@@ -62,6 +62,40 @@ enum MusicSearchService {
         let results: [CatalogSong]
     }
 
+    /// Finds one specific recording: results are scored by artist match
+    /// first (covers and tribute albums rank high in raw text search), then
+    /// title exactness. Returns nil rather than a wrong-artist result.
+    static func searchSong(title: String, artist: String) async throws -> CatalogSong? {
+        let results = try await search("\(title) \(artist)")
+        let targetTitle = LibraryStore.normalize(title)
+        let targetArtist = LibraryStore.normalize(artist)
+
+        func score(_ song: CatalogSong) -> Int {
+            let candidateTitle = LibraryStore.normalize(song.trackName)
+            let candidateArtist = LibraryStore.normalize(song.artistName)
+            var total = 0
+            if candidateArtist == targetArtist {
+                total += 100
+            } else if candidateArtist.contains(targetArtist) || targetArtist.contains(candidateArtist) {
+                total += 60
+            } else {
+                return 0 // wrong artist — never acceptable
+            }
+            if candidateTitle == targetTitle {
+                total += 50
+            } else if candidateTitle.contains(targetTitle) || targetTitle.contains(candidateTitle) {
+                total += 20
+            }
+            return total
+        }
+
+        return results
+            .map { (song: $0, score: score($0)) }
+            .filter { $0.score >= 60 }
+            .max { $0.score < $1.score }?
+            .song
+    }
+
     static func search(_ term: String) async throws -> [CatalogSong] {
         let trimmed = term.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }

@@ -54,9 +54,9 @@ struct IdentifyView: View {
         isFindingTone = true
         findErrorMessage = nil
         Task { @MainActor in
-            let results = try? await MusicSearchService.search("\(title) \(artist)")
-            if let first = results?.first {
-                path.append(first)
+            let match = try? await MusicSearchService.searchSong(title: title, artist: artist)
+            if let match {
+                path.append(match)
             } else {
                 findErrorMessage = "Couldn't find this song in the catalog."
             }

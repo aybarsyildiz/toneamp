@@ -49,8 +49,8 @@ final class LibraryStore {
         let missing = songs.filter { $0.artworkURL == nil }.prefix(60)
         for song in missing {
             guard cache[song.id] == nil else { continue }
-            let results = try? await MusicSearchService.search("\(song.title) \(song.artist)")
-            if let url = results?.first?.largeArtworkURL {
+            let match = try? await MusicSearchService.searchSong(title: song.title, artist: song.artist)
+            if let url = match?.largeArtworkURL {
                 cache[song.id] = url.absoluteString
                 UserDefaults.standard.set(cache, forKey: Self.artworkCacheKey)
                 if let index = songs.firstIndex(where: { $0.id == song.id }) {
