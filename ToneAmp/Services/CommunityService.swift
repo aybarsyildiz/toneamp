@@ -223,6 +223,53 @@ enum CommunityService {
 }
 
 extension CommunityTone {
+    /// Rebuilds a catalog song from the tone's stored metadata so browse
+    /// rows can deep-link into the song page without an iTunes round trip.
+    var asCatalogSong: CatalogSong {
+        CatalogSong(
+            trackId: trackID,
+            trackName: songTitle,
+            artistName: artistName,
+            collectionName: albumName.isEmpty ? nil : albumName,
+            releaseDate: year > 0 ? "\(year)-01-01" : nil,
+            primaryGenreName: genre.rawValue,
+            artworkUrl100: artworkURL?.absoluteString
+        )
+    }
+}
+
+/// One song in the community browse feed — all its tones rolled up.
+struct CommunitySongSummary: Identifiable, Hashable {
+    let song: CatalogSong
+    let toneCount: Int
+    let bestAverage: Double?
+    let ratingCount: Int
+    let latest: Date
+
+    var id: Int { song.trackId }
+}
+
+extension Array where Element == CommunityTone {
+    /// Groups a flat tone feed into per-song summaries.
+    func groupedBySong() -> [CommunitySongSummary] {
+        var groups: [Int: [CommunityTone]] = [:]
+        for tone in self {
+            groups[tone.trackID, default: []].append(tone)
+        }
+        return groups.values.compactMap { tones in
+            guard let first = tones.first else { return nil }
+            return CommunitySongSummary(
+                song: first.asCatalogSong,
+                toneCount: tones.count,
+                bestAverage: tones.compactMap { $0.averageRating }.max(),
+                ratingCount: tones.reduce(0) { $0 + $1.ratingCount },
+                latest: tones.map { $0.createdAt }.max() ?? first.createdAt
+            )
+        }
+    }
+}
+
+extension CommunityTone {
     init?(record: CKRecord) {
         guard let trackID = record["trackID"] as? Int,
               let songTitle = record["songTitle"] as? String,

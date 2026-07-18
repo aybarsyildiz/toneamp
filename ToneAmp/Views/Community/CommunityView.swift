@@ -13,10 +13,20 @@ struct CommunityView: View {
         !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    private var topTones: [CommunityTone] {
-        recentTones
-            .filter { $0.ratingCount > 0 }
-            .sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
+    /// Browse is song-level: one row per song no matter how many tones it
+    /// has — the song page ranks the individual tones.
+    private var songSummaries: [CommunitySongSummary] {
+        recentTones.groupedBySong()
+    }
+
+    private var topSongs: [CommunitySongSummary] {
+        songSummaries
+            .filter { $0.bestAverage != nil }
+            .sorted { ($0.bestAverage ?? 0) > ($1.bestAverage ?? 0) }
+    }
+
+    private var recentSongs: [CommunitySongSummary] {
+        songSummaries.sorted { $0.latest > $1.latest }
     }
 
     var body: some View {
@@ -87,19 +97,19 @@ struct CommunityView: View {
             }
         } else {
             List {
-                if !topTones.isEmpty {
+                if !topSongs.isEmpty {
                     Section("Top Rated") {
-                        ForEach(topTones.prefix(10)) { tone in
-                            NavigationLink(value: tone) {
-                                CommunityToneRow(tone: tone)
+                        ForEach(topSongs.prefix(10)) { summary in
+                            NavigationLink(value: summary.song) {
+                                CommunitySongRow(summary: summary)
                             }
                         }
                     }
                 }
-                Section("Recent") {
-                    ForEach(recentTones) { tone in
-                        NavigationLink(value: tone) {
-                            CommunityToneRow(tone: tone)
+                Section("Recently Active") {
+                    ForEach(recentSongs) { summary in
+                        NavigationLink(value: summary.song) {
+                            CommunitySongRow(summary: summary)
                         }
                     }
                 }
@@ -151,6 +161,39 @@ struct CatalogSongRow: View {
                     .lineLimit(1)
             }
         }
+    }
+}
+
+/// One song in the browse feed, its tones rolled up into a count + rating.
+struct CommunitySongRow: View {
+    let summary: CommunitySongSummary
+
+    var body: some View {
+        HStack(spacing: 12) {
+            SongArtworkView(genre: summary.song.genre, artworkURL: summary.song.artworkURL, size: 52)
+                .shadow(color: .black.opacity(0.12), radius: 3, y: 2)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(summary.song.trackName)
+                    .font(.body.weight(.semibold))
+                    .lineLimit(1)
+                Text(summary.song.artistName)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                HStack(spacing: 8) {
+                    Text(summary.toneCount == 1 ? "1 tone" : "\(summary.toneCount) tones")
+                        .font(.caption2.weight(.medium))
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 3)
+                        .background(Color(.tertiarySystemFill), in: Capsule())
+                        .foregroundStyle(.secondary)
+                    if summary.bestAverage != nil {
+                        RatingSummaryLabel(average: summary.bestAverage, count: summary.ratingCount)
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 3)
     }
 }
 
