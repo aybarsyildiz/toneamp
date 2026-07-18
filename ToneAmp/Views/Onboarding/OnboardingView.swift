@@ -8,15 +8,42 @@ struct OnboardingView: View {
     @Environment(RigStore.self) private var rigStore
     @State private var page = 0
 
-    private let lastPage = 3
+    private let lastPage = 6
 
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $page) {
                 welcomePage.tag(0)
                 featuresPage.tag(1)
-                gearPage.tag(2)
-                signInPage.tag(3)
+                gearPage(
+                    category: .guitar,
+                    title: "Your Guitar",
+                    subtitle: "Search and tap — one or several.",
+                    pageIndex: 2
+                )
+                .tag(2)
+                gearPage(
+                    category: .amp,
+                    title: "Your Amp",
+                    subtitle: "No amp? Pick \u{201C}Audio interface (direct to PC)\u{201D}.",
+                    pageIndex: 3
+                )
+                .tag(3)
+                gearPage(
+                    category: .multiFX,
+                    title: "Multi-FX or Modeler",
+                    subtitle: "GT, Helix, Kemper… it covers every effect at once.",
+                    pageIndex: 4
+                )
+                .tag(4)
+                gearPage(
+                    category: .pedal,
+                    title: "Your Pedals",
+                    subtitle: "Individual pedals, if you run any.",
+                    pageIndex: 5
+                )
+                .tag(5)
+                signInPage.tag(6)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
 
@@ -28,7 +55,7 @@ struct OnboardingView: View {
                             page += 1
                         }
                     } label: {
-                        Text(page == 2 ? (rigStore.rig.isConfigured ? "Continue" : "Skip for Now") : "Continue")
+                        Text(continueLabel)
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 6)
@@ -41,6 +68,34 @@ struct OnboardingView: View {
         }
         .background(Color(.systemBackground))
         .sensoryFeedback(.selection, trigger: page)
+    }
+
+    /// Gear pages say "Skip" until something in that category is picked.
+    private var continueLabel: String {
+        let category: GearItem.Category?
+        switch page {
+        case 2: category = .guitar
+        case 3: category = .amp
+        case 4: category = .multiFX
+        case 5: category = .pedal
+        default: category = nil
+        }
+        guard let category else { return "Continue" }
+        return hasContent(for: category) ? "Continue" : "Skip"
+    }
+
+    private func hasContent(for category: GearItem.Category) -> Bool {
+        if rigStore.selectedGearItems.contains(where: { $0.category == category }) {
+            return true
+        }
+        switch category {
+        case .guitar:
+            return !rigStore.rig.guitarText.isEmpty || !rigStore.rig.guitars.isEmpty
+        case .amp:
+            return !rigStore.rig.ampText.isEmpty || !rigStore.rig.amp.isEmpty
+        case .multiFX, .pedal:
+            return !rigStore.rig.pedalsText.isEmpty || !rigStore.rig.pedalTypes.isEmpty
+        }
     }
 
     private var pageDots: some View {
@@ -121,20 +176,29 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var gearPage: some View {
+    private func gearPage(
+        category: GearItem.Category,
+        title: String,
+        subtitle: String,
+        pageIndex: Int
+    ) -> some View {
         VStack(spacing: 0) {
             VStack(spacing: 6) {
-                Text("What Do You Play?")
+                Image(systemName: category.symbol)
+                    .font(.title2)
+                    .foregroundStyle(.tint)
+                    .symbolEffect(.bounce, value: page == pageIndex)
+                Text(title)
                     .font(.title.bold())
-                Text("Search and tap — tones get translated to your gear. You can edit this anytime in Profile.")
+                Text(subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
-            .padding(.top, 24)
-            .padding(.bottom, 14)
-            GearPickerView()
+            .padding(.top, 18)
+            .padding(.bottom, 12)
+            GearPickerView(fixedCategory: category)
         }
     }
 

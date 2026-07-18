@@ -5,9 +5,18 @@ import SwiftUI
 struct GearPickerView: View {
     @Environment(RigStore.self) private var rigStore
     @State private var query = ""
-    @State private var category: GearItem.Category = .guitar
+    @State private var category: GearItem.Category
 
     var showsSelectedRow = true
+    /// When set, the picker is locked to one category (no tabs) — used by
+    /// the per-category onboarding pages.
+    let fixedCategory: GearItem.Category?
+
+    init(fixedCategory: GearItem.Category? = nil, showsSelectedRow: Bool = true) {
+        self.fixedCategory = fixedCategory
+        self.showsSelectedRow = showsSelectedRow
+        _category = State(initialValue: fixedCategory ?? .guitar)
+    }
 
     private var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -20,14 +29,15 @@ struct GearPickerView: View {
     }
 
     /// Browsing shows one category at a time (tabs below the search field);
-    /// typing searches across every category.
+    /// typing searches every category — unless the picker is category-locked.
     private var sections: [(category: GearItem.Category, items: [GearItem])] {
         if trimmedQuery.isEmpty {
             let items = GearCatalog.popularGear.filter { $0.category == category }
             return items.isEmpty ? [] : [(category, items)]
         }
-        let matching = GearCatalog.popularGear.filter {
-            $0.name.localizedCaseInsensitiveContains(trimmedQuery)
+        let matching = GearCatalog.popularGear.filter { item in
+            item.name.localizedCaseInsensitiveContains(trimmedQuery)
+                && (fixedCategory == nil || item.category == fixedCategory)
         }
         return GearItem.Category.allCases.compactMap { cat in
             let items = matching.filter { $0.category == cat }
@@ -56,7 +66,7 @@ struct GearPickerView: View {
             .padding(.horizontal)
             .padding(.bottom, 8)
 
-            if trimmedQuery.isEmpty {
+            if trimmedQuery.isEmpty && fixedCategory == nil {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(GearItem.Category.allCases, id: \.self) { cat in
@@ -87,10 +97,13 @@ struct GearPickerView: View {
                 .padding(.bottom, 8)
             }
 
-            if showsSelectedRow && !rigStore.selectedGearItems.isEmpty {
+            let visibleSelection = rigStore.selectedGearItems.filter {
+                fixedCategory == nil || $0.category == fixedCategory
+            }
+            if showsSelectedRow && !visibleSelection.isEmpty {
                 ScrollView(.horizontal) {
                     HStack(spacing: 6) {
-                        ForEach(rigStore.selectedGearItems) { item in
+                        ForEach(visibleSelection) { item in
                             Button {
                                 withAnimation(.snappy) {
                                     rigStore.toggle(item)
@@ -156,14 +169,20 @@ struct GearPickerView: View {
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                             HStack(spacing: 8) {
-                                customAddButton("Guitar") {
-                                    rigStore.rig.guitarText = appended(trimmedQuery, to: rigStore.rig.guitarText)
+                                if fixedCategory == nil || fixedCategory == .guitar {
+                                    customAddButton("Guitar") {
+                                        rigStore.rig.guitarText = appended(trimmedQuery, to: rigStore.rig.guitarText)
+                                    }
                                 }
-                                customAddButton("Amp") {
-                                    rigStore.rig.ampText = appended(trimmedQuery, to: rigStore.rig.ampText)
+                                if fixedCategory == nil || fixedCategory == .amp {
+                                    customAddButton("Amp") {
+                                        rigStore.rig.ampText = appended(trimmedQuery, to: rigStore.rig.ampText)
+                                    }
                                 }
-                                customAddButton("Pedal/FX") {
-                                    rigStore.rig.pedalsText = appended(trimmedQuery, to: rigStore.rig.pedalsText)
+                                if fixedCategory == nil || fixedCategory == .multiFX || fixedCategory == .pedal {
+                                    customAddButton("Pedal/FX") {
+                                        rigStore.rig.pedalsText = appended(trimmedQuery, to: rigStore.rig.pedalsText)
+                                    }
                                 }
                             }
                         }
