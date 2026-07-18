@@ -12,6 +12,7 @@ canonicalizes against the iTunes Search API (title/album/artwork).
 """
 import hashlib
 import json
+import os
 import re
 import sys
 import time
@@ -1596,37 +1597,55 @@ def main():
 
     matched = 0
     if fetch_artwork:
+        # Checkpointed fetch: one cache entry per artist, written to disk
+        # after every request so a killed run resumes where it stopped.
+        cache_path = sys.argv[2] if len(sys.argv) > 2 and not sys.argv[2].startswith("--") else None
+        cache = {}
+        if cache_path and os.path.exists(cache_path):
+            with open(cache_path, encoding="utf-8") as f:
+                cache = json.load(f)
         artists = list(by_artist.keys())
-        print(f"unique artists: {len(artists)}", flush=True)
-        for i, (artist, country) in enumerate(artists):
+        pending = [(a, c) for (a, c) in artists if f"{a}|{c}" not in cache]
+        print(f"unique artists: {len(artists)}, cached: {len(artists) - len(pending)}, pending: {len(pending)}", flush=True)
+        for i, (artist, country) in enumerate(pending):
             results = itunes_artist_songs(artist, country)
             na = norm(artist)
-            catalog = []
+            entry = {}
             for res in results:
                 ra = norm(res.get("artistName", ""))
                 if na and (na in ra or ra in na):
-                    catalog.append((norm(res.get("trackName", "")), res))
-            for song in by_artist[(artist, country)]:
+                    rt = norm(res.get("trackName", ""))
+                    if rt and rt not in entry:
+                        a100 = res.get("artworkUrl100")
+                        entry[rt] = {
+                            "art": a100.replace("100x100", "600x600") if a100 else None,
+                            "album": res.get("collectionName") or "",
+                        }
+            cache[f"{artist}|{country}"] = entry
+            if cache_path:
+                with open(cache_path, "w", encoding="utf-8") as f:
+                    json.dump(cache, f, ensure_ascii=False)
+            if (i + 1) % 10 == 0:
+                print(f"fetched {i + 1}/{len(pending)}", flush=True)
+            time.sleep(2.5)
+
+        # Apply the cache to every song
+        for (artist, country), slist in by_artist.items():
+            entry = cache.get(f"{artist}|{country}", {})
+            keys = list(entry.keys())
+            for song in slist:
                 nt = norm(song["title"])
-                best = None
-                for rt, res in catalog:
-                    if nt == rt:
-                        best = res
-                        break
+                best = entry.get(nt)
                 if best is None:
-                    for rt, res in catalog:
+                    for rt in keys:
                         if nt and (nt in rt or rt in nt):
-                            best = res
+                            best = entry[rt]
                             break
                 if best:
                     matched += 1
-                    song["album"] = best.get("collectionName") or ""
-                    a100 = best.get("artworkUrl100")
-                    if a100:
-                        song["artworkURL"] = a100.replace("100x100", "600x600")
-            if (i + 1) % 20 == 0:
-                print(f"artists {i + 1}/{len(artists)} (songs matched: {matched})", flush=True)
-            time.sleep(3.0)
+                    song["album"] = best["album"]
+                    if best["art"]:
+                        song["artworkURL"] = best["art"]
 
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(songs, f, ensure_ascii=False)
