@@ -115,6 +115,24 @@ struct CommunityToneDetailView: View {
 
             Section("For Your Rig") {
                 RigTipsView(pickup: tone.pickup, amp: tone.ampName, pedals: tone.pedals)
+                AdaptToMyGearButton(
+                    input: ToneAdaptationInput(
+                        trackID: tone.trackID,
+                        songTitle: tone.songTitle,
+                        artist: tone.artistName,
+                        albumName: tone.albumName,
+                        year: tone.year,
+                        genre: tone.genre,
+                        artworkURL: tone.artworkURL,
+                        toneName: tone.toneName,
+                        ampName: tone.ampName,
+                        settings: tone.settings,
+                        guitar: tone.guitar,
+                        pickup: tone.pickup,
+                        pedals: tone.pedals,
+                        notes: tone.notes
+                    )
+                )
             }
 
             if !tone.notes.isEmpty {

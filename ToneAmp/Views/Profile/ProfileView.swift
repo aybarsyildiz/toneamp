@@ -168,15 +168,9 @@ struct ProfileView: View {
         VStack(spacing: 12) {
             ZStack {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.accentColor, Color(red: 0.85, green: 0.25, blue: 0.35)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(Color.accentColor)
                     .frame(width: 92, height: 92)
-                    .shadow(color: Color.accentColor.opacity(0.35), radius: 14, y: 8)
+                    .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
                 if session.isSignedIn && !session.displayName.isEmpty {
                     Text(initials)
                         .font(.system(size: 34, weight: .bold, design: .rounded))

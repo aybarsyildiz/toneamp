@@ -15,6 +15,46 @@ struct AIGeneratedTone: Identifiable, Hashable {
     let rigTips: [String]
 }
 
+/// Everything needed to adapt an existing tone to the player's rig —
+/// constructible from library, community, or saved-AI tones.
+struct ToneAdaptationInput {
+    let trackID: Int
+    let songTitle: String
+    let artist: String
+    let albumName: String
+    let year: Int
+    let genre: Genre
+    let artworkURL: URL?
+    let toneName: String
+    let ampName: String
+    let settings: AmpSettings
+    let guitar: String
+    let pickup: String
+    let pedals: [EffectPedal]
+    let notes: String
+
+    var asCatalogSong: CatalogSong {
+        CatalogSong(
+            trackId: trackID,
+            trackName: songTitle,
+            artistName: artist,
+            collectionName: albumName.isEmpty ? nil : albumName,
+            releaseDate: year > 0 ? "\(year)-01-01" : nil,
+            primaryGenreName: genre.rawValue,
+            artworkUrl100: artworkURL?.absoluteString
+        )
+    }
+
+    /// Stable pseudo-ID for library songs that have no iTunes track ID.
+    static func syntheticTrackID(for songID: String) -> Int {
+        var hash: UInt64 = 5381
+        for byte in songID.utf8 {
+            hash = hash &* 33 &+ UInt64(byte)
+        }
+        return -Int(hash % 9_000_000)
+    }
+}
+
 enum AIToneError: LocalizedError {
     case missingAPIKey
     case httpError(Int, String)
@@ -121,6 +161,77 @@ enum AIToneService {
             throw AIToneError.noTones
         }
         return payload.tones.map { $0.toGeneratedTone() }
+    }
+
+    /// Pro: translate a specific existing tone onto the player's rig.
+    /// Returns exactly one adapted tone (same schema as identifyTones).
+    static func adaptTone(_ input: ToneAdaptationInput, rig: UserRig) async throws -> AIGeneratedTone {
+        guard let apiKey = resolvedAPIKey else {
+            throw AIToneError.missingAPIKey
+        }
+
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+
+        let schemaData = Data(schemaJSON.utf8)
+        let schema = try JSONSerialization.jsonObject(with: schemaData)
+        let pedalText = input.pedals.map { pedal in
+            let controls = pedal.controls.map { "\($0.name) \($0.value)" }.joined(separator: ", ")
+            return "\(pedal.name) (\(pedal.type.rawValue)\(controls.isEmpty ? "" : ": " + controls))"
+        }.joined(separator: "; ")
+        let content = """
+        Adapt this exact tone to the player's own rig.
+
+        Song: \(input.songTitle) by \(input.artist)
+        Original tone \u{201C}\(input.toneName)\u{201D}: amp \(input.ampName); \
+        gain \(input.settings.gain), bass \(input.settings.bass), mid \(input.settings.mid), \
+        treble \(input.settings.treble), presence \(input.settings.presence ?? 0), reverb \(input.settings.reverb ?? 0); \
+        guitar \(input.guitar) (\(input.pickup)); \
+        pedals: \(pedalText.isEmpty ? "none" : pedalText). Notes: \(input.notes)
+
+        The player's rig — \(rig.aiDescription).
+
+        Return exactly ONE tone in the tones array, translated onto the player's gear:
+        - amp = the player's own amp with the channel/model to use (e.g. "Boss GT-8 — 'BG Lead' preamp")
+        - settings = the values to dial ON THE PLAYER'S amp/unit to match the original sound
+        - pedals = only gear the player owns; on a multi-FX, name the blocks (e.g. "GT-8 OD-1 block")
+        - guitar/pickup = the best choice from the player's guitars
+        - rigTips = 2–4 step-by-step dial-in instructions naming their gear
+        - name = "\(input.toneName) — My Gear"
+        """
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: [
+            "model": modelID,
+            "max_tokens": 6000,
+            "thinking": ["type": "adaptive"],
+            "system": systemPrompt,
+            "messages": [["role": "user", "content": content]],
+            "output_config": ["format": ["type": "json_schema", "schema": schema]],
+        ] as [String: Any])
+
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else {
+            throw AIToneError.malformedResponse
+        }
+        guard http.statusCode == 200 else {
+            let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
+            throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
+        }
+        let message = try JSONDecoder().decode(APIResponse.self, from: data)
+        if message.stopReason == "refusal" {
+            throw AIToneError.refused
+        }
+        guard let text = message.content.first(where: { $0.type == "text" })?.text,
+              let jsonData = text.data(using: .utf8),
+              let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData),
+              payload.found,
+              let tone = payload.tones.first else {
+            throw AIToneError.malformedResponse
+        }
+        return tone.toGeneratedTone()
     }
 
     // MARK: - Request

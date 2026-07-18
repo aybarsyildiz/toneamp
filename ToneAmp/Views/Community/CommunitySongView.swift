@@ -118,22 +118,13 @@ struct CommunitySongView: View {
                                 .font(.caption2.weight(.heavy))
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(.white.opacity(0.25), in: Capsule())
+                                .background(.white.opacity(0.22), in: Capsule())
                         }
                         .font(.headline)
-                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 13)
-                        .background(
-                            LinearGradient(
-                                colors: [Color.accentColor, Color(red: 0.85, green: 0.25, blue: 0.35)],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            ),
-                            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        )
+                        .padding(.vertical, 6)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.borderedProminent)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())

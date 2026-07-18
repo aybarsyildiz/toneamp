@@ -16,6 +16,24 @@ struct LibraryView: View {
             && selectedGenre == nil
     }
 
+    /// Contacts-style letter grouping for the browse list.
+    private var letterSections: [(letter: String, songs: [Song])] {
+        let grouped = Dictionary(grouping: results) { indexLetter(for: $0.title) }
+        return grouped.keys.sorted().map { letter in
+            (letter, grouped[letter] ?? [])
+        }
+    }
+
+    private func indexLetter(for title: String) -> String {
+        let folded = title
+            .translatedFromTurkish()
+            .uppercased()
+        guard let first = folded.first, first.isLetter, first.isASCII else {
+            return "#"
+        }
+        return String(first)
+    }
+
     /// Deterministic daily pick — same song all day, new song tomorrow.
     private var toneOfTheDay: Song? {
         let songs = library.songs
@@ -35,6 +53,7 @@ struct LibraryView: View {
                         Text("The library holds hand-checked classics. For everything else, search the Community tab — any song, tones by real players.")
                     }
                 } else {
+                    ScrollViewReader { proxy in
                     List {
                         if isBrowsing {
                             if let song = toneOfTheDay {
@@ -61,24 +80,44 @@ struct LibraryView: View {
                                 .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                                 .listRowBackground(Color.clear)
                         }
-                        Section {
-                            ForEach(results) { song in
-                                NavigationLink(value: song) {
-                                    SongRow(song: song)
-                                }
-                                .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                    FavoriteSwipeButton(song: song)
+                        if isBrowsing {
+                            ForEach(letterSections, id: \.letter) { section in
+                                Section {
+                                    ForEach(section.songs) { song in
+                                        NavigationLink(value: song) {
+                                            SongRow(song: song)
+                                        }
+                                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                            FavoriteSwipeButton(song: song)
+                                        }
+                                    }
+                                } header: {
+                                    Text(section.letter)
+                                        .id("index-\(section.letter)")
                                 }
                             }
-                        } header: {
-                            Text(isBrowsing ? "All Songs" : "Songs")
-                                .font(.title3.bold())
-                                .foregroundStyle(.primary)
-                                .textCase(nil)
+                        } else {
+                            Section("Songs") {
+                                ForEach(results) { song in
+                                    NavigationLink(value: song) {
+                                        SongRow(song: song)
+                                    }
+                                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                        FavoriteSwipeButton(song: song)
+                                    }
+                                }
+                            }
                         }
                     }
                     .listStyle(.insetGrouped)
-                    .headerProminence(.increased)
+                    .overlay(alignment: .trailing) {
+                        if isBrowsing {
+                            SectionIndexBar(letters: letterSections.map { $0.letter }) { letter in
+                                proxy.scrollTo("index-\(letter)", anchor: .top)
+                            }
+                        }
+                    }
+                    }
                 }
             }
             .navigationTitle("Library")
@@ -243,6 +282,58 @@ struct FeaturedSongCard: View {
                 .padding(10)
         }
         .frame(width: 244, height: 152)
+    }
+}
+
+/// Contacts-style tappable/draggable letter index.
+struct SectionIndexBar: View {
+    let letters: [String]
+    let onSelect: (String) -> Void
+
+    @State private var currentLetter = ""
+
+    private let rowHeight: CGFloat = 13
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(letters, id: \.self) { letter in
+                Text(letter)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(.tint)
+                    .frame(width: 18, height: rowHeight)
+            }
+        }
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { value in
+                    select(at: value.location.y)
+                }
+        )
+        .padding(.trailing, 3)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .sensoryFeedback(.selection, trigger: currentLetter)
+    }
+
+    private func select(at y: CGFloat) {
+        guard !letters.isEmpty else { return }
+        let index = max(0, min(letters.count - 1, Int(y / rowHeight)))
+        let letter = letters[index]
+        if letter != currentLetter {
+            currentLetter = letter
+            onSelect(letter)
+        }
+    }
+}
+
+extension String {
+    /// Transliterates Turkish characters for index grouping and slugs.
+    func translatedFromTurkish() -> String {
+        let table: [Character: Character] = [
+            "ç": "c", "ğ": "g", "ı": "i", "ö": "o", "ş": "s", "ü": "u",
+            "Ç": "C", "Ğ": "G", "İ": "I", "Ö": "O", "Ş": "S", "Ü": "U",
+        ]
+        return String(map { table[$0] ?? $0 })
     }
 }
 

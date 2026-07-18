@@ -35,6 +35,24 @@ struct ToneDetailView: View {
 
             Section("For Your Rig") {
                 RigTipsView(pickup: tone.pickup, amp: tone.amp, pedals: tone.pedals)
+                AdaptToMyGearButton(
+                    input: ToneAdaptationInput(
+                        trackID: ToneAdaptationInput.syntheticTrackID(for: song.id),
+                        songTitle: song.title,
+                        artist: song.artist,
+                        albumName: song.album,
+                        year: song.year,
+                        genre: song.genre,
+                        artworkURL: song.artworkURL,
+                        toneName: tone.name,
+                        ampName: tone.amp,
+                        settings: tone.settings,
+                        guitar: tone.guitar,
+                        pickup: tone.pickup,
+                        pedals: tone.pedals,
+                        notes: tone.notes
+                    )
+                )
             }
 
             Section("Pedals & Effects") {

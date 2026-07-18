@@ -232,17 +232,15 @@ struct AIToneFinderView: View {
     }
 }
 
-/// The "something magical is happening" screen: breathing gradient orb,
-/// orbiting sparkles, shimmering progress bar, and cycling status lines.
+/// The "something magical is happening" screen: breathing orb, orbiting
+/// ring, shimmering progress bar, and cycling status lines.
 struct MagicalLoadingView: View {
-    let song: CatalogSong
-
-    @State private var breathe = false
-    @State private var orbit = false
-    @State private var shimmer = false
-    @State private var messageIndex = 0
-
-    private let messages = [
+    let title: String
+    let artist: String
+    let artworkURL: URL?
+    let genre: Genre
+    var headline: String = "Identifying Tones"
+    var messages: [String] = [
         "Listening to the record…",
         "Reading the liner notes…",
         "Tracing the signal chain…",
@@ -251,6 +249,34 @@ struct MagicalLoadingView: View {
         "Dialing in the knobs…",
         "Almost there…",
     ]
+
+    init(song: CatalogSong) {
+        self.title = song.trackName
+        self.artist = song.artistName
+        self.artworkURL = song.artworkURL
+        self.genre = song.genre
+    }
+
+    init(
+        title: String,
+        artist: String,
+        artworkURL: URL?,
+        genre: Genre,
+        headline: String,
+        messages: [String]
+    ) {
+        self.title = title
+        self.artist = artist
+        self.artworkURL = artworkURL
+        self.genre = genre
+        self.headline = headline
+        self.messages = messages
+    }
+
+    @State private var breathe = false
+    @State private var orbit = false
+    @State private var shimmer = false
+    @State private var messageIndex = 0
 
     var body: some View {
         VStack(spacing: 36) {
@@ -282,7 +308,7 @@ struct MagicalLoadingView: View {
                     .rotationEffect(.degrees(orbit ? 360 : 0))
                     .animation(.linear(duration: 2.4).repeatForever(autoreverses: false), value: orbit)
 
-                SongArtworkView(genre: song.genre, artworkURL: song.artworkURL, size: 110)
+                SongArtworkView(genre: genre, artworkURL: artworkURL, size: 110)
                     .shadow(color: Color.accentColor.opacity(0.4), radius: 20)
 
                 Image(systemName: "sparkles")
@@ -293,7 +319,7 @@ struct MagicalLoadingView: View {
             }
 
             VStack(spacing: 10) {
-                Text("Identifying Tones")
+                Text(headline)
                     .font(.title2.bold())
                 Text(messages[messageIndex])
                     .font(.callout)
@@ -305,7 +331,7 @@ struct MagicalLoadingView: View {
             shimmerBar
                 .padding(.horizontal, 60)
 
-            Text("\(song.trackName) · \(song.artistName)")
+            Text("\(title) · \(artist)")
                 .font(.footnote)
                 .foregroundStyle(.tertiary)
                 .lineLimit(1)

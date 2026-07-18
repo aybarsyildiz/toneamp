@@ -103,6 +103,129 @@ enum GearCatalog {
     ]
 }
 
+/// A concrete, searchable piece of gear the player can add to their rig.
+struct GearItem: Identifiable, Hashable {
+    enum Category: String, CaseIterable {
+        case guitar = "Guitars"
+        case amp = "Amps"
+        case multiFX = "Multi-FX & Modelers"
+        case pedal = "Pedals"
+
+        var symbol: String {
+            switch self {
+            case .guitar: return "guitars.fill"
+            case .amp: return "amplifier"
+            case .multiFX: return "square.grid.3x3.fill"
+            case .pedal: return "bolt.fill"
+            }
+        }
+    }
+
+    let name: String
+    let category: Category
+
+    var id: String { name }
+}
+
+extension GearCatalog {
+    /// Popular gear, searchable in onboarding and the rig editor.
+    static let popularGear: [GearItem] = {
+        let guitars = [
+            "Fender Stratocaster", "Fender Player Stratocaster", "Fender Telecaster",
+            "Fender Jazzmaster", "Fender Mustang", "Squier Stratocaster", "Squier Telecaster",
+            "Gibson Les Paul Standard", "Gibson Les Paul Studio", "Gibson SG", "Gibson ES-335",
+            "Gibson Explorer", "Gibson Flying V", "Epiphone Les Paul", "Epiphone SG",
+            "Epiphone Casino", "PRS Custom 24", "PRS SE Custom 24", "PRS Silver Sky",
+            "Ibanez RG550", "Ibanez RG421", "Ibanez AZ", "Ibanez Gio",
+            "Jackson Soloist", "Jackson Dinky", "ESP LTD EC-1000", "ESP LTD M-1000",
+            "Schecter Hellraiser", "Charvel Pro-Mod", "Yamaha Pacifica 112", "Yamaha Revstar",
+            "Gretsch Streamliner", "Harley Benton TE-52", "Harley Benton SC-450", "Cort G250",
+        ].map { GearItem(name: $0, category: .guitar) }
+        let amps = [
+            "Boss Katana 50", "Boss Katana 100", "Fender Mustang GTX", "Fender Blues Junior",
+            "Fender Deluxe Reverb", "Fender Twin Reverb", "Fender Champion 40",
+            "Marshall DSL40CR", "Marshall JCM800", "Marshall Code 50", "Marshall MG30",
+            "Marshall Origin 20", "Vox AC15", "Vox AC30", "Vox Valvetronix VT40X",
+            "Orange Crush 35RT", "Orange Rockerverb", "Mesa/Boogie Dual Rectifier",
+            "Mesa/Boogie Mark V", "Peavey 6505", "EVH 5150 Iconic", "Positive Grid Spark 40",
+            "Line 6 Catalyst 60", "Blackstar HT Club 40", "Blackstar ID:Core 40",
+            "Roland JC-120", "Roland Cube", "Laney Cub", "Hughes & Kettner TubeMeister",
+            "Supro Delta King", "Bugera V22",
+        ].map { GearItem(name: $0, category: .amp) }
+        let multiFX = [
+            "Boss GT-8", "Boss GT-100", "Boss GT-1000", "Boss GX-100", "Boss ME-80",
+            "Boss GT-1", "Line 6 Helix", "Line 6 HX Stomp", "Line 6 POD Go", "Line 6 POD HD500X",
+            "Fractal Axe-FX III", "Neural DSP Quad Cortex", "Headrush MX5", "Headrush Pedalboard",
+            "Zoom G5n", "Zoom G1X Four", "Mooer GE200", "Mooer GE300", "NUX MG-30",
+            "Valeton GP-200", "Hotone Ampero II", "TC Electronic Plethora X5",
+        ].map { GearItem(name: $0, category: .multiFX) }
+        let pedals = [
+            "Ibanez Tube Screamer TS9", "Ibanez Tube Screamer TS808", "Boss SD-1", "Boss BD-2",
+            "Boss DS-1", "Boss MT-2 Metal Zone", "ProCo RAT 2", "EHX Big Muff Pi",
+            "Dunlop Fuzz Face", "EHX Soul Food", "Klon KTR", "Wampler Tumnus", "EarthQuaker Plumes",
+            "JHS Morning Glory", "Fulltone OCD", "Boss DD-8", "Boss DD-3T", "MXR Carbon Copy",
+            "EHX Memory Man", "Boss RE-2 Space Echo", "TC Flashback 2", "Boss RV-6",
+            "TC Hall of Fame 2", "EHX Holy Grail", "Boss CE-2W", "Boss CH-1", "EHX Small Clone",
+            "MXR Phase 90", "MXR Phase 95", "EHX Electric Mistress", "Dunlop Cry Baby",
+            "Vox V847 Wah", "MXR Dyna Comp", "Keeley Compressor Plus", "Boss GE-7 EQ",
+            "DigiTech Whammy", "EHX POG2", "Boss OC-5",
+        ].map { GearItem(name: $0, category: .pedal) }
+        return guitars + amps + multiFX + pedals
+    }()
+}
+
+extension RigStore {
+    /// Concrete gear items live in the free-text fields as comma lists —
+    /// the advisor's keyword inference and the AI both read them.
+    func isSelected(_ item: GearItem) -> Bool {
+        switch item.category {
+        case .guitar:
+            return rig.guitarText.localizedCaseInsensitiveContains(item.name)
+        case .amp:
+            return rig.ampText.localizedCaseInsensitiveContains(item.name)
+        case .multiFX, .pedal:
+            return rig.pedalsText.localizedCaseInsensitiveContains(item.name)
+        }
+    }
+
+    func toggle(_ item: GearItem) {
+        switch item.category {
+        case .guitar:
+            rig.guitarText = Self.toggling(item.name, in: rig.guitarText)
+        case .amp:
+            rig.ampText = Self.toggling(item.name, in: rig.ampText)
+        case .multiFX:
+            rig.pedalsText = Self.toggling(item.name, in: rig.pedalsText)
+            if isSelected(item) {
+                if !rig.pedalTypes.contains(GearCatalog.multiFXKey) {
+                    rig.pedalTypes.append(GearCatalog.multiFXKey)
+                }
+            } else if !GearCatalog.hasMultiFX(rig) {
+                rig.pedalTypes.removeAll { $0 == GearCatalog.multiFXKey }
+            }
+        case .pedal:
+            rig.pedalsText = Self.toggling(item.name, in: rig.pedalsText)
+        }
+    }
+
+    var selectedGearItems: [GearItem] {
+        GearCatalog.popularGear.filter { isSelected($0) }
+    }
+
+    private static func toggling(_ name: String, in list: String) -> String {
+        var parts = list
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        if let index = parts.firstIndex(where: { $0.caseInsensitiveCompare(name) == .orderedSame }) {
+            parts.remove(at: index)
+        } else {
+            parts.append(name)
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
 @Observable
 final class RigStore {
     private static let defaultsKey = "toneamp.userRig"

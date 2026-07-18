@@ -1,280 +1,176 @@
 import AuthenticationServices
 import SwiftUI
 
-/// Animated onboarding: three feature pages, then Sign in with Apple.
+/// Clean, system-native onboarding: welcome → what it does → add your gear
+/// (search-first) → sign in. No gradients, standard components, real haptics.
 struct OnboardingView: View {
     @Environment(SessionStore.self) private var session
     @Environment(RigStore.self) private var rigStore
-    @State private var pageIndex = 0
-    @State private var animateGradient = false
+    @State private var page = 0
 
-    /// 3 feature pages + rig page + sign-in page.
-    private let signInPageIndex = 4
-
-    private let pages: [OnboardPage] = [
-        OnboardPage(
-            symbol: "guitars.fill",
-            title: "Find the Tone",
-            subtitle: "Amp settings, pickups, and full pedalboards for the songs you love — knob by knob."
-        ),
-        OnboardPage(
-            symbol: "shazam.logo.fill",
-            title: "Hear It, Dial It",
-            subtitle: "Identify any song that's playing and jump straight to its guitar tone."
-        ),
-        OnboardPage(
-            symbol: "person.3.fill",
-            title: "Built by Players",
-            subtitle: "Publish your own tones for any song and rate the ones that nail it."
-        ),
-    ]
+    private let lastPage = 3
 
     var body: some View {
-        ZStack {
-            background
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    if pageIndex < signInPageIndex {
-                        Button("Skip") {
-                            withAnimation(.spring(duration: 0.5)) {
-                                pageIndex = signInPageIndex
-                            }
-                        }
-                        .foregroundStyle(.white.opacity(0.8))
-                        .padding()
-                    }
-                }
-                TabView(selection: $pageIndex) {
-                    ForEach(0..<pages.count, id: \.self) { index in
-                        OnboardPageView(page: pages[index], isActive: pageIndex == index)
-                            .tag(index)
-                    }
-                    rigPage
-                        .tag(3)
-                    signInPage
-                        .tag(signInPageIndex)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .automatic))
-                .indexViewStyle(.page(backgroundDisplayMode: .interactive))
+        VStack(spacing: 0) {
+            TabView(selection: $page) {
+                welcomePage.tag(0)
+                featuresPage.tag(1)
+                gearPage.tag(2)
+                signInPage.tag(3)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
 
-                if pageIndex < signInPageIndex {
+            VStack(spacing: 14) {
+                pageDots
+                if page < lastPage {
                     Button {
-                        withAnimation(.spring(duration: 0.5)) {
-                            pageIndex += 1
+                        withAnimation(.snappy) {
+                            page += 1
                         }
                     } label: {
-                        Text("Continue")
+                        Text(page == 2 ? (rigStore.rig.isConfigured ? "Continue" : "Skip for Now") : "Continue")
                             .font(.headline)
-                            .foregroundStyle(.black)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 15)
-                            .background(.white, in: Capsule())
+                            .padding(.vertical, 6)
                     }
-                    .padding(.horizontal, 28)
-                    .padding(.bottom, 28)
+                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal, 24)
                 }
             }
+            .padding(.bottom, 18)
         }
-        .sensoryFeedback(.selection, trigger: pageIndex)
+        .background(Color(.systemBackground))
+        .sensoryFeedback(.selection, trigger: page)
     }
 
-    private var background: some View {
-        LinearGradient(
-            colors: [Color.orange, Color(red: 0.85, green: 0.25, blue: 0.35), Color.indigo],
-            startPoint: animateGradient ? .topLeading : .bottomLeading,
-            endPoint: animateGradient ? .bottomTrailing : .topTrailing
-        )
-        .ignoresSafeArea()
-        .onAppear {
-            withAnimation(.easeInOut(duration: 6).repeatForever(autoreverses: true)) {
-                animateGradient = true
+    private var pageDots: some View {
+        HStack(spacing: 7) {
+            ForEach(0...lastPage, id: \.self) { index in
+                Capsule()
+                    .fill(index == page ? Color.accentColor : Color(.systemFill))
+                    .frame(width: index == page ? 22 : 7, height: 7)
+                    .animation(.snappy, value: page)
             }
         }
     }
 
-    private var rigPage: some View {
-        ScrollView {
-            VStack(spacing: 18) {
-                Image(systemName: "slider.horizontal.3")
-                    .font(.system(size: 56))
-                    .foregroundStyle(.white)
-                    .symbolEffect(.bounce, value: pageIndex == 3)
-                    .padding(.top, 8)
-                Text("What's Your Rig?")
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(.white)
-                Text("Every tone gets translated to your own gear. Pick what you play — refine anytime in Profile.")
-                    .font(.callout)
-                    .foregroundStyle(.white.opacity(0.85))
+    // MARK: Pages
+
+    private var welcomePage: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            ZStack {
+                Circle()
+                    .fill(Color.accentColor.opacity(0.12))
+                    .frame(width: 130, height: 130)
+                Image(systemName: "amplifier")
+                    .font(.system(size: 58))
+                    .foregroundStyle(.tint)
+                    .symbolEffect(.bounce, value: page == 0)
+            }
+            Text("Welcome to ToneAmp")
+                .font(.largeTitle.bold())
+                .multilineTextAlignment(.center)
+            Text("Hear a guitar tone you love?\nToneAmp tells you how to dial it in.")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+            Spacer()
+            Spacer()
+        }
+    }
+
+    private var featuresPage: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Spacer()
+            Text("Everything for the Tone")
+                .font(.largeTitle.bold())
+                .padding(.horizontal, 28)
+                .padding(.bottom, 28)
+            VStack(alignment: .leading, spacing: 24) {
+                FeatureRow(
+                    symbol: "music.note.list",
+                    tint: .orange,
+                    title: "1,300+ songs, knob by knob",
+                    text: "Amp settings, pickups, and full pedalboards — including Turkish rock."
+                )
+                FeatureRow(
+                    symbol: "shazam.logo.fill",
+                    tint: .blue,
+                    title: "Identify what's playing",
+                    text: "One tap recognizes the song and jumps to its tone."
+                )
+                FeatureRow(
+                    symbol: "person.3.fill",
+                    tint: .green,
+                    title: "By players, for players",
+                    text: "Publish your own tones and rate the ones that nail it."
+                )
+                FeatureRow(
+                    symbol: "wand.and.stars",
+                    tint: .purple,
+                    title: "Adapt any tone to your gear",
+                    text: "Pro translates settings to your exact amp and pedals."
+                )
+            }
+            .padding(.horizontal, 28)
+            Spacer()
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var gearPage: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 6) {
+                Text("What Do You Play?")
+                    .font(.title.bold())
+                Text("Search and tap — tones get translated to your gear. You can edit this anytime in Profile.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("GUITARS")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.white.opacity(0.7))
-                    onboardChips(GearCatalog.guitars, isSelected: { rigStore.rig.guitars.contains($0) }) { guitar in
-                        if let index = rigStore.rig.guitars.firstIndex(of: guitar) {
-                            rigStore.rig.guitars.remove(at: index)
-                        } else {
-                            rigStore.rig.guitars.append(guitar)
-                        }
-                    }
-                    Text("AMP")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.white.opacity(0.7))
-                        .padding(.top, 6)
-                    onboardChips(GearCatalog.amps, isSelected: { rigStore.rig.amp == $0 }) { amp in
-                        rigStore.rig.amp = rigStore.rig.amp == amp ? "" : amp
-                    }
-                    Text("EFFECTS")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.white.opacity(0.7))
-                        .padding(.top, 6)
-                    onboardChips(
-                        [GearCatalog.multiFXLabel, "Drive pedals", "Delay / Reverb", "Modulation", "Wah"],
-                        isSelected: { isEffectGroupSelected($0) }
-                    ) { group in
-                        toggleEffectGroup(group)
-                    }
-                    Text("OR TYPE YOUR EXACT GEAR")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.white.opacity(0.7))
-                        .padding(.top, 6)
-                    onboardTextField("Guitar — e.g. Player Strat HSS", text: guitarTextBinding)
-                    onboardTextField("Amp / multi-FX — e.g. Boss GT-8", text: ampTextBinding)
-                    onboardTextField("Pedals — e.g. TS9, DD-8, Big Muff", text: pedalsTextBinding)
-                }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 30)
             }
-        }
-    }
-
-    private var guitarTextBinding: Binding<String> {
-        Binding(
-            get: { rigStore.rig.guitarText },
-            set: { rigStore.rig.guitarText = $0 }
-        )
-    }
-
-    private var ampTextBinding: Binding<String> {
-        Binding(
-            get: { rigStore.rig.ampText },
-            set: { rigStore.rig.ampText = $0 }
-        )
-    }
-
-    private var pedalsTextBinding: Binding<String> {
-        Binding(
-            get: { rigStore.rig.pedalsText },
-            set: { rigStore.rig.pedalsText = $0 }
-        )
-    }
-
-    /// Onboarding effect groups map to sets of pedal categories.
-    private func effectTypes(for group: String) -> [String] {
-        switch group {
-        case GearCatalog.multiFXLabel:
-            return [GearCatalog.multiFXKey]
-        case "Drive pedals":
-            return [EffectType.overdrive.rawValue, EffectType.distortion.rawValue]
-        case "Delay / Reverb":
-            return [EffectType.delay.rawValue, EffectType.reverb.rawValue]
-        case "Modulation":
-            return [EffectType.chorus.rawValue, EffectType.phaser.rawValue, EffectType.flanger.rawValue]
-        case "Wah":
-            return [EffectType.wah.rawValue]
-        default:
-            return []
-        }
-    }
-
-    private func isEffectGroupSelected(_ group: String) -> Bool {
-        let types = effectTypes(for: group)
-        return !types.isEmpty && types.allSatisfy { rigStore.rig.pedalTypes.contains($0) }
-    }
-
-    private func toggleEffectGroup(_ group: String) {
-        let types = effectTypes(for: group)
-        if isEffectGroupSelected(group) {
-            rigStore.rig.pedalTypes.removeAll { types.contains($0) }
-        } else {
-            for type in types where !rigStore.rig.pedalTypes.contains(type) {
-                rigStore.rig.pedalTypes.append(type)
-            }
-        }
-    }
-
-    private func onboardTextField(_ prompt: String, text: Binding<String>) -> some View {
-        TextField("", text: text, prompt: Text(prompt).foregroundStyle(.white.opacity(0.55)))
-            .foregroundStyle(.white)
-            .tint(.white)
-            .autocorrectionDisabled()
-            .padding(.horizontal, 14)
-            .padding(.vertical, 11)
-            .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-    }
-
-    private func onboardChips(
-        _ items: [String],
-        isSelected: @escaping (String) -> Bool,
-        toggle: @escaping (String) -> Void
-    ) -> some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 128), spacing: 8)], alignment: .leading, spacing: 8) {
-            ForEach(items, id: \.self) { item in
-                Button {
-                    withAnimation(.snappy) {
-                        toggle(item)
-                    }
-                } label: {
-                    Text(item)
-                        .font(.footnote.weight(.medium))
-                        .lineLimit(1)
-                        .padding(.horizontal, 11)
-                        .padding(.vertical, 8)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            isSelected(item) ? AnyShapeStyle(.white) : AnyShapeStyle(.white.opacity(0.18)),
-                            in: Capsule()
-                        )
-                        .foregroundStyle(isSelected(item) ? .black : .white)
-                }
-                .buttonStyle(.plain)
-            }
+            .padding(.top, 24)
+            .padding(.bottom, 14)
+            GearPickerView()
         }
     }
 
     private var signInPage: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 18) {
             Spacer()
-            Image(systemName: "amplifier")
-                .font(.system(size: 80))
-                .foregroundStyle(.white)
-                .symbolEffect(.bounce, value: pageIndex == pages.count)
+            ZStack {
+                Circle()
+                    .fill(Color.accentColor.opacity(0.12))
+                    .frame(width: 110, height: 110)
+                Image(systemName: "person.crop.circle.badge.checkmark")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.tint)
+                    .symbolEffect(.bounce, value: page == lastPage)
+            }
             Text("Join the Community")
                 .font(.largeTitle.bold())
-                .foregroundStyle(.white)
-            Text("Sign in to publish tones and rate what other players share. You can browse everything without an account.")
-                .font(.callout)
-                .foregroundStyle(.white.opacity(0.85))
+            Text("Sign in to publish and rate tones.\nBrowsing never needs an account.")
+                .font(.body)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 36)
+                .padding(.horizontal, 40)
             Spacer()
             SignInWithAppleButton(.signIn) { request in
                 request.requestedScopes = [.fullName]
             } onCompletion: { result in
                 handleSignIn(result)
             }
-            .signInWithAppleButtonStyle(.white)
+            .signInWithAppleButtonStyle(.black)
             .frame(height: 52)
-            .padding(.horizontal, 28)
-            Button("Maybe Later") {
+            .padding(.horizontal, 24)
+            Button("Continue as Guest") {
                 session.completeOnboarding()
             }
-            .foregroundStyle(.white.opacity(0.8))
-            .padding(.bottom, 40)
+            .foregroundStyle(.secondary)
+            .padding(.bottom, 6)
         }
     }
 
@@ -292,41 +188,31 @@ struct OnboardingView: View {
             }
             session.completeOnboarding()
         case .failure:
-            // User cancelled — stay on the page.
             break
         }
     }
 }
 
-private struct OnboardPage {
+private struct FeatureRow: View {
     let symbol: String
+    let tint: Color
     let title: String
-    let subtitle: String
-}
-
-private struct OnboardPageView: View {
-    let page: OnboardPage
-    let isActive: Bool
+    let text: String
 
     var body: some View {
-        VStack(spacing: 22) {
-            Spacer()
-            Image(systemName: page.symbol)
-                .font(.system(size: 88))
-                .foregroundStyle(.white)
-                .symbolEffect(.bounce, value: isActive)
-                .scaleEffect(isActive ? 1 : 0.7)
-                .animation(.spring(duration: 0.6, bounce: 0.4), value: isActive)
-            Text(page.title)
-                .font(.largeTitle.bold())
-                .foregroundStyle(.white)
-            Text(page.subtitle)
-                .font(.callout)
-                .foregroundStyle(.white.opacity(0.85))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 36)
-            Spacer()
-            Spacer()
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: symbol)
+                .font(.title2)
+                .foregroundStyle(tint)
+                .frame(width: 36)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.headline)
+                Text(text)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 }

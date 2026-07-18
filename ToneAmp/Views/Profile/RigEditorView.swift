@@ -50,11 +50,22 @@ struct ChipFlow: View {
 struct RigEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(RigStore.self) private var rigStore
+    @State private var showingGearPicker = false
 
     var body: some View {
         @Bindable var store = rigStore
         NavigationStack {
             Form {
+                Section {
+                    Button {
+                        showingGearPicker = true
+                    } label: {
+                        Label("Search Popular Gear", systemImage: "magnifyingglass")
+                    }
+                } footer: {
+                    Text("The fastest way — find your exact models and tap to add.")
+                }
+
                 Section {
                     TextField("Guitar — e.g. Fender Player Strat HSS", text: $store.rig.guitarText)
                     TextField("Amp — e.g. Boss Katana 50 MkII", text: $store.rig.ampText)
@@ -131,6 +142,20 @@ struct RigEditorView: View {
                     Button("Done") {
                         dismiss()
                     }
+                }
+            }
+            .sheet(isPresented: $showingGearPicker) {
+                NavigationStack {
+                    GearPickerView()
+                        .navigationTitle("Add Gear")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") {
+                                    showingGearPicker = false
+                                }
+                            }
+                        }
                 }
             }
         }
