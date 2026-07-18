@@ -31,8 +31,12 @@ struct UserRig: Codable, Equatable {
         if !pedalsText.isEmpty {
             pedalParts.append(pedalsText)
         }
-        if !pedalTypes.isEmpty {
-            pedalParts.append("categories owned: " + pedalTypes.joined(separator: ", "))
+        let categories = pedalTypes.filter { $0 != GearCatalog.multiFXKey }
+        if pedalTypes.contains(GearCatalog.multiFXKey) {
+            pedalParts.append("owns a multi-FX unit that covers all effect types")
+        }
+        if !categories.isEmpty {
+            pedalParts.append("categories owned: " + categories.joined(separator: ", "))
         }
         if !pedalParts.isEmpty {
             parts.append("Pedals: " + pedalParts.joined(separator: "; "))
@@ -75,6 +79,21 @@ enum GearCatalog {
         .overdrive, .distortion, .fuzz, .boost, .delay, .reverb,
         .chorus, .phaser, .flanger, .wah, .compressor, .octave, .eq,
     ]
+
+    /// Special rig entry: a multi-FX floorboard/modeler (GT-8, POD, Helix…)
+    /// covers every pedal category at once.
+    static let multiFXKey = "multifx"
+    static let multiFXLabel = "Multi-FX unit (GT, POD, Helix…)"
+
+    static func hasMultiFX(_ rig: UserRig) -> Bool {
+        if rig.pedalTypes.contains(multiFXKey) {
+            return true
+        }
+        let text = (rig.pedalsText + " " + rig.ampText).lowercased()
+        return ["gt-", "gt8", "gt 8", "gt10", "gt100", "gt1000", "pod", "helix", "hx ", "headrush",
+                "multi-fx", "multifx", "multi fx", "fx8", "ax8", "axe-fx", "quad cortex",
+                "boss me-", "mooer ge", "nux mg", "valeton", "zoom g"].contains { text.contains($0) }
+    }
 
     static let singleCoilGuitars: Set<String> = [
         "Stratocaster", "Telecaster", "Jazzmaster / Jaguar",
@@ -170,6 +189,16 @@ enum RigAdvisor {
         ]
         for (keyword, type) in keywordMap where pedalWords.contains(keyword) {
             owned.insert(type.rawValue)
+        }
+        // A multi-FX unit covers everything — and deserves a patch tip.
+        if GearCatalog.hasMultiFX(rig) {
+            for type in GearCatalog.pedalOptions {
+                owned.insert(type.rawValue)
+            }
+            if !pedals.isEmpty {
+                let chain = pedals.map { $0.name }.joined(separator: " → ")
+                tips.append("Build this as one patch on your multi-FX — chain \(chain) in that order with the values shown.")
+            }
         }
         let needed = pedals.map { $0.type }
         let missingDirt = needed.first { type in

@@ -6,6 +6,7 @@ struct ToneAmpApp: App {
     @State private var favorites = FavoritesStore()
     @State private var session = SessionStore()
     @State private var rig = RigStore()
+    @State private var aiTones = AIToneCacheStore()
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +15,7 @@ struct ToneAmpApp: App {
                 .environment(favorites)
                 .environment(session)
                 .environment(rig)
+                .environment(aiTones)
         }
     }
 }

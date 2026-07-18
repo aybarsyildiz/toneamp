@@ -5,6 +5,7 @@ struct ProfileView: View {
     @Environment(FavoritesStore.self) private var favorites
     @Environment(LibraryStore.self) private var library
     @Environment(RigStore.self) private var rigStore
+    @Environment(AIToneCacheStore.self) private var aiCache
 
     @State private var myTones: [CommunityTone] = []
     @State private var isLoadingTones = false
@@ -92,6 +93,21 @@ struct ProfileView: View {
                     Text("Tone pages use your rig to translate settings to your gear.")
                 }
 
+                if !aiCache.tones.isEmpty {
+                    Section("My AI Tones") {
+                        ForEach(aiCache.tones) { saved in
+                            NavigationLink(value: saved) {
+                                SavedAIToneRow(tone: saved)
+                            }
+                        }
+                        .onDelete { offsets in
+                            for index in offsets {
+                                aiCache.delete(aiCache.tones[index])
+                            }
+                        }
+                    }
+                }
+
                 if session.isSignedIn {
                     Section("My Published Tones") {
                         if isLoadingTones {
@@ -126,6 +142,9 @@ struct ProfileView: View {
             .navigationTitle("Profile")
             .navigationDestination(for: CommunityTone.self) { tone in
                 CommunityToneDetailView(tone: tone)
+            }
+            .navigationDestination(for: SavedAITone.self) { saved in
+                SavedAIToneDetailView(tone: saved)
             }
             .sheet(isPresented: $showingRigEditor) {
                 RigEditorView()

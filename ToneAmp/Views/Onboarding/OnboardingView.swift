@@ -128,12 +128,23 @@ struct OnboardingView: View {
                     onboardChips(GearCatalog.amps, isSelected: { rigStore.rig.amp == $0 }) { amp in
                         rigStore.rig.amp = rigStore.rig.amp == amp ? "" : amp
                     }
+                    Text("EFFECTS")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white.opacity(0.7))
+                        .padding(.top, 6)
+                    onboardChips(
+                        [GearCatalog.multiFXLabel, "Drive pedals", "Delay / Reverb", "Modulation", "Wah"],
+                        isSelected: { isEffectGroupSelected($0) }
+                    ) { group in
+                        toggleEffectGroup(group)
+                    }
                     Text("OR TYPE YOUR EXACT GEAR")
                         .font(.caption.weight(.bold))
                         .foregroundStyle(.white.opacity(0.7))
                         .padding(.top, 6)
                     onboardTextField("Guitar — e.g. Player Strat HSS", text: guitarTextBinding)
-                    onboardTextField("Amp — e.g. Boss Katana 50 MkII", text: ampTextBinding)
+                    onboardTextField("Amp / multi-FX — e.g. Boss GT-8", text: ampTextBinding)
+                    onboardTextField("Pedals — e.g. TS9, DD-8, Big Muff", text: pedalsTextBinding)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 30)
@@ -153,6 +164,47 @@ struct OnboardingView: View {
             get: { rigStore.rig.ampText },
             set: { rigStore.rig.ampText = $0 }
         )
+    }
+
+    private var pedalsTextBinding: Binding<String> {
+        Binding(
+            get: { rigStore.rig.pedalsText },
+            set: { rigStore.rig.pedalsText = $0 }
+        )
+    }
+
+    /// Onboarding effect groups map to sets of pedal categories.
+    private func effectTypes(for group: String) -> [String] {
+        switch group {
+        case GearCatalog.multiFXLabel:
+            return [GearCatalog.multiFXKey]
+        case "Drive pedals":
+            return [EffectType.overdrive.rawValue, EffectType.distortion.rawValue]
+        case "Delay / Reverb":
+            return [EffectType.delay.rawValue, EffectType.reverb.rawValue]
+        case "Modulation":
+            return [EffectType.chorus.rawValue, EffectType.phaser.rawValue, EffectType.flanger.rawValue]
+        case "Wah":
+            return [EffectType.wah.rawValue]
+        default:
+            return []
+        }
+    }
+
+    private func isEffectGroupSelected(_ group: String) -> Bool {
+        let types = effectTypes(for: group)
+        return !types.isEmpty && types.allSatisfy { rigStore.rig.pedalTypes.contains($0) }
+    }
+
+    private func toggleEffectGroup(_ group: String) {
+        let types = effectTypes(for: group)
+        if isEffectGroupSelected(group) {
+            rigStore.rig.pedalTypes.removeAll { types.contains($0) }
+        } else {
+            for type in types where !rigStore.rig.pedalTypes.contains(type) {
+                rigStore.rig.pedalTypes.append(type)
+            }
+        }
     }
 
     private func onboardTextField(_ prompt: String, text: Binding<String>) -> some View {

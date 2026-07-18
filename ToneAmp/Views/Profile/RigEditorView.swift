@@ -58,12 +58,12 @@ struct RigEditorView: View {
                 Section {
                     TextField("Guitar — e.g. Fender Player Strat HSS", text: $store.rig.guitarText)
                     TextField("Amp — e.g. Boss Katana 50 MkII", text: $store.rig.ampText)
-                    TextField("Pedals — e.g. TS9, DD-8, Big Muff", text: $store.rig.pedalsText, axis: .vertical)
+                    TextField("Pedals / multi-FX — e.g. Boss GT-8, TS9, DD-8", text: $store.rig.pedalsText, axis: .vertical)
                         .lineLimit(1...3)
                 } header: {
                     Text("Describe Your Exact Gear")
                 } footer: {
-                    Text("Free text — the Pro tone engine reads this to write tips for your specific models. The quick picks below power instant local tips.")
+                    Text("Free text — the Pro tone engine reads this to write tips for your specific models (multi-FX units like a GT-8 belong here or in the chip below). The quick picks power instant local tips.")
                 }
 
                 Section {
@@ -93,6 +93,18 @@ struct RigEditorView: View {
                 }
 
                 Section {
+                    ToggleChip(
+                        label: GearCatalog.multiFXLabel,
+                        isSelected: rigStore.rig.pedalTypes.contains(GearCatalog.multiFXKey)
+                    ) {
+                        if let index = rigStore.rig.pedalTypes.firstIndex(of: GearCatalog.multiFXKey) {
+                            rigStore.rig.pedalTypes.remove(at: index)
+                        } else {
+                            rigStore.rig.pedalTypes.append(GearCatalog.multiFXKey)
+                        }
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 4, leading: 4, bottom: 0, trailing: 4))
                     ChipFlow(
                         items: GearCatalog.pedalOptions.map { $0.displayName },
                         isSelected: { name in
@@ -107,9 +119,9 @@ struct RigEditorView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4))
                 } header: {
-                    Text("Your Pedals")
+                    Text("Your Pedals & Effects")
                 } footer: {
-                    Text("Every tone page shows how to cover missing pedals with what you own.")
+                    Text("A multi-FX unit counts as owning everything — tone pages will suggest a patch chain instead of individual pedals.")
                 }
             }
             .navigationTitle("My Rig")

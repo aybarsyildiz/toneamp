@@ -4,6 +4,7 @@ import SwiftUI
 /// community has published for it.
 struct CommunitySongView: View {
     @Environment(SessionStore.self) private var session
+    @Environment(AIToneCacheStore.self) private var aiCache
     let song: CatalogSong
 
     @State private var tones: [CommunityTone] = []
@@ -36,6 +37,16 @@ struct CommunitySongView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
                 .listRowBackground(Color.clear)
+            }
+
+            if !aiCache.tones(forTrackID: song.trackId).isEmpty {
+                Section("Your AI Tones") {
+                    ForEach(aiCache.tones(forTrackID: song.trackId)) { saved in
+                        NavigationLink(value: saved) {
+                            SavedAIToneRow(tone: saved, showSong: false)
+                        }
+                    }
+                }
             }
 
             Section("Community Tones") {
@@ -132,6 +143,9 @@ struct CommunitySongView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: CommunityTone.self) { tone in
             CommunityToneDetailView(tone: tone)
+        }
+        .navigationDestination(for: SavedAITone.self) { saved in
+            SavedAIToneDetailView(tone: saved)
         }
         .sheet(isPresented: $showingEditor) {
             ToneEditorView(song: song) {

@@ -6,6 +6,7 @@ struct AIToneFinderView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     @Environment(RigStore.self) private var rigStore
+    @Environment(AIToneCacheStore.self) private var aiCache
     let song: CatalogSong
     var onPublished: () -> Void
 
@@ -73,6 +74,8 @@ struct AIToneFinderView: View {
     private func identify() async {
         do {
             let tones = try await AIToneService.identifyTones(for: song, rig: rigStore.rig)
+            // Persist immediately — Pro results belong to the user.
+            aiCache.save(tones, for: song, rigDescription: rigStore.rig.aiDescription)
             withAnimation(.spring(duration: 0.6)) {
                 phase = .result(tones)
             }
@@ -94,7 +97,7 @@ struct AIToneFinderView: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
-                        Label("Identified by the tone engine", systemImage: "sparkles")
+                        Label("Identified & saved to your AI tones", systemImage: "sparkles")
                             .font(.caption)
                             .foregroundStyle(.tint)
                     }
