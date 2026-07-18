@@ -366,6 +366,37 @@ struct OnboardingView: View {
             toggle: { self.toggleEffectGroup(group) })
     }
 
+    private func effectTypes(for group: String) -> [String] {
+        switch group {
+        case "Drive pedals":
+            return [EffectType.overdrive.rawValue, EffectType.distortion.rawValue]
+        case "Delay / Reverb":
+            return [EffectType.delay.rawValue, EffectType.reverb.rawValue]
+        case "Modulation":
+            return [EffectType.chorus.rawValue, EffectType.phaser.rawValue, EffectType.flanger.rawValue]
+        case "Wah":
+            return [EffectType.wah.rawValue]
+        default:
+            return []
+        }
+    }
+
+    private func isEffectGroupSelected(_ group: String) -> Bool {
+        let types = effectTypes(for: group)
+        return !types.isEmpty && types.allSatisfy { rigStore.rig.pedalTypes.contains($0) }
+    }
+
+    private func toggleEffectGroup(_ group: String) {
+        let types = effectTypes(for: group)
+        if isEffectGroupSelected(group) {
+            rigStore.rig.pedalTypes.removeAll { types.contains($0) }
+        } else {
+            for type in types where !rigStore.rig.pedalTypes.contains(type) {
+                rigStore.rig.pedalTypes.append(type)
+            }
+        }
+    }
+
     private func syncMultiFXKey() {
         if GearCatalog.hasMultiFX(rigStore.rig) {
             if !rigStore.rig.pedalTypes.contains(GearCatalog.multiFXKey) {
