@@ -92,30 +92,39 @@ final class LibraryStore {
     }
 
     /// Fuzzy-matches a ShazamKit media item against the catalog.
-    /// Titles are compared after normalization (case/diacritic folding,
-    /// punctuation stripped) so "Sweet Child O' Mine (Remastered)" still hits.
+    /// Titles are compared after normalization so "Sweet Child O' Mine
+    /// (Remastered)" still hits — but a known artist must ALWAYS verify:
+    /// "Bottom" by TOOL must never resolve to "Bell Bottom Blues".
     func match(title: String?, artist: String?) -> Song? {
         guard let title, !title.isEmpty else { return nil }
         let normalizedTitle = Self.normalize(title)
         guard !normalizedTitle.isEmpty else { return nil }
         let normalizedArtist = Self.normalize(artist ?? "")
 
-        let titleMatches = songs.filter { song in
-            let candidate = Self.normalize(song.title)
-            return candidate == normalizedTitle
-                || candidate.contains(normalizedTitle)
-                || normalizedTitle.contains(candidate)
-        }
-        guard !titleMatches.isEmpty else { return nil }
-        guard !normalizedArtist.isEmpty else { return titleMatches.first }
-
-        let artistVerified = titleMatches.first { song in
+        func artistMatches(_ song: Song) -> Bool {
+            guard !normalizedArtist.isEmpty else { return true }
             let candidate = Self.normalize(song.artist)
             return candidate == normalizedArtist
                 || candidate.contains(normalizedArtist)
                 || normalizedArtist.contains(candidate)
         }
-        return artistVerified ?? titleMatches.first
+
+        // Exact title (artist-verified when an artist is known).
+        if let exact = songs.first(where: {
+            Self.normalize($0.title) == normalizedTitle && artistMatches($0)
+        }) {
+            return exact
+        }
+
+        // Partial titles only cover edition suffixes ("… (Live)", "… - Remastered"):
+        // they require a verified artist AND a distinctive overlap length.
+        guard !normalizedArtist.isEmpty else { return nil }
+        return songs.first { song in
+            let candidate = Self.normalize(song.title)
+            let contains = candidate.contains(normalizedTitle) || normalizedTitle.contains(candidate)
+            let shorterLength = min(candidate.count, normalizedTitle.count)
+            return contains && shorterLength >= 8 && artistMatches(song)
+        }
     }
 
     static func normalize(_ string: String) -> String {
