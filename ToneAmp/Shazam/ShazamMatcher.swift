@@ -101,9 +101,15 @@ final class ShazamMatcher {
         case .error(let error, _):
             let nsError = error as NSError
             print("[ToneAmp] ShazamKit error: \(nsError)")
+            let message: String
+            if nsError.domain == "com.apple.ShazamKit" && nsError.code == 202 {
+                message = "ShazamKit isn't authorized for this app yet. Enable the ShazamKit app service for the App ID in the Apple Developer portal, then clean-build and reinstall."
+            } else {
+                message = nsError.localizedDescription
+            }
             state = .failed(
                 FailureDetail(
-                    message: nsError.localizedDescription,
+                    message: message,
                     diagnostic: "\(nsError.domain) \(nsError.code)"
                 )
             )
