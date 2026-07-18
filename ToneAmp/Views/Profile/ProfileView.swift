@@ -147,7 +147,7 @@ struct ProfileView: View {
                 SavedAIToneDetailView(tone: saved)
             }
             .sheet(isPresented: $showingRigEditor) {
-                RigEditorView()
+                MyRigView()
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()

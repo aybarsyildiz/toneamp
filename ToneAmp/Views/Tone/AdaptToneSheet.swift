@@ -203,7 +203,7 @@ struct AdaptToMyGearButton: View {
             ProPaywallView()
         }
         .sheet(isPresented: $showingRigEditor) {
-            RigEditorView()
+            MyRigView()
         }
     }
 }

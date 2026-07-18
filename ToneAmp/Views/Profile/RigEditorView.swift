@@ -222,7 +222,7 @@ struct RigTipsView: View {
                 }
             }
             .sheet(isPresented: $showingEditor) {
-                RigEditorView()
+                MyRigView()
             }
         }
     }
