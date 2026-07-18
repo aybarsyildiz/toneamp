@@ -135,32 +135,52 @@ enum AIToneService {
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
         request.httpBody = try JSONSerialization.data(withJSONObject: requestBody(song: song, rig: rig))
 
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw AIToneError.malformedResponse
-        }
-        guard http.statusCode == 200 else {
-            let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
-            throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
-        }
+        // Validate + retry: a degenerate (all-zero) response is silently
+        // re-requested once instead of ever reaching the screen.
+        var lastError: Error = AIToneError.malformedResponse
+        for _ in 0..<2 {
+            do {
+                let (data, response) = try await session.data(for: request)
+                guard let http = response as? HTTPURLResponse else {
+                    throw AIToneError.malformedResponse
+                }
+                guard http.statusCode == 200 else {
+                    let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
+                    throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
+                }
 
-        let message = try JSONDecoder().decode(APIResponse.self, from: data)
-        if message.stopReason == "refusal" {
-            throw AIToneError.refused
-        }
-        if message.stopReason == "max_tokens" {
-            throw AIToneError.truncated
-        }
-        guard let text = message.content.first(where: { $0.type == "text" })?.text,
-              let jsonData = text.data(using: .utf8) else {
-            throw AIToneError.malformedResponse
-        }
+                let message = try JSONDecoder().decode(APIResponse.self, from: data)
+                if message.stopReason == "refusal" {
+                    throw AIToneError.refused
+                }
+                if message.stopReason == "max_tokens" {
+                    throw AIToneError.truncated
+                }
+                guard let text = message.content.first(where: { $0.type == "text" })?.text,
+                      let jsonData = text.data(using: .utf8) else {
+                    throw AIToneError.malformedResponse
+                }
 
-        let payload = try JSONDecoder().decode(GeneratedPayload.self, from: jsonData)
-        guard payload.found, !payload.tones.isEmpty else {
-            throw AIToneError.noTones
+                let payload = try JSONDecoder().decode(GeneratedPayload.self, from: jsonData)
+                guard payload.found, !payload.tones.isEmpty else {
+                    throw AIToneError.noTones
+                }
+                let valid = payload.tones.map { $0.toGeneratedTone() }.filter { !isDegenerate($0) }
+                if valid.isEmpty {
+                    lastError = AIToneError.malformedResponse
+                    continue
+                }
+                return valid
+            } catch let error as AIToneError {
+                switch error {
+                case .httpError, .refused, .missingAPIKey, .noTones, .truncated:
+                    throw error
+                default:
+                    lastError = error
+                }
+            }
         }
-        return payload.tones.map { $0.toGeneratedTone() }
+        throw lastError
     }
 
     /// Pro: translate a specific existing tone onto the player's rig.
