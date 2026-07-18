@@ -13,6 +13,12 @@ struct GearPickerView: View {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private var hasExactMatch: Bool {
+        GearCatalog.popularGear.contains {
+            $0.name.caseInsensitiveCompare(trimmedQuery) == .orderedSame
+        }
+    }
+
     /// Browsing shows one category at a time (tabs below the search field);
     /// typing searches across every category.
     private var sections: [(category: GearItem.Category, items: [GearItem])] {
@@ -140,10 +146,13 @@ struct GearPickerView: View {
                         }
                     }
                 }
-                if sections.isEmpty {
-                    Section {
+                // "Every guitar possible": whenever the exact model isn't in
+                // the catalog, adding it as custom gear is one tap away —
+                // custom entries feed the advisor and the AI identically.
+                if !trimmedQuery.isEmpty && !hasExactMatch {
+                    Section(sections.isEmpty ? "No matches" : "Not seeing yours?") {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("No match for \u{201C}\(trimmedQuery)\u{201D} — add it as custom gear:")
+                            Text("Add \u{201C}\(trimmedQuery)\u{201D} as custom gear:")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                             HStack(spacing: 8) {

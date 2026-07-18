@@ -133,28 +133,79 @@ extension GearCatalog {
     /// Popular gear, searchable in onboarding and the rig editor.
     static let popularGear: [GearItem] = {
         let guitars = [
-            "Fender Stratocaster", "Fender Player Stratocaster", "Fender American Pro Stratocaster",
-            "Fender Telecaster", "Fender Player Telecaster", "Fender Vintera Stratocaster",
-            "Fender Jazzmaster", "Fender Jaguar", "Fender Mustang", "Fender Duo-Sonic",
-            "Squier Stratocaster", "Squier Classic Vibe Stratocaster", "Squier Telecaster",
-            "Squier Classic Vibe Telecaster", "Squier Jazzmaster",
-            "Gibson Les Paul Standard", "Gibson Les Paul Studio", "Gibson Les Paul Classic",
-            "Gibson Les Paul Special", "Gibson SG Standard", "Gibson SG Special",
-            "Gibson ES-335", "Gibson ES-339", "Gibson Explorer", "Gibson Flying V", "Gibson Firebird",
-            "Epiphone Les Paul", "Epiphone SG", "Epiphone Casino", "Epiphone Dot",
-            "Epiphone Explorer", "Epiphone Flying V",
-            "PRS Custom 24", "PRS SE Custom 24", "PRS S2 Vela", "PRS McCarty 594", "PRS Silver Sky",
-            "Ibanez RG550", "Ibanez RG421", "Ibanez RG5xx Prestige", "Ibanez AZ", "Ibanez AZES",
-            "Ibanez S Series", "Ibanez JEM", "Ibanez Gio",
-            "Jackson Soloist", "Jackson Dinky", "Jackson Rhoads", "Jackson Kelly",
-            "ESP LTD EC-1000", "ESP LTD M-1000", "ESP Eclipse", "ESP Horizon", "ESP LTD KH-602",
-            "Schecter Hellraiser", "Schecter C-1", "Schecter Omen", "Dean ML",
-            "Charvel Pro-Mod DK24", "Music Man JP6", "Music Man Cutlass", "Sterling by Music Man",
-            "Suhr Classic S", "Yamaha Pacifica 112", "Yamaha Pacifica 612", "Yamaha Revstar",
-            "Gretsch Streamliner", "Gretsch Duo Jet", "Gretsch White Falcon",
-            "Rickenbacker 330", "Danelectro '59", "Reverend Charger", "Chapman ML1",
-            "Solar A-Type", "Harley Benton TE-52", "Harley Benton SC-450", "Harley Benton Fusion",
-            "Cort G250", "Cort KX Series",
+            // Fender
+            "Fender Stratocaster", "Fender Player Stratocaster", "Fender Player Plus Stratocaster",
+            "Fender American Performer Stratocaster", "Fender American Professional II Stratocaster",
+            "Fender American Ultra Stratocaster", "Fender Vintera Stratocaster",
+            "Fender Telecaster", "Fender Player Telecaster", "Fender American Professional II Telecaster",
+            "Fender Vintera Telecaster", "Fender Jazzmaster", "Fender Player Jazzmaster",
+            "Fender Jaguar", "Fender Mustang", "Fender Duo-Sonic", "Fender Lead II",
+            // Squier
+            "Squier Bullet Stratocaster", "Squier Affinity Stratocaster", "Squier Affinity Telecaster",
+            "Squier Classic Vibe '50s Stratocaster", "Squier Classic Vibe '60s Stratocaster",
+            "Squier Classic Vibe '70s Stratocaster", "Squier Classic Vibe Telecaster",
+            "Squier Classic Vibe Jazzmaster", "Squier Contemporary Stratocaster", "Squier Starcaster",
+            // Gibson
+            "Gibson Les Paul Standard '50s", "Gibson Les Paul Standard '60s", "Gibson Les Paul Classic",
+            "Gibson Les Paul Studio", "Gibson Les Paul Tribute", "Gibson Les Paul Special",
+            "Gibson Les Paul Junior", "Gibson Les Paul Modern", "Gibson SG Standard",
+            "Gibson SG Special", "Gibson SG Modern", "Gibson SG Tribute", "Gibson ES-335",
+            "Gibson ES-339", "Gibson ES-345", "Gibson Explorer", "Gibson Flying V", "Gibson Firebird",
+            // Epiphone
+            "Epiphone Les Paul Standard", "Epiphone Les Paul Custom", "Epiphone Les Paul Studio",
+            "Epiphone Les Paul Special II", "Epiphone SG Standard", "Epiphone SG Special",
+            "Epiphone Casino", "Epiphone Dot", "Epiphone Sheraton", "Epiphone Explorer",
+            "Epiphone Flying V", "Epiphone Firebird", "Epiphone Prophecy Les Paul",
+            // PRS
+            "PRS SE 245", "PRS SE Standard 24", "PRS SE Custom 24", "PRS SE Custom 22",
+            "PRS SE CE 24", "PRS SE Paul's Guitar", "PRS SE Zach Myers", "PRS SE Mark Holcomb",
+            "PRS SE Tremonti", "PRS SE Silver Sky", "PRS SE Hollowbody", "PRS S2 Standard 24",
+            "PRS S2 Custom 24", "PRS S2 McCarty 594", "PRS S2 Vela", "PRS CE 24",
+            "PRS Custom 24", "PRS McCarty 594", "PRS Silver Sky", "PRS Mira",
+            // Ibanez
+            "Ibanez GRX70", "Ibanez Gio", "Ibanez RG421", "Ibanez RG450", "Ibanez RG550",
+            "Ibanez RG565", "Ibanez RG Prestige", "Ibanez RGA42", "Ibanez S521", "Ibanez S Prestige",
+            "Ibanez AZ2204", "Ibanez AZES40", "Ibanez JEM Jr", "Ibanez JEM77", "Ibanez JS2450",
+            "Ibanez Artcore AS73", "Ibanez Artcore AF75", "Ibanez Iceman", "Ibanez Talman",
+            // Jackson
+            "Jackson JS22 Dinky", "Jackson JS32 Dinky", "Jackson Pro Dinky DK2", "Jackson Soloist SL2",
+            "Jackson Rhoads RR", "Jackson Kelly", "Jackson King V", "Jackson Monarkh",
+            // ESP / LTD
+            "ESP LTD EC-256", "ESP LTD EC-401", "ESP LTD EC-1000", "ESP LTD MH-1000",
+            "ESP LTD M-II", "ESP LTD KH-202", "ESP LTD KH-602", "ESP LTD Snakebyte",
+            "ESP LTD Viper", "ESP LTD TE-200", "ESP LTD Phoenix", "ESP Eclipse", "ESP Horizon",
+            // Schecter
+            "Schecter Omen 6", "Schecter Omen Extreme", "Schecter C-1 Platinum",
+            "Schecter C-1 Hellraiser", "Schecter Sun Valley Super Shredder",
+            "Schecter Nick Johnston Traditional", "Schecter Reaper", "Schecter PT", "Schecter Solo-II",
+            // Charvel / Kramer / EVH
+            "Charvel Pro-Mod DK24", "Charvel So-Cal Style 1", "Charvel San Dimas",
+            "Kramer Baretta", "Kramer Pacer", "EVH Wolfgang Standard", "EVH Wolfgang Special",
+            // Music Man / Sterling
+            "Music Man JP6", "Music Man JP15", "Music Man Majesty", "Music Man Cutlass",
+            "Music Man StingRay Guitar", "Sterling JP70", "Sterling Cutlass CT30",
+            // Yamaha
+            "Yamaha Pacifica 012", "Yamaha Pacifica 112V", "Yamaha Pacifica 212",
+            "Yamaha Pacifica 311H", "Yamaha Pacifica 612V", "Yamaha Revstar RSE20",
+            "Yamaha Revstar RSS20", "Yamaha SG1820",
+            // Cort / Harley Benton / Sire
+            "Cort G250", "Cort G280", "Cort KX300", "Cort KX500", "Cort X700",
+            "Harley Benton TE-52", "Harley Benton ST-62", "Harley Benton SC-450",
+            "Harley Benton Fusion-II", "Harley Benton Fusion-III", "Harley Benton Dullahan",
+            "Harley Benton DC-Custom", "Sire Larry Carlton S7", "Sire Larry Carlton T7",
+            "Sire Larry Carlton L7", "Sire Larry Carlton H7",
+            // G&L / Godin / Gretsch / Guild
+            "G&L Legacy", "G&L ASAT Classic", "G&L Fallout", "Godin Session HT",
+            "Gretsch G2622 Streamliner", "Gretsch G5220 Electromatic Jet",
+            "Gretsch G5420 Electromatic", "Gretsch G6120 Nashville", "Gretsch White Falcon",
+            "Guild Starfire IV", "D'Angelico Premier DC", "Hagstrom Viking", "Duesenberg Starplayer TV",
+            // Others
+            "Rickenbacker 330", "Rickenbacker 360", "Danelectro '59", "Reverend Charger",
+            "Chapman ML1", "Chapman ML3", "Solar A2.6", "Solar S-Type", "Solar Type-E",
+            "Strandberg Boden 6", "Strandberg Boden 8", "Mayones Regius", "Kiesel Delos",
+            "Legator Ninja", "Balaguer Espada", "Ormsby Hype GTR", "Dean ML", "Dean Cadillac",
+            "B.C. Rich Warlock", "B.C. Rich Mockingbird", "Eastman SB59", "Heritage H-150",
+            "Vintage V100", "Washburn Parallaxe", "Suhr Classic S", "Tom Anderson Drop Top",
         ].map { GearItem(name: $0, category: .guitar) }
         let amps = [
             "Boss Katana 50", "Boss Katana 100", "Fender Mustang GTX", "Fender Blues Junior",
