@@ -196,42 +196,75 @@ enum AIToneService {
 
         Return exactly ONE tone in the tones array, translated onto the player's gear:
         - amp = the player's own amp with the channel/model to use (e.g. "Boss GT-8 — 'BG Lead' preamp")
-        - settings = the values to dial ON THE PLAYER'S amp/unit to match the original sound
-        - pedals = only gear the player owns; on a multi-FX, name the blocks (e.g. "GT-8 OD-1 block")
+        - settings = the values to dial ON THE PLAYER'S amp/unit to match the original sound — realistic playable values on the 0–10 scale, NEVER all zeros
+        - pedals = only gear the player owns; on a multi-FX, express each effect as its own entry named after the unit's block (e.g. "GT-8: OD-1 block", "GT-8: Digital Delay block") with control values
         - guitar/pickup = the best choice from the player's guitars
-        - rigTips = 2–4 step-by-step dial-in instructions naming their gear
+        - rigTips = ALWAYS 2–4 step-by-step dial-in instructions naming their gear
         - name = "\(input.toneName) — My Gear"
+
+        Sparse-rig rules (follow strictly):
+        - If the player lists NO amp (plays direct into an interface/PC): their multi-FX or modeler IS the amp. Pick one of its amp models by name in the amp field and put that amp block's values in settings. Add a rigTip about setting output mode to "Line/Phones" for direct monitoring.
+        - If the player lists NO guitar: recommend the original tone's guitar type in the guitar/pickup fields as a suggestion (e.g. "Any humbucker guitar — the record used a Gibson SG") — never empty strings.
+        - If the original tone used effects, pedals must not be empty — map every needed effect onto the player's unit or owned pedals.
         """
 
         request.httpBody = try JSONSerialization.data(withJSONObject: [
             "model": modelID,
-            "max_tokens": 6000,
+            "max_tokens": 8000,
             "thinking": ["type": "adaptive"],
             "system": systemPrompt,
             "messages": [["role": "user", "content": content]],
             "output_config": ["format": ["type": "json_schema", "schema": schema]],
         ] as [String: Any])
 
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw AIToneError.malformedResponse
+        // One automatic retry: sparse rigs occasionally produce a degenerate
+        // (all-zero / empty) first attempt.
+        var lastError: Error = AIToneError.malformedResponse
+        for _ in 0..<2 {
+            do {
+                let (data, response) = try await session.data(for: request)
+                guard let http = response as? HTTPURLResponse else {
+                    throw AIToneError.malformedResponse
+                }
+                guard http.statusCode == 200 else {
+                    let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
+                    throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
+                }
+                let message = try JSONDecoder().decode(APIResponse.self, from: data)
+                if message.stopReason == "refusal" {
+                    throw AIToneError.refused
+                }
+                guard let text = message.content.first(where: { $0.type == "text" })?.text,
+                      let jsonData = text.data(using: .utf8),
+                      let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData),
+                      payload.found,
+                      let generated = payload.tones.first else {
+                    throw AIToneError.malformedResponse
+                }
+                let tone = generated.toGeneratedTone()
+                if isDegenerate(tone) {
+                    lastError = AIToneError.malformedResponse
+                    continue
+                }
+                return tone
+            } catch let error as AIToneError {
+                switch error {
+                case .httpError, .refused, .missingAPIKey:
+                    throw error
+                default:
+                    lastError = error
+                }
+            }
         }
-        guard http.statusCode == 200 else {
-            let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
-            throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
-        }
-        let message = try JSONDecoder().decode(APIResponse.self, from: data)
-        if message.stopReason == "refusal" {
-            throw AIToneError.refused
-        }
-        guard let text = message.content.first(where: { $0.type == "text" })?.text,
-              let jsonData = text.data(using: .utf8),
-              let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData),
-              payload.found,
-              let tone = payload.tones.first else {
-            throw AIToneError.malformedResponse
-        }
-        return tone.toGeneratedTone()
+        throw lastError
+    }
+
+    /// A usable adaptation must have real knob values and a named amp.
+    private static func isDegenerate(_ tone: AIGeneratedTone) -> Bool {
+        let s = tone.settings
+        let allZero = s.gain == 0 && s.bass == 0 && s.mid == 0 && s.treble == 0
+        let noAmp = tone.ampName.trimmingCharacters(in: .whitespaces).isEmpty
+        return allZero || noAmp
     }
 
     // MARK: - Request

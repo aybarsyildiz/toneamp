@@ -26,6 +26,8 @@ struct UserRig: Codable, Equatable {
         let ampList = ([ampText] + [amp]).filter { !$0.isEmpty }
         if !ampList.isEmpty {
             parts.append("Amp: " + ampList.joined(separator: " — "))
+        } else {
+            parts.append("Amp: none — plays direct into an audio interface/PC or headphones")
         }
         var pedalParts: [String] = []
         if !pedalsText.isEmpty {
@@ -131,15 +133,28 @@ extension GearCatalog {
     /// Popular gear, searchable in onboarding and the rig editor.
     static let popularGear: [GearItem] = {
         let guitars = [
-            "Fender Stratocaster", "Fender Player Stratocaster", "Fender Telecaster",
-            "Fender Jazzmaster", "Fender Mustang", "Squier Stratocaster", "Squier Telecaster",
-            "Gibson Les Paul Standard", "Gibson Les Paul Studio", "Gibson SG", "Gibson ES-335",
-            "Gibson Explorer", "Gibson Flying V", "Epiphone Les Paul", "Epiphone SG",
-            "Epiphone Casino", "PRS Custom 24", "PRS SE Custom 24", "PRS Silver Sky",
-            "Ibanez RG550", "Ibanez RG421", "Ibanez AZ", "Ibanez Gio",
-            "Jackson Soloist", "Jackson Dinky", "ESP LTD EC-1000", "ESP LTD M-1000",
-            "Schecter Hellraiser", "Charvel Pro-Mod", "Yamaha Pacifica 112", "Yamaha Revstar",
-            "Gretsch Streamliner", "Harley Benton TE-52", "Harley Benton SC-450", "Cort G250",
+            "Fender Stratocaster", "Fender Player Stratocaster", "Fender American Pro Stratocaster",
+            "Fender Telecaster", "Fender Player Telecaster", "Fender Vintera Stratocaster",
+            "Fender Jazzmaster", "Fender Jaguar", "Fender Mustang", "Fender Duo-Sonic",
+            "Squier Stratocaster", "Squier Classic Vibe Stratocaster", "Squier Telecaster",
+            "Squier Classic Vibe Telecaster", "Squier Jazzmaster",
+            "Gibson Les Paul Standard", "Gibson Les Paul Studio", "Gibson Les Paul Classic",
+            "Gibson Les Paul Special", "Gibson SG Standard", "Gibson SG Special",
+            "Gibson ES-335", "Gibson ES-339", "Gibson Explorer", "Gibson Flying V", "Gibson Firebird",
+            "Epiphone Les Paul", "Epiphone SG", "Epiphone Casino", "Epiphone Dot",
+            "Epiphone Explorer", "Epiphone Flying V",
+            "PRS Custom 24", "PRS SE Custom 24", "PRS S2 Vela", "PRS McCarty 594", "PRS Silver Sky",
+            "Ibanez RG550", "Ibanez RG421", "Ibanez RG5xx Prestige", "Ibanez AZ", "Ibanez AZES",
+            "Ibanez S Series", "Ibanez JEM", "Ibanez Gio",
+            "Jackson Soloist", "Jackson Dinky", "Jackson Rhoads", "Jackson Kelly",
+            "ESP LTD EC-1000", "ESP LTD M-1000", "ESP Eclipse", "ESP Horizon", "ESP LTD KH-602",
+            "Schecter Hellraiser", "Schecter C-1", "Schecter Omen", "Dean ML",
+            "Charvel Pro-Mod DK24", "Music Man JP6", "Music Man Cutlass", "Sterling by Music Man",
+            "Suhr Classic S", "Yamaha Pacifica 112", "Yamaha Pacifica 612", "Yamaha Revstar",
+            "Gretsch Streamliner", "Gretsch Duo Jet", "Gretsch White Falcon",
+            "Rickenbacker 330", "Danelectro '59", "Reverend Charger", "Chapman ML1",
+            "Solar A-Type", "Harley Benton TE-52", "Harley Benton SC-450", "Harley Benton Fusion",
+            "Cort G250", "Cort KX Series",
         ].map { GearItem(name: $0, category: .guitar) }
         let amps = [
             "Boss Katana 50", "Boss Katana 100", "Fender Mustang GTX", "Fender Blues Junior",
@@ -150,14 +165,23 @@ extension GearCatalog {
             "Mesa/Boogie Mark V", "Peavey 6505", "EVH 5150 Iconic", "Positive Grid Spark 40",
             "Line 6 Catalyst 60", "Blackstar HT Club 40", "Blackstar ID:Core 40",
             "Roland JC-120", "Roland Cube", "Laney Cub", "Hughes & Kettner TubeMeister",
-            "Supro Delta King", "Bugera V22",
+            "Supro Delta King", "Bugera V22", "Fender Hot Rod Deluxe", "Fender Princeton Reverb",
+            "Fender Tone Master Deluxe", "Marshall Silver Jubilee", "Marshall Studio Classic SC20",
+            "Vox MV50", "Orange Micro Terror", "PRS Archon", "Soldano SLO-30", "Friedman BE-100",
+            "Boss Nextone", "Boss Katana Artist", "Yamaha THR10 II", "Yamaha THR30 II",
+            "Positive Grid Spark Mini", "Blackstar Debut 50R",
+            "Audio interface (direct to PC)", "FRFR cab / powered speaker", "Headphones (direct)",
         ].map { GearItem(name: $0, category: .amp) }
         let multiFX = [
             "Boss GT-8", "Boss GT-100", "Boss GT-1000", "Boss GX-100", "Boss ME-80",
             "Boss GT-1", "Line 6 Helix", "Line 6 HX Stomp", "Line 6 POD Go", "Line 6 POD HD500X",
             "Fractal Axe-FX III", "Neural DSP Quad Cortex", "Headrush MX5", "Headrush Pedalboard",
-            "Zoom G5n", "Zoom G1X Four", "Mooer GE200", "Mooer GE300", "NUX MG-30",
-            "Valeton GP-200", "Hotone Ampero II", "TC Electronic Plethora X5",
+            "Zoom G5n", "Zoom G1X Four", "Zoom G3Xn", "Zoom G11", "Zoom MS-50G+",
+            "Mooer GE200", "Mooer GE250", "Mooer GE300", "NUX MG-30", "NUX MG-400",
+            "Valeton GP-200", "Hotone Ampero II", "Hotone Ampero Mini", "TC Electronic Plethora X5",
+            "Line 6 HX Effects", "Fractal FM3", "Fractal FM9", "Kemper Profiler",
+            "Kemper Profiler Player", "Neural DSP Nano Cortex", "Strymon Iridium",
+            "UAFX Dream '65", "UAFX Ruby '63", "Eventide H9", "Boss GX-10", "IK ToneX Pedal",
         ].map { GearItem(name: $0, category: .multiFX) }
         let pedals = [
             "Ibanez Tube Screamer TS9", "Ibanez Tube Screamer TS808", "Boss SD-1", "Boss BD-2",
@@ -168,7 +192,15 @@ extension GearCatalog {
             "TC Hall of Fame 2", "EHX Holy Grail", "Boss CE-2W", "Boss CH-1", "EHX Small Clone",
             "MXR Phase 90", "MXR Phase 95", "EHX Electric Mistress", "Dunlop Cry Baby",
             "Vox V847 Wah", "MXR Dyna Comp", "Keeley Compressor Plus", "Boss GE-7 EQ",
-            "DigiTech Whammy", "EHX POG2", "Boss OC-5",
+            "DigiTech Whammy", "EHX POG2", "Boss OC-5", "Boss OD-3", "Boss HM-2W", "Boss BF-3",
+            "Boss PH-3", "Boss TR-2", "Boss NS-2 Noise Suppressor", "Boss DD-200", "Boss DD-500",
+            "Strymon Timeline", "Strymon BigSky", "Strymon El Capistan", "Strymon Flint",
+            "EarthQuaker Dispatch Master", "EarthQuaker Avalanche Run", "EarthQuaker Hoof",
+            "Walrus Julia", "Walrus Slö", "Walrus ARP-87", "JHS 3 Series Overdrive",
+            "Wampler Ego Compressor", "Xotic SL Drive", "Xotic EP Booster", "MXR Distortion+",
+            "MXR Micro Amp", "MXR 10-Band EQ", "EHX Canyon", "EHX Oceans 11", "EHX Nano Big Muff",
+            "Ibanez TS Mini", "Dunlop 535Q Wah", "Morley Bad Horsie", "DigiTech Drop",
+            "TC Ditto Looper", "Boss RC-1 Loop Station",
         ].map { GearItem(name: $0, category: .pedal) }
         return guitars + amps + multiFX + pedals
     }()

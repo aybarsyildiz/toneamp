@@ -5,6 +5,7 @@ import SwiftUI
 struct GearPickerView: View {
     @Environment(RigStore.self) private var rigStore
     @State private var query = ""
+    @State private var category: GearItem.Category = .guitar
 
     var showsSelectedRow = true
 
@@ -12,18 +13,19 @@ struct GearPickerView: View {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    /// Browsing shows one category at a time (tabs below the search field);
+    /// typing searches across every category.
     private var sections: [(category: GearItem.Category, items: [GearItem])] {
-        let matching: [GearItem]
         if trimmedQuery.isEmpty {
-            matching = GearCatalog.popularGear
-        } else {
-            matching = GearCatalog.popularGear.filter {
-                $0.name.localizedCaseInsensitiveContains(trimmedQuery)
-            }
+            let items = GearCatalog.popularGear.filter { $0.category == category }
+            return items.isEmpty ? [] : [(category, items)]
         }
-        return GearItem.Category.allCases.compactMap { category in
-            let items = matching.filter { $0.category == category }
-            return items.isEmpty ? nil : (category, items)
+        let matching = GearCatalog.popularGear.filter {
+            $0.name.localizedCaseInsensitiveContains(trimmedQuery)
+        }
+        return GearItem.Category.allCases.compactMap { cat in
+            let items = matching.filter { $0.category == cat }
+            return items.isEmpty ? nil : (cat, items)
         }
     }
 
@@ -47,6 +49,37 @@ struct GearPickerView: View {
             .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             .padding(.horizontal)
             .padding(.bottom, 8)
+
+            if trimmedQuery.isEmpty {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 8) {
+                        ForEach(GearItem.Category.allCases, id: \.self) { cat in
+                            Button {
+                                withAnimation(.snappy) {
+                                    category = cat
+                                }
+                            } label: {
+                                Label(cat.rawValue, systemImage: cat.symbol)
+                                    .font(.subheadline.weight(.medium))
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 7)
+                                    .background(
+                                        category == cat
+                                            ? AnyShapeStyle(Color.accentColor)
+                                            : AnyShapeStyle(Color(.secondarySystemBackground)),
+                                        in: Capsule()
+                                    )
+                                    .foregroundStyle(category == cat ? .white : .primary)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .scrollIndicators(.hidden)
+                .sensoryFeedback(.selection, trigger: category)
+                .padding(.bottom, 8)
+            }
 
             if showsSelectedRow && !rigStore.selectedGearItems.isEmpty {
                 ScrollView(.horizontal) {
