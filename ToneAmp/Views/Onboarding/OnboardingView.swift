@@ -7,6 +7,7 @@ struct OnboardingView: View {
     @Environment(SessionStore.self) private var session
     @Environment(RigStore.self) private var rigStore
     @State private var page = 0
+    @State private var expandedSearch: Set<GearItem.Category> = []
 
     private let lastPage = 6
 
@@ -176,30 +177,212 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    /// One tap for the common case: big family cards; exact-model search
+    /// stays one tap away behind the expander.
     private func gearPage(
         category: GearItem.Category,
         title: String,
         subtitle: String,
         pageIndex: Int
     ) -> some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 6) {
-                Image(systemName: category.symbol)
-                    .font(.title2)
-                    .foregroundStyle(.tint)
-                    .symbolEffect(.bounce, value: page == pageIndex)
-                Text(title)
-                    .font(.title.bold())
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
+        ScrollView {
+            VStack(spacing: 16) {
+                VStack(spacing: 6) {
+                    Image(systemName: category.symbol)
+                        .font(.title2)
+                        .foregroundStyle(.tint)
+                        .symbolEffect(.bounce, value: page == pageIndex)
+                    Text(title)
+                        .font(.title.bold())
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
+                .padding(.top, 14)
+
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                    ForEach(quickOptions(for: category)) { option in
+                        GearChoiceCard(
+                            title: option.title,
+                            subtitle: option.subtitle,
+                            symbol: option.symbol,
+                            isSelected: option.isSelected(),
+                            action: option.toggle
+                        )
+                    }
+                }
+                .padding(.horizontal, 18)
+
+                Button {
+                    withAnimation(.snappy) {
+                        if expandedSearch.contains(category) {
+                            expandedSearch.remove(category)
+                        } else {
+                            expandedSearch.insert(category)
+                        }
+                    }
+                } label: {
+                    Label(
+                        expandedSearch.contains(category) ? "Hide search" : "Find my exact model",
+                        systemImage: expandedSearch.contains(category) ? "chevron.up" : "magnifyingglass"
+                    )
+                    .font(.subheadline.weight(.medium))
+                }
+                .padding(.top, 2)
+
+                if expandedSearch.contains(category) {
+                    GearPickerView(fixedCategory: category)
+                        .frame(height: 380)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+
+                Text("Takes seconds — change it anytime in Profile.")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .padding(.bottom, 12)
             }
-            .padding(.top, 18)
-            .padding(.bottom, 12)
-            GearPickerView(fixedCategory: category)
         }
+    }
+
+    // MARK: Quick gear options
+
+    private struct QuickGearOption: Identifiable {
+        let id: String
+        let title: String
+        let subtitle: String
+        let symbol: String
+        let isSelected: () -> Bool
+        let toggle: () -> Void
+
+        init(_ title: String, _ subtitle: String, _ symbol: String,
+             isSelected: @escaping () -> Bool, toggle: @escaping () -> Void) {
+            self.id = title
+            self.title = title
+            self.subtitle = subtitle
+            self.symbol = symbol
+            self.isSelected = isSelected
+            self.toggle = toggle
+        }
+    }
+
+    private func quickOptions(for category: GearItem.Category) -> [QuickGearOption] {
+        switch category {
+        case .guitar:
+            return [
+                guitarFamily("Stratocaster", "Fender & similar S-types", "guitars"),
+                guitarFamily("Telecaster", "Twangy single-coils", "guitars"),
+                guitarFamily("Les Paul", "Gibson, Epiphone & co.", "guitars.fill"),
+                guitarFamily("SG", "Light, raw humbuckers", "guitars.fill"),
+                guitarFamily("Semi-hollow (335)", "ES-335, Casino, Dot…", "guitars"),
+                guitarFamily("Superstrat (Ibanez/Jackson)", "Fast necks, hot pickups", "bolt.fill"),
+                customGuitarFamily("PRS-style", "Custom 24, SE line…", "guitars.fill"),
+                guitarFamily("Jazzmaster / Jaguar", "Offsets & indie tones", "guitars"),
+            ]
+        case .amp:
+            return [
+                ampFamily("Fender-style (clean/scooped)", "Twin, Deluxe, Blues Jr", "amplifier"),
+                ampFamily("Marshall-style (mid-forward)", "DSL, JCM, Origin", "amplifier"),
+                ampFamily("Vox-style (chimey)", "AC15, AC30", "amplifier"),
+                ampFamily("Mesa/high-gain", "Rectifier, 5150, ENGL", "flame.fill"),
+                ampTextOption("Boss Katana", "The modern bedroom classic", "amplifier"),
+                ampFamily("Modeler (Katana, Helix, …)", "Digital amp modeling", "square.grid.3x3.fill"),
+                ampTextOption("Audio interface (direct to PC)", "No amp — plugins & monitoring", "desktopcomputer"),
+                ampFamily("Orange-style (thick)", "Crush, Rockerverb", "amplifier"),
+            ]
+        case .multiFX:
+            return [
+                fxBrand("Boss GT series", "GT-8, GT-100, GT-1000, GX", "square.grid.3x3.fill"),
+                fxBrand("Line 6 Helix / POD", "Helix, HX Stomp, POD Go", "square.grid.3x3.fill"),
+                fxBrand("Kemper / Fractal / Quad Cortex", "Pro-grade modeling", "square.grid.3x3.fill"),
+                fxBrand("Zoom / Mooer / NUX", "Budget-friendly boards", "square.grid.3x3.fill"),
+                QuickGearOption("I don't use one", "Pedals or straight in", "xmark.circle",
+                    isSelected: { !GearCatalog.hasMultiFX(self.rigStore.rig) },
+                    toggle: { self.clearMultiFX() }),
+            ]
+        case .pedal:
+            return [
+                pedalGroup("Drive pedals", "Overdrive & distortion", "bolt.fill", "Drive pedals"),
+                pedalGroup("Delay / Reverb", "Space & echo", "clock.arrow.circlepath", "Delay / Reverb"),
+                pedalGroup("Modulation", "Chorus, phaser, flanger", "waveform.path", "Modulation"),
+                pedalGroup("Wah", "Cry Baby & friends", "dial.max", "Wah"),
+                QuickGearOption("None yet", "Amp and fingers only", "xmark.circle",
+                    isSelected: { self.rigStore.rig.pedalTypes.filter { $0 != GearCatalog.multiFXKey }.isEmpty },
+                    toggle: { self.rigStore.rig.pedalTypes.removeAll { $0 != GearCatalog.multiFXKey } }),
+            ]
+        }
+    }
+
+    private func guitarFamily(_ chip: String, _ subtitle: String, _ symbol: String) -> QuickGearOption {
+        QuickGearOption(chip, subtitle, symbol,
+            isSelected: { self.rigStore.rig.guitars.contains(chip) },
+            toggle: {
+                if let index = self.rigStore.rig.guitars.firstIndex(of: chip) {
+                    self.rigStore.rig.guitars.remove(at: index)
+                } else {
+                    self.rigStore.rig.guitars.append(chip)
+                }
+            })
+    }
+
+    private func customGuitarFamily(_ name: String, _ subtitle: String, _ symbol: String) -> QuickGearOption {
+        QuickGearOption(name, subtitle, symbol,
+            isSelected: { self.rigStore.rig.guitarText.localizedCaseInsensitiveContains(name) },
+            toggle: {
+                self.rigStore.rig.guitarText = RigStore.togglingToken(name, in: self.rigStore.rig.guitarText)
+            })
+    }
+
+    /// Amp family chips are single-select — tapping switches, re-tapping clears.
+    private func ampFamily(_ chip: String, _ subtitle: String, _ symbol: String) -> QuickGearOption {
+        QuickGearOption(chip, subtitle, symbol,
+            isSelected: { self.rigStore.rig.amp == chip },
+            toggle: {
+                self.rigStore.rig.amp = self.rigStore.rig.amp == chip ? "" : chip
+            })
+    }
+
+    private func ampTextOption(_ name: String, _ subtitle: String, _ symbol: String) -> QuickGearOption {
+        QuickGearOption(name, subtitle, symbol,
+            isSelected: { self.rigStore.rig.ampText.localizedCaseInsensitiveContains(name) },
+            toggle: {
+                self.rigStore.rig.ampText = RigStore.togglingToken(name, in: self.rigStore.rig.ampText)
+            })
+    }
+
+    private func fxBrand(_ token: String, _ subtitle: String, _ symbol: String) -> QuickGearOption {
+        QuickGearOption(token, subtitle, symbol,
+            isSelected: { self.rigStore.rig.pedalsText.localizedCaseInsensitiveContains(token) },
+            toggle: {
+                self.rigStore.rig.pedalsText = RigStore.togglingToken(token, in: self.rigStore.rig.pedalsText)
+                self.syncMultiFXKey()
+            })
+    }
+
+    private func pedalGroup(_ title: String, _ subtitle: String, _ symbol: String, _ group: String) -> QuickGearOption {
+        QuickGearOption(title, subtitle, symbol,
+            isSelected: { self.isEffectGroupSelected(group) },
+            toggle: { self.toggleEffectGroup(group) })
+    }
+
+    private func syncMultiFXKey() {
+        if GearCatalog.hasMultiFX(rigStore.rig) {
+            if !rigStore.rig.pedalTypes.contains(GearCatalog.multiFXKey) {
+                rigStore.rig.pedalTypes.append(GearCatalog.multiFXKey)
+            }
+        } else {
+            rigStore.rig.pedalTypes.removeAll { $0 == GearCatalog.multiFXKey }
+        }
+    }
+
+    private func clearMultiFX() {
+        for token in ["Boss GT series", "Line 6 Helix / POD", "Kemper / Fractal / Quad Cortex", "Zoom / Mooer / NUX"] {
+            if rigStore.rig.pedalsText.localizedCaseInsensitiveContains(token) {
+                rigStore.rig.pedalsText = RigStore.togglingToken(token, in: rigStore.rig.pedalsText)
+            }
+        }
+        rigStore.rig.pedalTypes.removeAll { $0 == GearCatalog.multiFXKey }
     }
 
     private var signInPage: some View {
@@ -254,6 +437,60 @@ struct OnboardingView: View {
         case .failure:
             break
         }
+    }
+}
+
+/// Large tappable selection card — the one-tap path through gear setup.
+private struct GearChoiceCard: View {
+    let title: String
+    let subtitle: String
+    let symbol: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            withAnimation(.snappy) {
+                action()
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Image(systemName: symbol)
+                        .font(.title3)
+                        .foregroundStyle(isSelected ? AnyShapeStyle(.white) : AnyShapeStyle(.tint))
+                    Spacer()
+                    if isSelected {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.body)
+                            .foregroundStyle(.white)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                Spacer(minLength: 0)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(isSelected ? .white : .primary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(isSelected ? .white.opacity(0.85) : .secondary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 104)
+            .background(
+                isSelected ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(Color(.secondarySystemBackground)),
+                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+            )
+        }
+        .buttonStyle(.plain)
+        .sensoryFeedback(.selection, trigger: isSelected)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

@@ -92,9 +92,10 @@ enum GearCatalog {
             return true
         }
         let text = (rig.pedalsText + " " + rig.ampText).lowercased()
-        return ["gt-", "gt8", "gt 8", "gt10", "gt100", "gt1000", "pod", "helix", "hx ", "headrush",
-                "multi-fx", "multifx", "multi fx", "fx8", "ax8", "axe-fx", "quad cortex",
-                "boss me-", "mooer ge", "nux mg", "valeton", "zoom g"].contains { text.contains($0) }
+        return ["gt-", "gt8", "gt 8", "gt10", "gt100", "gt1000", "gt series", "pod", "helix",
+                "hx ", "headrush", "multi-fx", "multifx", "multi fx", "fx8", "ax8", "axe-fx",
+                "quad cortex", "kemper", "fractal", "boss me-", "mooer", "nux mg", "valeton",
+                "zoom"].contains { text.contains($0) }
     }
 
     static let singleCoilGuitars: Set<String> = [
@@ -293,6 +294,10 @@ extension RigStore {
 
     var selectedGearItems: [GearItem] {
         GearCatalog.popularGear.filter { isSelected($0) }
+    }
+
+    static func togglingToken(_ name: String, in list: String) -> String {
+        toggling(name, in: list)
     }
 
     private static func toggling(_ name: String, in list: String) -> String {
