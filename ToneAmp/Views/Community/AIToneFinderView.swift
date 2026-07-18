@@ -5,6 +5,7 @@ import SwiftUI
 struct AIToneFinderView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
+    @Environment(RigStore.self) private var rigStore
     let song: CatalogSong
     var onPublished: () -> Void
 
@@ -71,7 +72,7 @@ struct AIToneFinderView: View {
     @MainActor
     private func identify() async {
         do {
-            let tones = try await AIToneService.identifyTones(for: song)
+            let tones = try await AIToneService.identifyTones(for: song, rig: rigStore.rig)
             withAnimation(.spring(duration: 0.6)) {
                 phase = .result(tones)
             }
@@ -133,7 +134,21 @@ struct AIToneFinderView: View {
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
-                    RigTipsView(pickup: tone.pickup, amp: tone.ampName, pedals: tone.pedals)
+                    if tone.rigTips.isEmpty {
+                        RigTipsView(pickup: tone.pickup, amp: tone.ampName, pedals: tone.pedals)
+                    } else {
+                        // Tips written by the engine for the user's exact gear.
+                        ForEach(tone.rigTips, id: \.self) { tip in
+                            HStack(alignment: .top, spacing: 10) {
+                                Image(systemName: "person.crop.circle.badge.checkmark")
+                                    .foregroundStyle(.tint)
+                                    .frame(width: 24)
+                                Text(tip)
+                                    .font(.callout)
+                            }
+                            .padding(.vertical, 2)
+                        }
+                    }
                     publishButton(for: tone)
                 } header: {
                     Text(tone.name)

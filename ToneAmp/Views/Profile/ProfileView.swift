@@ -48,24 +48,32 @@ struct ProfileView: View {
 
                 Section {
                     if rigStore.rig.isConfigured {
-                        if !rigStore.rig.guitars.isEmpty {
+                        let guitarList = ([rigStore.rig.guitarText] + rigStore.rig.guitars)
+                            .filter { !$0.isEmpty }
+                        if !guitarList.isEmpty {
                             LabeledContent {
-                                Text(rigStore.rig.guitars.joined(separator: ", "))
+                                Text(guitarList.joined(separator: ", "))
                                     .multilineTextAlignment(.trailing)
                             } label: {
                                 Label("Guitars", systemImage: "guitars.fill")
                             }
                         }
-                        if !rigStore.rig.amp.isEmpty {
+                        let ampDisplay = rigStore.rig.ampText.isEmpty ? rigStore.rig.amp : rigStore.rig.ampText
+                        if !ampDisplay.isEmpty {
                             LabeledContent {
-                                Text(rigStore.rig.amp)
+                                Text(ampDisplay)
                                     .multilineTextAlignment(.trailing)
                             } label: {
                                 Label("Amp", systemImage: "amplifier")
                             }
                         }
                         LabeledContent {
-                            Text("\(rigStore.rig.pedalTypes.count)")
+                            Text(
+                                rigStore.rig.pedalsText.isEmpty
+                                    ? "\(rigStore.rig.pedalTypes.count)"
+                                    : rigStore.rig.pedalsText
+                            )
+                            .multilineTextAlignment(.trailing)
                         } label: {
                             Label("Pedals", systemImage: "bolt.fill")
                         }

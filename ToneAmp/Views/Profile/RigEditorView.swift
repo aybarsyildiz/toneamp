@@ -52,8 +52,20 @@ struct RigEditorView: View {
     @Environment(RigStore.self) private var rigStore
 
     var body: some View {
+        @Bindable var store = rigStore
         NavigationStack {
             Form {
+                Section {
+                    TextField("Guitar — e.g. Fender Player Strat HSS", text: $store.rig.guitarText)
+                    TextField("Amp — e.g. Boss Katana 50 MkII", text: $store.rig.ampText)
+                    TextField("Pedals — e.g. TS9, DD-8, Big Muff", text: $store.rig.pedalsText, axis: .vertical)
+                        .lineLimit(1...3)
+                } header: {
+                    Text("Describe Your Exact Gear")
+                } footer: {
+                    Text("Free text — the Pro tone engine reads this to write tips for your specific models. The quick picks below power instant local tips.")
+                }
+
                 Section {
                     ChipFlow(
                         items: GearCatalog.guitars,

@@ -12,6 +12,9 @@ ToneAmp is a native iOS app for guitar players who hear a tone they love and wan
 - **Search** — Native `.searchable` search over song titles and artists, plus a genre filter and a featured shelf.
 - **Identify (ShazamKit)** — Tap to listen, Shazam-style. Recognized library songs deep-link to their tone; unknown ones offer "Get Tone with AI".
 - **Favorites** — Star songs to keep your go-to tones one tap away. Persisted locally.
+- **My Rig personalization** — Tell ToneAmp your guitars, amp, and pedals (onboarding or Profile); every tone screen adds "For Your Rig" tips that translate the recording's settings to your gear.
+- **ToneAmp Pro: Identify Tones** — The AI tone engine builds a researched tone sheet for any song behind a magical loading screen (Claude structured outputs; preview toggle until StoreKit).
+- **1,380-song catalog** — Curated gold tones (354 hand-researched, including Turkish rock: Duman, Pentagram, Erkin Koray, mor ve ötesi…) plus template starter tones for the rest, all with iTunes artwork. Tone of the Day, Identify history, tone sharing, and a Profile tab round out the MVP.
 - **Native Apple look & feel** — SwiftUI end to end: `NavigationStack`, inset-grouped lists, SF Symbols, system colors and materials, Dynamic Type, dark mode, haptics. It should feel like Apple shipped it.
 
 ## Requirements

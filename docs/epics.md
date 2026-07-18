@@ -62,9 +62,9 @@ Legend: ✅ in MVP · 🔮 post-MVP
 
 Backend catalog, accounts, tone submission/voting, moderation. Requires server + sync layer; the `Codable` model and store abstraction are already shaped for a remote source.
 
-## E7 — Personal Rig Translation 🔮
+## E7 — Personal Rig Translation ✅ (MVP-lite shipped in v0.6)
 
-User describes their amp; settings are translated to its controls (e.g. Marshall JCM800 recipe → Boss Katana). Needs an amp-capability database and mapping engine.
+Shipped: rig capture (guitars/amp/pedals) in onboarding + Profile, and a rules-based `RigAdvisor` that translates every tone (pickup differences, amp-family EQ shifts, missing-pedal substitutions) into up to three concrete tips on every tone screen. 🔮 Later: a full amp-capability database mapping knob-for-knob onto specific models (e.g. Boss Katana).
 
 ## E8 — Tone Intelligence 🔮
 

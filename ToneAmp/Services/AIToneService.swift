@@ -11,6 +11,8 @@ struct AIGeneratedTone: Identifiable, Hashable {
     let pickup: String
     let pedals: [EffectPedal]
     let notes: String
+    /// Tips written for the player's specific rig (empty if no rig set).
+    let rigTips: [String]
 }
 
 enum AIToneError: LocalizedError {
@@ -81,7 +83,7 @@ enum AIToneService {
         resolvedAPIKey != nil
     }
 
-    static func identifyTones(for song: CatalogSong) async throws -> [AIGeneratedTone] {
+    static func identifyTones(for song: CatalogSong, rig: UserRig? = nil) async throws -> [AIGeneratedTone] {
         guard let apiKey = resolvedAPIKey else {
             throw AIToneError.missingAPIKey
         }
@@ -91,7 +93,7 @@ enum AIToneService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody(song: song))
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody(song: song, rig: rig))
 
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else {
@@ -123,11 +125,17 @@ enum AIToneService {
 
     // MARK: - Request
 
-    private static func requestBody(song: CatalogSong) throws -> [String: Any] {
+    private static func requestBody(song: CatalogSong, rig: UserRig?) throws -> [String: Any] {
         let schemaData = Data(schemaJSON.utf8)
         let schema = try JSONSerialization.jsonObject(with: schemaData)
         let genreName = song.primaryGenreName ?? "Rock"
         let yearText = song.year > 0 ? String(song.year) : "unknown year"
+        var content = "Identify the guitar tones for \u{201C}\(song.trackName)\u{201D} by \(song.artistName) (\(yearText), \(genreName))."
+        if let rig, rig.isConfigured {
+            content += "\n\nThe player's own rig — \(rig.aiDescription). For each tone, fill rigTips with 1–3 short, concrete tips adapting the settings to this exact rig; name their gear (e.g. specific amp model) in the tips."
+        } else {
+            content += "\n\nNo rig information — leave rigTips as an empty array."
+        }
         return [
             "model": modelID,
             "max_tokens": 8000,
@@ -136,7 +144,7 @@ enum AIToneService {
             "messages": [
                 [
                     "role": "user",
-                    "content": "Identify the guitar tones for \u{201C}\(song.trackName)\u{201D} by \(song.artistName) (\(yearText), \(genreName)).",
+                    "content": content,
                 ]
             ],
             "output_config": [
@@ -182,7 +190,7 @@ enum AIToneService {
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "character", "amp", "settings", "guitar", "pickup", "pedals", "notes"],
+            "required": ["name", "character", "amp", "settings", "guitar", "pickup", "pedals", "notes", "rigTips"],
             "properties": {
               "name": {"type": "string"},
               "character": {"type": "string", "enum": ["Clean", "Crunch", "Overdrive", "High Gain", "Fuzz", "Lead"]},
@@ -227,7 +235,8 @@ enum AIToneService {
                   }
                 }
               },
-              "notes": {"type": "string"}
+              "notes": {"type": "string"},
+              "rigTips": {"type": "array", "items": {"type": "string"}}
             }
           }
         }
@@ -291,6 +300,7 @@ enum AIToneService {
             let pickup: String
             let pedals: [GPedal]
             let notes: String
+            let rigTips: [String]?
 
             func toGeneratedTone() -> AIGeneratedTone {
                 AIGeneratedTone(
@@ -317,7 +327,8 @@ enum AIToneService {
                             note: pedal.note
                         )
                     },
-                    notes: notes
+                    notes: notes,
+                    rigTips: rigTips ?? []
                 )
             }
         }

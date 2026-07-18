@@ -1,14 +1,59 @@
 import Foundation
 import Observation
 
-/// The player's own gear — the heart of personalization.
+/// The player's own gear — the heart of personalization. Chips power the
+/// quick local tips; free text describes exact models for the AI engine.
 struct UserRig: Codable, Equatable {
     var guitars: [String] = []
     var amp: String = ""
     var pedalTypes: [String] = []
+    var guitarText: String = ""
+    var ampText: String = ""
+    var pedalsText: String = ""
 
     var isConfigured: Bool {
         !guitars.isEmpty || !amp.isEmpty || !pedalTypes.isEmpty
+            || !guitarText.isEmpty || !ampText.isEmpty || !pedalsText.isEmpty
+    }
+
+    /// Compact description handed to the AI tone engine.
+    var aiDescription: String {
+        var parts: [String] = []
+        let guitarList = ([guitarText] + guitars).filter { !$0.isEmpty }
+        if !guitarList.isEmpty {
+            parts.append("Guitars: " + guitarList.joined(separator: ", "))
+        }
+        let ampList = ([ampText] + [amp]).filter { !$0.isEmpty }
+        if !ampList.isEmpty {
+            parts.append("Amp: " + ampList.joined(separator: " — "))
+        }
+        var pedalParts: [String] = []
+        if !pedalsText.isEmpty {
+            pedalParts.append(pedalsText)
+        }
+        if !pedalTypes.isEmpty {
+            pedalParts.append("categories owned: " + pedalTypes.joined(separator: ", "))
+        }
+        if !pedalParts.isEmpty {
+            parts.append("Pedals: " + pedalParts.joined(separator: "; "))
+        }
+        return parts.joined(separator: ". ")
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case guitars, amp, pedalTypes, guitarText, ampText, pedalsText
+    }
+
+    init() {}
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        guitars = try container.decodeIfPresent([String].self, forKey: .guitars) ?? []
+        amp = try container.decodeIfPresent(String.self, forKey: .amp) ?? ""
+        pedalTypes = try container.decodeIfPresent([String].self, forKey: .pedalTypes) ?? []
+        guitarText = try container.decodeIfPresent(String.self, forKey: .guitarText) ?? ""
+        ampText = try container.decodeIfPresent(String.self, forKey: .ampText) ?? ""
+        pedalsText = try container.decodeIfPresent(String.self, forKey: .pedalsText) ?? ""
     }
 }
 
@@ -71,20 +116,23 @@ enum RigAdvisor {
         guard rig.isConfigured else { return [] }
         var tips: [String] = []
 
-        // Pickup translation
+        // Pickup translation — chips first, free text as fallback signal
         let toneWantsHumbucker = pickup.localizedCaseInsensitiveContains("humbucker")
         let toneWantsSingle = pickup.localizedCaseInsensitiveContains("single")
+        let guitarWords = (rig.guitars.joined(separator: " ") + " " + rig.guitarText).lowercased()
         let hasSingle = !GearCatalog.singleCoilGuitars.isDisjoint(with: rig.guitars)
+            || ["strat", "tele", "jazzmaster", "jaguar", "single"].contains { guitarWords.contains($0) }
         let hasHumbucker = !GearCatalog.humbuckerGuitars.isDisjoint(with: rig.guitars)
+            || ["les paul", "sg", "335", "humbucker", "ibanez", "jackson", "esp", "emg", "prs", "hss"].contains { guitarWords.contains($0) }
         if toneWantsHumbucker && hasSingle && !hasHumbucker {
             tips.append("This tone uses a humbucker; your single-coils run brighter and quieter — add about half a step of gain and pull treble back slightly.")
         } else if toneWantsSingle && hasHumbucker && !hasSingle {
             tips.append("This tone uses single-coils; your humbuckers run hotter and darker — back the gain off about one step and open up the treble.")
         }
 
-        // Amp family translation
+        // Amp family translation — chip first, then the typed amp name
         let toneAmp = ampFamily(of: amp)
-        let myAmp = ampFamily(of: rig.amp)
+        let myAmp = ampFamily(of: rig.amp) ?? ampFamily(of: rig.ampText)
         if let toneAmp, let myAmp, toneAmp != myAmp {
             switch (toneAmp, myAmp) {
             case ("marshall", "fender"):
@@ -102,8 +150,27 @@ enum RigAdvisor {
             }
         }
 
-        // Pedal coverage
-        let owned = Set(rig.pedalTypes)
+        // Pedal coverage — chips plus keywords from the typed pedal list
+        var owned = Set(rig.pedalTypes)
+        let pedalWords = rig.pedalsText.lowercased()
+        let keywordMap: [(String, EffectType)] = [
+            ("screamer", .overdrive), ("ts9", .overdrive), ("ts808", .overdrive),
+            ("od", .overdrive), ("drive", .overdrive), ("klon", .overdrive), ("blues driver", .overdrive),
+            ("ds-", .distortion), ("distortion", .distortion), ("rat", .distortion), ("metal", .distortion),
+            ("muff", .fuzz), ("fuzz", .fuzz),
+            ("delay", .delay), ("dd-", .delay), ("echo", .delay), ("carbon copy", .delay),
+            ("reverb", .reverb), ("hall of fame", .reverb),
+            ("chorus", .chorus), ("ce-", .chorus),
+            ("phaser", .phaser), ("phase 90", .phaser),
+            ("flanger", .flanger),
+            ("wah", .wah), ("cry baby", .wah),
+            ("comp", .compressor),
+            ("whammy", .octave), ("octave", .octave),
+            ("eq", .eq),
+        ]
+        for (keyword, type) in keywordMap where pedalWords.contains(keyword) {
+            owned.insert(type.rawValue)
+        }
         let needed = pedals.map { $0.type }
         let missingDirt = needed.first { type in
             (type == .fuzz || type == .overdrive || type == .distortion) && !owned.contains(type.rawValue)

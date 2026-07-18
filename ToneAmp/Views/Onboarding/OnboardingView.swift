@@ -128,11 +128,41 @@ struct OnboardingView: View {
                     onboardChips(GearCatalog.amps, isSelected: { rigStore.rig.amp == $0 }) { amp in
                         rigStore.rig.amp = rigStore.rig.amp == amp ? "" : amp
                     }
+                    Text("OR TYPE YOUR EXACT GEAR")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white.opacity(0.7))
+                        .padding(.top, 6)
+                    onboardTextField("Guitar — e.g. Player Strat HSS", text: guitarTextBinding)
+                    onboardTextField("Amp — e.g. Boss Katana 50 MkII", text: ampTextBinding)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 30)
             }
         }
+    }
+
+    private var guitarTextBinding: Binding<String> {
+        Binding(
+            get: { rigStore.rig.guitarText },
+            set: { rigStore.rig.guitarText = $0 }
+        )
+    }
+
+    private var ampTextBinding: Binding<String> {
+        Binding(
+            get: { rigStore.rig.ampText },
+            set: { rigStore.rig.ampText = $0 }
+        )
+    }
+
+    private func onboardTextField(_ prompt: String, text: Binding<String>) -> some View {
+        TextField("", text: text, prompt: Text(prompt).foregroundStyle(.white.opacity(0.55)))
+            .foregroundStyle(.white)
+            .tint(.white)
+            .autocorrectionDisabled()
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private func onboardChips(
