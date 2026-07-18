@@ -10,6 +10,9 @@ struct MyRigView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(RigStore.self) private var rigStore
 
+    /// False when hosted as a tab (no Done button needed).
+    var showsDone: Bool = true
+
     @State private var pickerCategory: GearItem.Category?
     @State private var showingAdvanced = false
 
@@ -64,9 +67,11 @@ struct MyRigView: View {
                         showingAdvanced = true
                     }
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
+                if showsDone {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }

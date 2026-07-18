@@ -32,9 +32,9 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Identify", systemImage: "shazam.logo.fill")
                 }
-            FavoritesView()
+            MyRigView(showsDone: false)
                 .tabItem {
-                    Label("Favorites", systemImage: "star.fill")
+                    Label("My Rig", systemImage: "guitars.fill")
                 }
             ProfileView()
                 .tabItem {

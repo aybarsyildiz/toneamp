@@ -133,6 +133,13 @@ struct LibraryView: View {
                         Label("Settings", systemImage: "gearshape")
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        FavoritesView()
+                    } label: {
+                        Label("Favorites", systemImage: "star")
+                    }
+                }
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
