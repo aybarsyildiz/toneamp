@@ -199,8 +199,8 @@ struct AdaptToMyGearButton: View {
         .sheet(isPresented: $showingAdapt) {
             AdaptToneSheet(input: input)
         }
-        .sheet(isPresented: $showingProTeaser) {
-            ProTeaserSheet()
+        .fullScreenCover(isPresented: $showingProTeaser) {
+            ProPaywallView()
         }
         .sheet(isPresented: $showingRigEditor) {
             RigEditorView()

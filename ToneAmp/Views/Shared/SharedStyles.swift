@@ -193,40 +193,6 @@ func toneShareText(
     return lines.joined(separator: "\n")
 }
 
-/// Shown when a non-Pro user taps a Pro feature.
-struct ProTeaserSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        VStack(spacing: 18) {
-            Image(systemName: "wand.and.stars")
-                .font(.system(size: 54))
-                .foregroundStyle(.tint)
-                .symbolEffect(.bounce, options: .repeating)
-                .padding(.top, 40)
-            Text("ToneAmp Pro")
-                .font(.title2.bold())
-            Text("Identify Tones asks the AI tone engine to build a knob-by-knob tone sheet — amp, pedals, and all — for any song in the catalog.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-            Spacer()
-            Text("Subscriptions are coming soon. Until then, enable the Pro Preview in Settings.")
-                .font(.footnote)
-                .foregroundStyle(.tertiary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-            Button("OK") {
-                dismiss()
-            }
-            .buttonStyle(.borderedProminent)
-            .padding(.bottom, 32)
-        }
-        .presentationDetents([.medium])
-    }
-}
-
 /// Compact "★ 4.5 (12)" label for list rows.
 struct RatingSummaryLabel: View {
     let average: Double?

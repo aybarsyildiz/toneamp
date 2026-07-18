@@ -148,8 +148,8 @@ struct CommunitySongView: View {
                 Task { await load() }
             }
         }
-        .sheet(isPresented: $showingProTeaser) {
-            ProTeaserSheet()
+        .fullScreenCover(isPresented: $showingProTeaser) {
+            ProPaywallView()
         }
         .task {
             await load()
