@@ -340,6 +340,9 @@ enum AIToneService {
     - Keep notes practical and concise: tuning, technique, what makes the tone work.
     - If the song has no meaningful guitar part or you don't know it, set found to false \
     with empty tones.
+    - Knob values must always be realistic, playable settings. A tone whose gain, bass, \
+    mid, and treble are all 0 is INVALID — never return one. Amp, guitar, and pickup \
+    fields must never be empty strings.
     """
 
     private static let schemaJSON = """
