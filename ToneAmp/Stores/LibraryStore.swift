@@ -46,7 +46,7 @@ final class LibraryStore {
         var cache = UserDefaults.standard.dictionary(forKey: Self.artworkCacheKey) as? [String: String] ?? [:]
         // Cap per launch to stay friendly with the iTunes API rate limit —
         // seed songs already ship with artwork; this catches stragglers.
-        let missing = songs.filter { $0.artworkURL == nil }.prefix(40)
+        let missing = songs.filter { $0.artworkURL == nil }.prefix(60)
         for song in missing {
             guard cache[song.id] == nil else { continue }
             let results = try? await MusicSearchService.search("\(song.title) \(song.artist)")

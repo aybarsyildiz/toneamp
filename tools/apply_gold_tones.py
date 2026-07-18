@@ -419,6 +419,64 @@ def to_tone(sid, idx, t):
     }
 
 
+def _h(s):
+    import hashlib
+    return int(hashlib.md5(s.encode("utf-8")).hexdigest(), 16)
+
+
+def enrich(songs):
+    """Template (non-gold) songs: guarantee at least one pedal per tone and
+    add a derived 'Solo Boost' second tone to dirt-character songs.
+    Idempotent — safe to re-run."""
+    empty_pedal_fill = {
+        "Clean": {"name": "MXR Dyna Comp", "type": "compressor",
+                  "controls": [{"name": "Output", "value": 5.5}, {"name": "Sensitivity", "value": 4.5}],
+                  "note": "Subtle glue — evens the attack without squashing dynamics."},
+        "Crunch": {"name": "Boss SD-1", "type": "overdrive",
+                   "controls": [{"name": "Drive", "value": 3.0}, {"name": "Tone", "value": 5.0}, {"name": "Level", "value": 6.0}],
+                   "note": "Optional push for the dirtier sections — level does the work."},
+    }
+    added_pedals, added_tones = 0, 0
+    for song in songs:
+        tones = song["tones"]
+        # Only template songs (single tone, generator id suffix "-t0")
+        if len(tones) == 0 or not tones[0]["id"].endswith("-t0"):
+            continue
+        t0 = tones[0]
+        if not t0["pedals"]:
+            fill = empty_pedal_fill.get(t0["character"])
+            if fill:
+                t0["pedals"] = [dict(fill)]
+                added_pedals += 1
+        if t0["character"] in ("Crunch", "High Gain", "Overdrive") and len(tones) == 1:
+            seed = _h(song["id"])
+            s = dict(t0["settings"])
+            s["gain"] = min(10.0, round((s["gain"] + 1.0) * 2) / 2)
+            s["mid"] = min(10.0, round((s["mid"] + 0.5) * 2) / 2)
+            solo = {
+                "id": song["id"] + "-t1",
+                "name": "Solo Boost",
+                "amp": t0["amp"],
+                "character": "Lead",
+                "settings": s,
+                "guitar": t0["guitar"],
+                "pickup": t0["pickup"],
+                "pedals": t0["pedals"] + [{
+                    "name": "Analog Delay", "type": "delay",
+                    "controls": [
+                        {"name": "Time", "value": 3.5 + (seed % 3) * 0.5},
+                        {"name": "Repeats", "value": 3.0},
+                        {"name": "Mix", "value": 3.0},
+                    ],
+                    "note": "Kicks in for the solo — repeats tucked under the dry signal.",
+                }],
+                "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain.",
+            }
+            tones.append(solo)
+            added_tones += 1
+    print(f"enriched: {added_pedals} pedal fills, {added_tones} solo tones added")
+
+
 def main():
     path = sys.argv[1]
     with open(path, encoding="utf-8") as f:
@@ -440,6 +498,8 @@ def main():
             continue
         song["tones"] = [to_tone(song["id"], i, t) for i, t in enumerate(tones)]
         applied += 1
+
+    enrich(songs)
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(songs, f, ensure_ascii=False)
