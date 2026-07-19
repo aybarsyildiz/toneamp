@@ -2,13 +2,29 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(SessionStore.self) private var session
+    @Environment(ProStore.self) private var pro
+    @Environment(ModerationStore.self) private var moderation
 
     @State private var showingSignIn = false
     @State private var confirmingSignOut = false
-    @State private var apiKeyInput = ""
-    @State private var hasStoredKey =
-        KeychainStore.read(forKey: KeychainStore.anthropicAPIKeyAccount)?.isEmpty == false
+    @State private var showingPaywall = false
+    @State private var isRestoring = false
+
+    private var privacyURL: URL {
+        AIToneService.proxyURL?.appendingPathComponent("privacy")
+            ?? URL(string: "https://github.com/aybarsyildiz/toneamp")!
+    }
+
+    private var supportURL: URL {
+        AIToneService.proxyURL?.appendingPathComponent("support")
+            ?? URL(string: "https://github.com/aybarsyildiz/toneamp")!
+    }
+
+    private var hiddenCount: Int {
+        moderation.hiddenToneIDs.count + moderation.blockedAuthorIDs.count
+    }
 
     var body: some View {
         NavigationStack {
@@ -40,7 +56,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Account")
                 } footer: {
-                    Text("An account is needed to publish and rate tones. Browsing is always open.")
+                    Text("Browsing is always open. Favorites, publishing, rating, and the AI tone engine are tied to your account.")
                 }
 
                 Section {
@@ -51,48 +67,87 @@ struct SettingsView: View {
                         Label("ToneAmp Pro", systemImage: "wand.and.stars")
                     }
                     if session.isPro {
-                        if hasStoredKey {
-                            HStack {
-                                Label("Tone engine key saved", systemImage: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-                                Spacer()
-                                Button("Remove", role: .destructive) {
-                                    KeychainStore.delete(forKey: KeychainStore.anthropicAPIKeyAccount)
-                                    hasStoredKey = false
-                                }
-                                .font(.subheadline)
-                            }
-                        } else if AIToneService.bundledAPIKey != nil {
-                            Label("Development key bundled (Secrets.plist)", systemImage: "checkmark.seal.fill")
-                                .foregroundStyle(.green)
-                        } else {
-                            SecureField("Anthropic API key (sk-ant-…)", text: $apiKeyInput)
-                                .textInputAutocapitalization(.never)
-                                .autocorrectionDisabled()
-                            Button("Save Key") {
-                                let trimmed = apiKeyInput.trimmingCharacters(in: .whitespacesAndNewlines)
-                                guard !trimmed.isEmpty else { return }
-                                KeychainStore.save(trimmed, forKey: KeychainStore.anthropicAPIKeyAccount)
-                                apiKeyInput = ""
-                                hasStoredKey = true
-                            }
-                            .disabled(apiKeyInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        Button {
+                            openURL(URL(string: "https://apps.apple.com/account/subscriptions")!)
+                        } label: {
+                            Label("Manage Subscription", systemImage: "creditcard")
+                        }
+                    } else {
+                        Button {
+                            showingPaywall = true
+                        } label: {
+                            Label("See What Pro Unlocks", systemImage: "sparkles")
                         }
                     }
+                    Button {
+                        isRestoring = true
+                        Task { @MainActor in
+                            await pro.restore()
+                            isRestoring = false
+                        }
+                    } label: {
+                        if isRestoring {
+                            HStack {
+                                Label("Restoring…", systemImage: "arrow.clockwise")
+                                Spacer()
+                                ProgressView()
+                            }
+                        } else {
+                            Label("Restore Purchases", systemImage: "arrow.clockwise")
+                        }
+                    }
+                    .disabled(isRestoring)
                 } header: {
                     Text("ToneAmp Pro")
                 } footer: {
-                    Text("Pro unlocks the AI tone engine — Identify Tones and Adapt to My Gear. Manage or cancel your subscription in the Settings app → your Apple ID → Subscriptions.")
+                    Text("Pro unlocks the AI tone engine — Identify Tones and Adapt to My Gear.")
+                }
+
+                Section {
+                    Button {
+                        moderation.unhideAll()
+                    } label: {
+                        Label(
+                            hiddenCount == 0
+                                ? "No Hidden Tones or Blocked Authors"
+                                : "Restore Hidden & Blocked (\(hiddenCount))",
+                            systemImage: "eye"
+                        )
+                    }
+                    .disabled(hiddenCount == 0)
+                } header: {
+                    Text("Community")
+                } footer: {
+                    Text("Tones you've hidden and authors you've blocked come back after restoring.")
+                }
+
+                Section {
+                    Button {
+                        openURL(URL(string: "mailto:s.aybars.yildiz@gmail.com?subject=ToneAmp%20Feedback")!)
+                    } label: {
+                        Label("Contact & Feedback", systemImage: "envelope")
+                    }
+                    Button {
+                        openURL(supportURL)
+                    } label: {
+                        Label("Support", systemImage: "questionmark.circle")
+                    }
+                    Button {
+                        openURL(privacyURL)
+                    } label: {
+                        Label("Privacy Policy", systemImage: "hand.raised")
+                    }
+                    Button {
+                        openURL(URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                    } label: {
+                        Label("Terms of Use", systemImage: "doc.text")
+                    }
+                } header: {
+                    Text("Help")
                 }
 
                 Section {
                     LabeledContent("Version", value: "1.0")
-                    Button {
-                        dismiss()
-                        session.replayOnboarding()
-                    } label: {
-                        Label("Replay Onboarding", systemImage: "arrow.counterclockwise")
-                    }
                 } header: {
                     Text("About")
                 } footer: {
@@ -110,6 +165,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showingSignIn) {
                 SignInSheet()
+            }
+            .fullScreenCover(isPresented: $showingPaywall) {
+                ProPaywallView()
             }
             .confirmationDialog(
                 "Sign out of ToneAmp?",

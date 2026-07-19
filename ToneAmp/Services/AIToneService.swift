@@ -69,7 +69,7 @@ enum AIToneError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingAPIKey:
-            return "Add your Anthropic API key in Settings → ToneAmp Pro to identify tones."
+            return "The tone engine isn't configured in this build. Please update ToneAmp."
         case .httpError(let code, let message):
             return "Tone engine error (\(code)): \(message)"
         case .malformedResponse(let detail):
