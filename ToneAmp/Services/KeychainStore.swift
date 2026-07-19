@@ -5,6 +5,7 @@ import Security
 /// Generic-password items scoped to the app's service identifier.
 enum KeychainStore {
     static let anthropicAPIKeyAccount = "anthropic-api-key"
+    static let appleUserIDAccount = "apple-user-id"
     private static let service = "com.netnucleus.toneamp"
 
     static var hasAPIKey: Bool {

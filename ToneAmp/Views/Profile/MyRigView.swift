@@ -156,8 +156,17 @@ struct MyRigView: View {
     private var effectsCard: some View {
         VStack(alignment: .leading, spacing: 0) {
             if fxTokens.isEmpty {
-                Button {
-                    pickerCategory = .pedal
+                Menu {
+                    Button {
+                        pickerCategory = .pedal
+                    } label: {
+                        Label("Add Pedal", systemImage: "bolt.fill")
+                    }
+                    Button {
+                        pickerCategory = .multiFX
+                    } label: {
+                        Label("Add Multi-FX / Modeler", systemImage: "square.grid.3x3.fill")
+                    }
                 } label: {
                     HStack(spacing: 12) {
                         SlotIcon(symbol: "bolt.fill", isFilled: false)
@@ -172,7 +181,6 @@ struct MyRigView: View {
                     .padding(.vertical, 12)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
             } else {
                 ForEach(Array(fxTokens.enumerated()), id: \.element) { index, token in
                     HStack(spacing: 12) {
@@ -312,9 +320,11 @@ private struct RigSlotCard: View {
 }
 
 /// The cable between slots — a signal dot travels it when the chain is live.
+/// The dot animates on a TimelineView clock rather than a repeatForever
+/// animation: repeatForever + offset replays against stale positions when
+/// the layout shifts (scrolling made the dot wander sideways).
 private struct SignalConnector: View {
     let isLive: Bool
-    @State private var pulse = false
 
     var body: some View {
         ZStack {
@@ -322,17 +332,18 @@ private struct SignalConnector: View {
                 .fill(Color(.systemGray4))
                 .frame(width: 2, height: 26)
             if isLive {
-                Circle()
-                    .fill(Color.accentColor)
-                    .frame(width: 6, height: 6)
-                    .offset(y: pulse ? 11 : -11)
-                    .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: false), value: pulse)
+                TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { context in
+                    let phase = context.date.timeIntervalSinceReferenceDate
+                        .truncatingRemainder(dividingBy: 1.1) / 1.1
+                    Circle()
+                        .fill(Color.accentColor)
+                        .frame(width: 6, height: 6)
+                        .offset(y: -11 + 22 * phase)
+                        .opacity(phase < 0.08 ? phase / 0.08 : (phase > 0.92 ? (1 - phase) / 0.08 : 1))
+                }
             }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 26)
-        .onAppear {
-            pulse = true
-        }
     }
 }

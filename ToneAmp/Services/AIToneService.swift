@@ -161,6 +161,9 @@ enum AIToneService {
             if let token = secretsValue("ToneProxyToken") {
                 request.setValue(token, forHTTPHeaderField: "x-toneamp-token")
             }
+            // Stable identity for the proxy's per-user rate limiting.
+            let userID = KeychainStore.read(forKey: KeychainStore.appleUserIDAccount) ?? "anonymous"
+            request.setValue(userID, forHTTPHeaderField: "x-toneamp-user")
         } else {
             guard let apiKey = resolvedAPIKey else {
                 throw AIToneError.missingAPIKey
@@ -382,8 +385,11 @@ enum AIToneService {
     relevant knobs (e.g. a wah), use an empty controls array and explain usage in its note.
     - Name real amps, guitars, and pedals used on the recording where known.
     - Keep notes practical and concise: tuning, technique, what makes the tone work.
-    - If the song has no meaningful guitar part or you don't know it, set found to false \
-    with empty tones.
+    - Set found to false ONLY when the music genuinely has no guitar at all (solo piano, \
+    a cappella, pure electronic). NEVER because you don't know the specific song: if the \
+    exact recording is unfamiliar, infer a credible tone from the artist's overall sound, \
+    genre, era, and scene — and open the notes with "Based on \
+    the artist's typical sound" so the player knows it's inferred.
     - Knob values must always be realistic, playable settings. A tone whose gain, bass, \
     mid, and treble are all 0 is INVALID — never return one. Amp, guitar, and pickup \
     fields must never be empty strings.

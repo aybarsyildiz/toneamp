@@ -9,6 +9,8 @@
 const UPSTREAM = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-opus-4-8";
 const MAX_TOKENS_CAP = 8000;
+const DAILY_LIMIT = 25; // generations per user per UTC day
+const GLOBAL_DAILY_LIMIT = 2000; // whole-app runaway-spend guard
 
 export default {
   async fetch(request, env) {
@@ -21,6 +23,32 @@ export default {
       if (request.headers.get("x-toneamp-token") !== env.APP_TOKEN) {
         return json(401, { error: { message: "Unauthorized" } });
       }
+    }
+
+    // Rate limiting via KV (skipped when the USAGE binding isn't set up).
+    if (env.USAGE) {
+      const user = request.headers.get("x-toneamp-user") || "anonymous";
+      const day = new Date().toISOString().slice(0, 10);
+      const userKey = `u:${user}:${day}`;
+      const globalKey = `g:${day}`;
+      const [userCount, globalCount] = await Promise.all([
+        env.USAGE.get(userKey),
+        env.USAGE.get(globalKey),
+      ]);
+      if (parseInt(globalCount ?? "0", 10) >= GLOBAL_DAILY_LIMIT) {
+        return json(429, {
+          error: { message: "The tone engine is at capacity today — try again tomorrow." },
+        });
+      }
+      if (parseInt(userCount ?? "0", 10) >= DAILY_LIMIT) {
+        return json(429, {
+          error: { message: `Daily limit reached (${DAILY_LIMIT} AI generations). It resets at midnight UTC.` },
+        });
+      }
+      await Promise.all([
+        env.USAGE.put(userKey, String(parseInt(userCount ?? "0", 10) + 1), { expirationTtl: 172800 }),
+        env.USAGE.put(globalKey, String(parseInt(globalCount ?? "0", 10) + 1), { expirationTtl: 172800 }),
+      ]);
     }
 
     let body;

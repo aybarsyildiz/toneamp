@@ -7,7 +7,6 @@ import Observation
 final class SessionStore {
     private static let onboardedKey = "toneamp.hasOnboarded"
     private static let displayNameKey = "toneamp.displayName"
-    private static let appleUserIDAccount = "apple-user-id"
     private static let proKey = "toneamp.isPro"
 
     private(set) var hasOnboarded: Bool
@@ -18,7 +17,7 @@ final class SessionStore {
 
     init() {
         hasOnboarded = UserDefaults.standard.bool(forKey: Self.onboardedKey)
-        userID = KeychainStore.read(forKey: Self.appleUserIDAccount)
+        userID = KeychainStore.read(forKey: KeychainStore.appleUserIDAccount)
         displayName = UserDefaults.standard.string(forKey: Self.displayNameKey) ?? ""
         isPro = UserDefaults.standard.bool(forKey: Self.proKey)
     }
@@ -48,7 +47,7 @@ final class SessionStore {
 
     func completeSignIn(userID: String, displayName: String) {
         self.userID = userID
-        KeychainStore.save(userID, forKey: Self.appleUserIDAccount)
+        KeychainStore.save(userID, forKey: KeychainStore.appleUserIDAccount)
         // Apple only provides the name on first authorization — keep any
         // previously stored name when the credential comes back empty.
         if !displayName.isEmpty {
@@ -59,6 +58,6 @@ final class SessionStore {
 
     func signOut() {
         userID = nil
-        KeychainStore.delete(forKey: Self.appleUserIDAccount)
+        KeychainStore.delete(forKey: KeychainStore.appleUserIDAccount)
     }
 }
