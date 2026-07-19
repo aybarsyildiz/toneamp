@@ -409,6 +409,9 @@ enum AIToneService {
     - When a player's rig is mentioned, it exists ONLY to write rigTips. Unless the \
     task is explicitly to adapt a tone onto the player's rig, the amp, settings, \
     guitar, pickup, and pedals fields always describe the ORIGINAL RECORDING.
+    - Every rigTips entry must be a complete instructional sentence naming the \
+    player's gear. NEVER pad the array with placeholder tokens, key-like strings, \
+    or empty strings — with nothing rig-specific to say, return an empty array.
     """
 
     private static let schemaJSON = """
@@ -537,9 +540,9 @@ enum AIToneService {
 
             func toGeneratedTone() -> AIGeneratedTone {
                 AIGeneratedTone(
-                    name: name,
+                    name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                     character: ToneCharacter(rawValue: character) ?? .crunch,
-                    ampName: amp,
+                    ampName: amp.trimmingCharacters(in: .whitespacesAndNewlines),
                     settings: AmpSettings(
                         gain: settings.gain,
                         bass: settings.bass,
@@ -548,25 +551,47 @@ enum AIToneService {
                         presence: settings.presence,
                         reverb: settings.reverb
                     ),
-                    guitar: guitar,
-                    pickup: pickup,
-                    pedals: pedals.map { pedal in
-                        EffectPedal(
-                            name: pedal.name,
-                            type: EffectType(rawValue: pedal.type) ?? .overdrive,
-                            controls: pedal.controls.map {
-                                PedalControl(name: $0.name, value: $0.value)
-                            },
-                            note: pedal.note
-                        )
-                    },
-                    notes: notes,
-                    rigTips: rigTips ?? []
+                    guitar: guitar.trimmingCharacters(in: .whitespacesAndNewlines),
+                    pickup: pickup.trimmingCharacters(in: .whitespacesAndNewlines),
+                    pedals: pedals
+                        .filter { !$0.name.trimmingCharacters(in: .whitespaces).isEmpty }
+                        .map { pedal in
+                            EffectPedal(
+                                name: pedal.name,
+                                type: EffectType(rawValue: pedal.type) ?? .overdrive,
+                                controls: pedal.controls.filter {
+                                    !$0.name.trimmingCharacters(in: .whitespaces).isEmpty
+                                }.map {
+                                    PedalControl(name: $0.name, value: $0.value)
+                                },
+                                note: pedal.note
+                            )
+                        },
+                    notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
+                    rigTips: (rigTips ?? []).cleanedTips
                 )
             }
         }
 
         let found: Bool
         let tones: [GTone]
+    }
+}
+
+extension Array where Element == String {
+    /// Schema-forced arrays occasionally get padded with junk — placeholder
+    /// tokens like "settings_note_ignore" or empty strings. A real tip is a
+    /// sentence: keep only deduped entries with actual words.
+    var cleanedTips: [String] {
+        var seen = Set<String>()
+        return compactMap { tip in
+            let trimmed = tip.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard trimmed.count >= 8,
+                  trimmed.contains(" "),
+                  seen.insert(trimmed).inserted else {
+                return nil
+            }
+            return trimmed
+        }
     }
 }

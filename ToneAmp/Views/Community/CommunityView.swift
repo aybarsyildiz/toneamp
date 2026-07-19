@@ -3,11 +3,19 @@ import SwiftUI
 /// Community home: search Apple's song catalog, or browse top-rated and
 /// recent tones published by other players.
 struct CommunityView: View {
+    private enum CommunitySort: String, CaseIterable {
+        case recent = "Recently Active"
+        case topRated = "Top Rated"
+        case mostTones = "Most Tones"
+    }
+
     @State private var searchText = ""
     @State private var searchResults: [CatalogSong] = []
     @State private var recentTones: [CommunityTone] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var sort: CommunitySort = .recent
+    @State private var characterFilter: ToneCharacter?
 
     private var isSearching: Bool {
         !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -19,14 +27,25 @@ struct CommunityView: View {
         recentTones.groupedBySong()
     }
 
-    private var topSongs: [CommunitySongSummary] {
-        songSummaries
-            .filter { $0.bestAverage != nil }
-            .sorted { ($0.bestAverage ?? 0) > ($1.bestAverage ?? 0) }
+    private var filteredSongs: [CommunitySongSummary] {
+        var result = songSummaries
+        if let characterFilter {
+            result = result.filter { $0.characters.contains(characterFilter) }
+        }
+        switch sort {
+        case .recent:
+            return result.sorted { $0.latest > $1.latest }
+        case .topRated:
+            return result.sorted {
+                ($0.bestAverage ?? 0, $0.ratingCount) > ($1.bestAverage ?? 0, $1.ratingCount)
+            }
+        case .mostTones:
+            return result.sorted { ($0.toneCount, $0.latest) > ($1.toneCount, $1.latest) }
+        }
     }
 
-    private var recentSongs: [CommunitySongSummary] {
-        songSummaries.sorted { $0.latest > $1.latest }
+    private var isFilterActive: Bool {
+        sort != .recent || characterFilter != nil
     }
 
     var body: some View {
@@ -40,6 +59,30 @@ struct CommunityView: View {
             }
             .navigationTitle("Community")
             .searchable(text: $searchText, prompt: "Search any song")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Picker("Sort", selection: $sort) {
+                            ForEach(CommunitySort.allCases, id: \.self) { option in
+                                Text(option.rawValue).tag(option)
+                            }
+                        }
+                        Picker("Character", selection: $characterFilter) {
+                            Text("Any Character").tag(ToneCharacter?.none)
+                            ForEach(ToneCharacter.allCases, id: \.self) { character in
+                                Text(character.rawValue).tag(Optional(character))
+                            }
+                        }
+                    } label: {
+                        Label(
+                            "Filter",
+                            systemImage: isFilterActive
+                                ? "line.3.horizontal.decrease.circle.fill"
+                                : "line.3.horizontal.decrease.circle"
+                        )
+                    }
+                }
+            }
             .navigationDestination(for: CatalogSong.self) { song in
                 CommunitySongView(song: song)
             }
@@ -97,17 +140,8 @@ struct CommunityView: View {
             }
         } else {
             List {
-                if !topSongs.isEmpty {
-                    Section("Top Rated") {
-                        ForEach(topSongs.prefix(10)) { summary in
-                            NavigationLink(value: summary.song) {
-                                CommunitySongRow(summary: summary)
-                            }
-                        }
-                    }
-                }
-                Section("Recently Active") {
-                    ForEach(recentSongs) { summary in
+                Section(sectionTitle) {
+                    ForEach(filteredSongs) { summary in
                         NavigationLink(value: summary.song) {
                             CommunitySongRow(summary: summary)
                         }
@@ -115,7 +149,28 @@ struct CommunityView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            .overlay {
+                if filteredSongs.isEmpty {
+                    ContentUnavailableView {
+                        Label("Nothing Matches", systemImage: "line.3.horizontal.decrease.circle")
+                    } description: {
+                        Text("No songs with a \(characterFilter?.rawValue ?? "") tone yet — clear the filter or publish one.")
+                    } actions: {
+                        Button("Clear Filter") {
+                            characterFilter = nil
+                            sort = .recent
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private var sectionTitle: String {
+        if let characterFilter {
+            return "\(sort.rawValue) · \(characterFilter.rawValue)"
+        }
+        return sort.rawValue
     }
 
     @MainActor

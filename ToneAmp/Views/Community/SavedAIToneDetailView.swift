@@ -75,9 +75,9 @@ struct SavedAIToneDetailView: View {
                 }
             }
 
-            if !tone.rigTips.isEmpty {
+            if !tone.rigTips.cleanedTips.isEmpty {
                 Section {
-                    ForEach(tone.rigTips, id: \.self) { tip in
+                    ForEach(tone.rigTips.cleanedTips, id: \.self) { tip in
                         HStack(alignment: .top, spacing: 10) {
                             Image(systemName: "person.crop.circle.badge.checkmark")
                                 .foregroundStyle(.tint)

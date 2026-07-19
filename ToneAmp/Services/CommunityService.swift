@@ -245,6 +245,7 @@ struct CommunitySongSummary: Identifiable, Hashable {
     let bestAverage: Double?
     let ratingCount: Int
     let latest: Date
+    let characters: Set<ToneCharacter>
 
     var id: Int { song.trackId }
 }
@@ -263,7 +264,8 @@ extension Array where Element == CommunityTone {
                 toneCount: tones.count,
                 bestAverage: tones.compactMap { $0.averageRating }.max(),
                 ratingCount: tones.reduce(0) { $0 + $1.ratingCount },
-                latest: tones.map { $0.createdAt }.max() ?? first.createdAt
+                latest: tones.map { $0.createdAt }.max() ?? first.createdAt,
+                characters: Set(tones.map { $0.character })
             )
         }
     }
