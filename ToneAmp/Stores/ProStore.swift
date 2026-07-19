@@ -7,7 +7,9 @@ import StoreKit
 /// can sell; until products load, the paywall shows fallback prices.
 @Observable
 final class ProStore {
-    static let yearlyID = "com.netnucleus.toneamp.pro.yearly"
+    // "pro.yearly" is dead — its ASC record corrupted pre-launch and was
+    // replaced by "pro.annual" (same price, same trial). Never reuse the old ID.
+    static let yearlyID = "com.netnucleus.toneamp.pro.annual"
     static let monthlyID = "com.netnucleus.toneamp.pro.monthly"
     static let allProductIDs = [yearlyID, monthlyID]
 

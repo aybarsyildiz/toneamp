@@ -71,7 +71,7 @@ Create ONE subscription group "ToneAmp Pro", with TWO products:
 
 | Field | Yearly | Monthly |
 |---|---|---|
-| Product ID | `com.netnucleus.toneamp.pro.yearly` | `com.netnucleus.toneamp.pro.monthly` |
+| Product ID | `com.netnucleus.toneamp.pro.annual` | `com.netnucleus.toneamp.pro.monthly` |
 | Reference name | Pro Yearly | Pro Monthly |
 | Duration | 1 year | 1 month |
 | Price | $29.99 tier | $4.99 tier |
