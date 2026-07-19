@@ -3,7 +3,7 @@
 
 Drop raw iPhone screenshots into appstore/raw/ named 01.png, 02.png, …
 (the order below), run this script, and upload appstore/framed/*.png
-(1320x2868, the required 6.9-inch size) straight to App Store Connect.
+(1284x2778, the 6.5-inch size App Store Connect asks for) straight to App Store Connect.
 
     python3 tools/frame_screenshots.py
 """
@@ -11,7 +11,7 @@ import os
 import sys
 from PIL import Image, ImageDraw, ImageFont
 
-W, H = 1320, 2868
+W, H = 1284, 2778
 BG = (16, 18, 22)          # deep charcoal — flat, no gradients
 FG = (245, 246, 248)
 ACCENT = (255, 149, 0)     # matches the app accent
