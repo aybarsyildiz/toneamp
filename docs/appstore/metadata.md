@@ -84,8 +84,10 @@ Product IDs must match EXACTLY — the app hardcodes them in `ProStore.swift`.
 ## App Review notes (paste into "Notes" box)
 
 ```
-- Browsing the full tone library needs no account. Sign in with Apple is only
-  required to publish or rate community tones.
+- Browsing the full tone library and community needs no account. Sign in with
+  Apple (any Apple ID works — no demo credentials needed) is required for
+  interactive actions: favoriting, song identification, publishing, rating,
+  and the AI features.
 - Community content moderation: every published tone has a ••• menu with
   Report (spam / misleading / offensive), Hide This Tone, and Block Author.
   Reports are reviewed within 24 hours via CloudKit.

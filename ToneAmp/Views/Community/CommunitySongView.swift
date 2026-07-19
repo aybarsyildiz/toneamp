@@ -102,6 +102,7 @@ struct CommunitySongView: View {
             Section {
                 VStack(spacing: 10) {
                     Button {
+                        guard session.requireSignIn() else { return }
                         showingEditor = true
                     } label: {
                         Label("Add Your Tone", systemImage: "plus.circle.fill")
@@ -110,6 +111,7 @@ struct CommunitySongView: View {
                     .buttonStyle(.borderedProminent)
 
                     Button {
+                        guard session.requireSignIn() else { return }
                         if session.isPro {
                             showingAIFinder = true
                         } else {

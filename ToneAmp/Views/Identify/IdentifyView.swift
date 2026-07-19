@@ -3,6 +3,7 @@ import UIKit
 
 struct IdentifyView: View {
     @Environment(LibraryStore.self) private var library
+    @Environment(SessionStore.self) private var session
     @Environment(\.openURL) private var openURL
     @State private var matcher = ShazamMatcher()
     @State private var recents = RecentMatchesStore()
@@ -96,6 +97,7 @@ struct IdentifyView: View {
                     PulsingRings()
                 }
                 Button {
+                    guard session.requireSignIn() else { return }
                     matcher.toggle(library: library)
                 } label: {
                     Image(systemName: "shazam.logo.fill")

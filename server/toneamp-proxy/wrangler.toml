@@ -6,6 +6,6 @@ compatibility_date = "2026-01-01"
 #   wrangler kv namespace create USAGE
 # then paste the printed id below and uncomment. The Worker runs fine
 # without it (rate limiting is simply skipped).
-# [[kv_namespaces]]
-# binding = "USAGE"
-# id = "PASTE-ID-HERE"
+[[kv_namespaces]]
+binding = "USAGE"
+id = "8a379eabbf454e67814bcb381b6a3c12"

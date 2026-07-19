@@ -31,6 +31,20 @@ final class SessionStore {
         userID != nil
     }
 
+    /// Presents the app-wide sign-in sheet (attached in RootView).
+    var showingSignInGate = false
+
+    /// Soft gate for interactive actions: browsing is open, acting needs an
+    /// account. Returns true when signed in; otherwise presents the sign-in
+    /// sheet and returns false so the caller can bail.
+    func requireSignIn() -> Bool {
+        if isSignedIn {
+            return true
+        }
+        showingSignInGate = true
+        return false
+    }
+
     var authorName: String {
         displayName.isEmpty ? "Guitarist" : displayName
     }

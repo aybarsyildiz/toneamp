@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SongDetailView: View {
     @Environment(FavoritesStore.self) private var favorites
+    @Environment(SessionStore.self) private var session
     let song: Song
 
     @State private var favoriteToggleCount = 0
@@ -61,6 +62,7 @@ struct SongDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    guard session.requireSignIn() else { return }
                     favorites.toggle(song)
                     favoriteToggleCount += 1
                 } label: {

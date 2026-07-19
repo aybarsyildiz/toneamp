@@ -185,6 +185,7 @@ struct AdaptToMyGearButton: View {
 
     var body: some View {
         Button {
+            guard session.requireSignIn() else { return }
             if !session.isPro {
                 showingProTeaser = true
             } else if !rigStore.rig.isConfigured {

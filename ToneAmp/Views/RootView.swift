@@ -18,7 +18,10 @@ struct RootView: View {
 }
 
 struct MainTabView: View {
+    @Environment(SessionStore.self) private var session
+
     var body: some View {
+        @Bindable var session = session
         TabView {
             LibraryView()
                 .tabItem {
@@ -40,6 +43,9 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle")
                 }
+        }
+        .sheet(isPresented: $session.showingSignInGate) {
+            SignInSheet()
         }
     }
 }

@@ -563,7 +563,7 @@ struct SignInSheet: View {
                 .padding(.top, 40)
             Text("Sign In to Continue")
                 .font(.title2.bold())
-            Text("Publishing and rating tones needs an account, so every tone has a real author behind it.")
+            Text("Browsing is open to everyone. Favorites, song identification, publishing, rating, and the AI tone engine are tied to your account — so your library follows you and every tone has a real author.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

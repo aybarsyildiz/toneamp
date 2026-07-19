@@ -415,10 +415,12 @@ struct ToneOfTheDayCard: View {
 
 struct FavoriteSwipeButton: View {
     @Environment(FavoritesStore.self) private var favorites
+    @Environment(SessionStore.self) private var session
     let song: Song
 
     var body: some View {
         Button {
+            guard session.requireSignIn() else { return }
             favorites.toggle(song)
         } label: {
             if favorites.isFavorite(song) {
