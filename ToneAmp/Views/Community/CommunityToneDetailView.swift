@@ -46,6 +46,13 @@ struct CommunityToneDetailView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                if !tone.authorID.isEmpty {
+                    NavigationLink {
+                        AuthorProfileView(authorID: tone.authorID, authorName: tone.authorName)
+                    } label: {
+                        Label("View \(tone.authorName)'s Profile", systemImage: "person.crop.circle")
+                    }
+                }
             }
 
             Section("Rating") {

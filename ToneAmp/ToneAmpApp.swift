@@ -9,6 +9,7 @@ struct ToneAmpApp: App {
     @State private var aiTones = AIToneCacheStore()
     @State private var pro = ProStore()
     @State private var moderation = ModerationStore()
+    @State private var avatar = AvatarStore()
 
     var body: some Scene {
         WindowGroup {
@@ -20,6 +21,7 @@ struct ToneAmpApp: App {
                 .environment(aiTones)
                 .environment(pro)
                 .environment(moderation)
+                .environment(avatar)
                 .task {
                     pro.onEntitlementChange = { active in
                         session.setPro(active)

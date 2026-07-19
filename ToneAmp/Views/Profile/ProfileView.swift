@@ -1,4 +1,6 @@
+import PhotosUI
 import SwiftUI
+import UIKit
 
 struct ProfileView: View {
     @Environment(SessionStore.self) private var session
@@ -6,12 +8,15 @@ struct ProfileView: View {
     @Environment(LibraryStore.self) private var library
     @Environment(RigStore.self) private var rigStore
     @Environment(AIToneCacheStore.self) private var aiCache
+    @Environment(AvatarStore.self) private var avatarStore
 
     @State private var myTones: [CommunityTone] = []
     @State private var isLoadingTones = false
     @State private var showingRigEditor = false
     @State private var showingSettings = false
     @State private var showingSignIn = false
+    @State private var showingPhotoPicker = false
+    @State private var photoItem: PhotosPickerItem?
 
     var body: some View {
         NavigationStack {
@@ -140,6 +145,16 @@ struct ProfileView: View {
             }
             .listStyle(.insetGrouped)
             .navigationTitle("Profile")
+            .photosPicker(isPresented: $showingPhotoPicker, selection: $photoItem, matching: .images)
+            .onChange(of: photoItem) { _, newItem in
+                guard let newItem else { return }
+                Task { @MainActor in
+                    if let data = try? await newItem.loadTransferable(type: Data.self) {
+                        avatarStore.set(data, session: session)
+                    }
+                    photoItem = nil
+                }
+            }
             .navigationDestination(for: CommunityTone.self) { tone in
                 CommunityToneDetailView(tone: tone)
             }
@@ -166,21 +181,45 @@ struct ProfileView: View {
 
     private var header: some View {
         VStack(spacing: 12) {
-            ZStack {
-                Circle()
-                    .fill(Color.accentColor)
-                    .frame(width: 92, height: 92)
+            Menu {
+                Button {
+                    guard session.requireSignIn() else { return }
+                    showingPhotoPicker = true
+                } label: {
+                    Label("Choose From Photos", systemImage: "photo.on.rectangle")
+                }
+                Button {
+                    guard session.requireSignIn() else { return }
+                    if let pasted = UIPasteboard.general.image,
+                       let data = pasted.pngData() {
+                        avatarStore.set(data, session: session)
+                    }
+                } label: {
+                    Label("Paste Copied Image", systemImage: "doc.on.clipboard")
+                }
+                if avatarStore.imageData != nil {
+                    Button(role: .destructive) {
+                        avatarStore.clear(session: session)
+                    } label: {
+                        Label("Remove Photo", systemImage: "trash")
+                    }
+                }
+            } label: {
+                ZStack(alignment: .bottomTrailing) {
+                    AvatarCircleView(
+                        image: avatarStore.image,
+                        name: session.isSignedIn ? session.displayName : "",
+                        size: 92
+                    )
                     .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
-                if session.isSignedIn && !session.displayName.isEmpty {
-                    Text(initials)
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-                } else {
-                    Image(systemName: "guitars.fill")
-                        .font(.system(size: 36))
-                        .foregroundStyle(.white)
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.title3)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, Color.accentColor)
+                        .background(Circle().fill(Color(.systemBackground)))
                 }
             }
+            .buttonStyle(.plain)
             VStack(spacing: 4) {
                 Text(session.isSignedIn ? session.authorName : "Guest Guitarist")
                     .font(.title3.bold())

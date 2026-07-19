@@ -178,15 +178,6 @@ struct ProPaywallView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(pro.products.isEmpty || pro.isPurchasing)
                 .padding(.horizontal, 20)
-                #if DEBUG
-                if pro.products.isEmpty {
-                    Button("Enable Pro Preview (dev build only)") {
-                        session.setPro(true)
-                        dismiss()
-                    }
-                    .font(.caption)
-                }
-                #endif
                 HStack(spacing: 18) {
                     Button("Restore Purchases") {
                         Task {

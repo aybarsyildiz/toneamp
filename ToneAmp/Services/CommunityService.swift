@@ -172,6 +172,42 @@ enum CommunityService {
 
     /// One rating per user per tone: the rating record name is derived from
     /// both IDs, so re-rating overwrites instead of duplicating.
+    // MARK: - Author profiles
+
+    /// One public profile record per author (deterministic record name, so
+    /// updates overwrite): display name + avatar shown on author pages.
+    static func upsertProfile(authorID: String, displayName: String, avatarData: Data?) async throws {
+        try await ensureAccount()
+        let recordID = CKRecord.ID(recordName: "author|\(authorID)")
+        let record: CKRecord
+        if let existing = try? await database.record(for: recordID) {
+            record = existing
+        } else {
+            record = CKRecord(recordType: "AuthorProfile", recordID: recordID)
+        }
+        record["authorID"] = authorID as CKRecordValue
+        record["displayName"] = displayName as CKRecordValue
+        if let avatarData {
+            let stagingURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent("avatar-upload-\(authorID.hashValue).png")
+            try avatarData.write(to: stagingURL)
+            record["avatar"] = CKAsset(fileURL: stagingURL)
+        }
+        _ = try await database.save(record)
+    }
+
+    static func profile(authorID: String) async -> (displayName: String?, avatarData: Data?) {
+        let recordID = CKRecord.ID(recordName: "author|\(authorID)")
+        guard let record = try? await database.record(for: recordID) else {
+            return (nil, nil)
+        }
+        var avatarData: Data?
+        if let asset = record["avatar"] as? CKAsset, let fileURL = asset.fileURL {
+            avatarData = try? Data(contentsOf: fileURL)
+        }
+        return (record["displayName"] as? String, avatarData)
+    }
+
     /// App Review requirement for user-generated content: a report lands
     /// as a ToneReport record the developer reviews in CloudKit Console.
     static func report(toneID: String, toneName: String, reason: String, reporterID: String) async throws {

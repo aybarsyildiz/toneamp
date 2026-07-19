@@ -44,14 +44,12 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    #if DEBUG
-                    Toggle(isOn: Binding(
-                        get: { session.isPro },
-                        set: { session.setPro($0) }
-                    )) {
-                        Label("Pro Preview", systemImage: "wand.and.stars")
+                    LabeledContent {
+                        Text(session.isPro ? "Active" : "Not subscribed")
+                            .foregroundStyle(session.isPro ? .green : .secondary)
+                    } label: {
+                        Label("ToneAmp Pro", systemImage: "wand.and.stars")
                     }
-                    #endif
                     if session.isPro {
                         if hasStoredKey {
                             HStack {
@@ -84,7 +82,7 @@ struct SettingsView: View {
                 } header: {
                     Text("ToneAmp Pro")
                 } footer: {
-                    Text("Pro unlocks Identify Tones — the AI tone engine that builds a tone sheet for any song. Preview toggle until subscriptions launch; the engine currently uses your own Anthropic API key, stored in the Keychain.")
+                    Text("Pro unlocks the AI tone engine — Identify Tones and Adapt to My Gear. Manage or cancel your subscription in the Settings app → your Apple ID → Subscriptions.")
                 }
 
                 Section {

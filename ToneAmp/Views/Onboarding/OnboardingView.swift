@@ -553,6 +553,7 @@ private struct FeatureRow: View {
 /// or rate.
 struct SignInSheet: View {
     @Environment(SessionStore.self) private var session
+    @Environment(AvatarStore.self) private var avatarStore
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -581,6 +582,7 @@ struct SignInSheet: View {
                     .compactMap { $0 }
                     .joined(separator: " ")
                     session.completeSignIn(userID: credential.user, displayName: name)
+                    avatarStore.syncToCommunity(session: session)
                     dismiss()
                 }
             }
