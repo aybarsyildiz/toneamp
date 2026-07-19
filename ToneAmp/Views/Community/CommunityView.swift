@@ -9,6 +9,8 @@ struct CommunityView: View {
         case mostTones = "Most Tones"
     }
 
+    @Environment(ModerationStore.self) private var moderation
+
     @State private var searchText = ""
     @State private var searchResults: [CatalogSong] = []
     @State private var recentTones: [CommunityTone] = []
@@ -24,7 +26,7 @@ struct CommunityView: View {
     /// Browse is song-level: one row per song no matter how many tones it
     /// has — the song page ranks the individual tones.
     private var songSummaries: [CommunitySongSummary] {
-        recentTones.groupedBySong()
+        recentTones.filter { !moderation.isHidden($0) }.groupedBySong()
     }
 
     private var filteredSongs: [CommunitySongSummary] {

@@ -21,6 +21,7 @@ struct CommunityTone: Identifiable, Hashable {
     let pedals: [EffectPedal]
     let notes: String
     let authorName: String
+    let authorID: String
     let ratingCount: Int
     let ratingTotal: Int
     let createdAt: Date
@@ -171,6 +172,17 @@ enum CommunityService {
 
     /// One rating per user per tone: the rating record name is derived from
     /// both IDs, so re-rating overwrites instead of duplicating.
+    /// App Review requirement for user-generated content: a report lands
+    /// as a ToneReport record the developer reviews in CloudKit Console.
+    static func report(toneID: String, toneName: String, reason: String, reporterID: String) async throws {
+        let record = CKRecord(recordType: "ToneReport")
+        record["toneID"] = toneID as CKRecordValue
+        record["toneName"] = toneName as CKRecordValue
+        record["reason"] = reason as CKRecordValue
+        record["reporterID"] = reporterID as CKRecordValue
+        _ = try await database.save(record)
+    }
+
     static func rate(toneID: String, stars: Int, userID: String) async throws {
         try await ensureAccount()
         let clamped = max(1, min(stars, 5))
@@ -314,6 +326,7 @@ extension CommunityTone {
             pedals: pedals,
             notes: record["notes"] as? String ?? "",
             authorName: record["authorName"] as? String ?? "Guitarist",
+            authorID: record["authorID"] as? String ?? "",
             ratingCount: record["ratingCount"] as? Int ?? 0,
             ratingTotal: record["ratingTotal"] as? Int ?? 0,
             createdAt: record.creationDate ?? Date()

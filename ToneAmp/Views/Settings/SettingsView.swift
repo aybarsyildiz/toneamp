@@ -44,12 +44,14 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    #if DEBUG
                     Toggle(isOn: Binding(
                         get: { session.isPro },
                         set: { session.setPro($0) }
                     )) {
                         Label("Pro Preview", systemImage: "wand.and.stars")
                     }
+                    #endif
                     if session.isPro {
                         if hasStoredKey {
                             HStack {

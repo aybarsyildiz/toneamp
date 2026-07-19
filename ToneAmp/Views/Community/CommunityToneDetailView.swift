@@ -4,6 +4,8 @@ import SwiftUI
 /// and interactive rating.
 struct CommunityToneDetailView: View {
     @Environment(SessionStore.self) private var session
+    @Environment(ModerationStore.self) private var moderation
+    @Environment(\.dismiss) private var dismiss
     let tone: CommunityTone
 
     @State private var myRating = 0
@@ -12,6 +14,8 @@ struct CommunityToneDetailView: View {
     @State private var isRating = false
     @State private var showingSignIn = false
     @State private var ratingError: String?
+    @State private var showingReportDialog = false
+    @State private var reportConfirmation: String?
 
     init(tone: CommunityTone) {
         self.tone = tone
@@ -162,6 +166,47 @@ struct CommunityToneDetailView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button {
+                        showingReportDialog = true
+                    } label: {
+                        Label("Report This Tone", systemImage: "exclamationmark.bubble")
+                    }
+                    Button(role: .destructive) {
+                        moderation.hide(toneID: tone.id)
+                        dismiss()
+                    } label: {
+                        Label("Hide This Tone", systemImage: "eye.slash")
+                    }
+                    if !tone.authorID.isEmpty {
+                        Button(role: .destructive) {
+                            moderation.block(authorID: tone.authorID)
+                            dismiss()
+                        } label: {
+                            Label("Block \(tone.authorName)", systemImage: "person.slash")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .confirmationDialog("Report This Tone", isPresented: $showingReportDialog, titleVisibility: .visible) {
+            ForEach(["Spam or junk", "Wrong or misleading", "Offensive content"], id: \.self) { reason in
+                Button(reason) {
+                    submitReport(reason: reason)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .alert("Thanks for the Report", isPresented: Binding(
+            get: { reportConfirmation != nil },
+            set: { if !$0 { reportConfirmation = nil } }
+        )) {
+            Button("OK") {}
+        } message: {
+            Text(reportConfirmation ?? "")
         }
         .sensoryFeedback(.success, trigger: myRating)
         .sheet(isPresented: $showingSignIn) {
@@ -174,6 +219,19 @@ struct CommunityToneDetailView: View {
                     myRating = stars
                 }
             }
+        }
+    }
+
+    private func submitReport(reason: String) {
+        let reporterID = session.userID ?? "anonymous"
+        Task { @MainActor in
+            try? await CommunityService.report(
+                toneID: tone.id,
+                toneName: tone.toneName,
+                reason: reason,
+                reporterID: reporterID
+            )
+            reportConfirmation = "We'll review \u{201C}\(tone.toneName)\u{201D}. You can also hide it or block the author from the ••• menu."
         }
     }
 

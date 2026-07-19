@@ -1,17 +1,27 @@
+import StoreKit
 import SwiftUI
 
 /// Full-screen Pro paywall — hero, feature list, plan selection, CTA.
-/// StoreKit products land later; until then the CTA enables the Pro
-/// preview and prices are visibly placeholders.
+/// Prices come from StoreKit once the App Store Connect products load;
+/// the static strings below are display fallbacks only.
 struct ProPaywallView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(SessionStore.self) private var session
+    @Environment(ProStore.self) private var pro
 
     private enum Plan: String, CaseIterable, Identifiable {
         case yearly
         case monthly
 
         var id: String { rawValue }
+
+        var productID: String {
+            switch self {
+            case .yearly: return ProStore.yearlyID
+            case .monthly: return ProStore.monthlyID
+            }
+        }
 
         var title: String {
             switch self {
@@ -20,7 +30,7 @@ struct ProPaywallView: View {
             }
         }
 
-        var price: String {
+        var fallbackPrice: String {
             switch self {
             case .yearly: return "$29.99 / year"
             case .monthly: return "$4.99 / month"
@@ -43,6 +53,23 @@ struct ProPaywallView: View {
     }
 
     @State private var selectedPlan: Plan = .yearly
+
+    private func price(for plan: Plan) -> String {
+        guard let product = pro.product(for: plan.productID) else {
+            return plan.fallbackPrice
+        }
+        let unit = plan == .yearly ? "year" : "month"
+        return "\(product.displayPrice) / \(unit)"
+    }
+
+    private var privacyURL: URL {
+        AIToneService.proxyURL?.appendingPathComponent("privacy")
+            ?? URL(string: "https://github.com/aybarsyildiz/toneamp")!
+    }
+
+    private var termsURL: URL {
+        URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -117,7 +144,9 @@ struct ProPaywallView: View {
                     }
                     .padding(.horizontal, 20)
 
-                    Text("Subscriptions aren't live yet — prices are placeholders, and the button below enables the free Pro preview.")
+                    Text(pro.products.isEmpty
+                         ? "Connecting to the App Store…"
+                         : "Auto-renews until cancelled in Settings → Apple ID → Subscriptions.")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
                         .multilineTextAlignment(.center)
@@ -128,20 +157,51 @@ struct ProPaywallView: View {
 
             VStack(spacing: 10) {
                 Button {
-                    session.setPro(true)
-                    dismiss()
+                    Task {
+                        await pro.purchase(productID: selectedPlan.productID)
+                        if pro.hasEntitlement {
+                            dismiss()
+                        }
+                    }
                 } label: {
-                    Text(selectedPlan == .yearly ? "Start Free Trial" : "Continue")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
+                    Group {
+                        if pro.isPurchasing {
+                            ProgressView()
+                        } else {
+                            Text(selectedPlan == .yearly ? "Start Free Trial" : "Continue")
+                        }
+                    }
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(pro.products.isEmpty || pro.isPurchasing)
                 .padding(.horizontal, 20)
+                #if DEBUG
+                if pro.products.isEmpty {
+                    Button("Enable Pro Preview (dev build only)") {
+                        session.setPro(true)
+                        dismiss()
+                    }
+                    .font(.caption)
+                }
+                #endif
                 HStack(spacing: 18) {
-                    Button("Restore Purchases") {}
-                    Button("Terms") {}
-                    Button("Privacy") {}
+                    Button("Restore Purchases") {
+                        Task {
+                            await pro.restore()
+                            if pro.hasEntitlement {
+                                dismiss()
+                            }
+                        }
+                    }
+                    Button("Terms") {
+                        openURL(termsURL)
+                    }
+                    Button("Privacy") {
+                        openURL(privacyURL)
+                    }
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -151,6 +211,17 @@ struct ProPaywallView: View {
         }
         .background(Color(.systemBackground))
         .sensoryFeedback(.selection, trigger: selectedPlan)
+        .alert("Purchase Problem", isPresented: Binding(
+            get: { pro.lastError != nil },
+            set: { if !$0 { pro.lastError = nil } }
+        )) {
+            Button("OK") {}
+        } message: {
+            Text(pro.lastError ?? "")
+        }
+        .task {
+            await pro.loadProducts()
+        }
     }
 
     private func planCard(_ plan: Plan) -> some View {
@@ -182,7 +253,7 @@ struct ProPaywallView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                Text(plan.price)
+                Text(price(for: plan))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.primary)
             }

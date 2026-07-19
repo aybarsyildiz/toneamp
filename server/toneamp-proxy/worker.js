@@ -14,6 +14,14 @@ const GLOBAL_DAILY_LIMIT = 2000; // whole-app runaway-spend guard
 
 export default {
   async fetch(request, env) {
+    // Public pages: App Store privacy policy + support URL live here too,
+    // so no separate website is needed.
+    if (request.method === "GET") {
+      const path = new URL(request.url).pathname;
+      if (path === "/privacy") return html(PRIVACY_HTML);
+      if (path === "/support" || path === "/") return html(SUPPORT_HTML);
+      return json(404, { error: { message: "Not found" } });
+    }
     if (request.method !== "POST") {
       return json(405, { error: { message: "POST only" } });
     }
@@ -85,3 +93,43 @@ function json(status, payload) {
     headers: { "content-type": "application/json" },
   });
 }
+
+function html(body) {
+  return new Response(
+    `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ToneAmp</title><style>body{font-family:-apple-system,system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1a1a1a}h1{font-size:1.6em}h2{font-size:1.15em;margin-top:1.6em}@media(prefers-color-scheme:dark){body{background:#111;color:#eee}}</style></head><body>${body}</body></html>`,
+    { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }
+  );
+}
+
+const SUPPORT_HTML = `
+<h1>ToneAmp — Support</h1>
+<p>ToneAmp shows guitarists how to dial in the tones of real songs — amps, settings, and pedals — and adapts them to your own gear with AI.</p>
+<h2>Contact</h2>
+<p>Questions, bug reports, or feedback: <a href="mailto:s.aybars.yildiz@gmail.com">s.aybars.yildiz@gmail.com</a>. We usually reply within 48 hours.</p>
+<h2>Community content</h2>
+<p>Tones published to the community can be reported, hidden, or their author blocked from the ••• menu on any tone page. Reported content is reviewed within 24 hours and removed if it violates our rules (spam, misleading, or offensive content).</p>
+<h2>Subscription</h2>
+<p>ToneAmp Pro renews automatically. Manage or cancel any time in iOS Settings → your Apple ID → Subscriptions.</p>
+<p><a href="/privacy">Privacy Policy</a></p>
+`;
+
+const PRIVACY_HTML = `
+<h1>ToneAmp — Privacy Policy</h1>
+<p>Effective July 2026. ToneAmp is built to collect as little as possible.</p>
+<h2>What we collect</h2>
+<ul>
+<li><b>Sign in with Apple identifier</b> — a random ID Apple gives us when you sign in. Used to attribute the tones you publish and your ratings. We never see your email unless you choose to share it.</li>
+<li><b>Content you publish</b> — tones you share to the community (amp settings, pedals, notes, your display name) are public.</li>
+<li><b>AI requests</b> — when you use Identify Tones or Adapt to My Gear, the song name and your gear list are sent to our server and processed by Anthropic's Claude API to generate the result. Requests are not used to train models.</li>
+<li><b>Your gear and favorites</b> — stored on your device (and your private iCloud where applicable), not on our servers.</li>
+</ul>
+<h2>What we don't do</h2>
+<ul>
+<li>No ads, no trackers, no analytics SDKs, no selling of data.</li>
+<li>No collection of contacts, location, photos, or microphone audio. Song identification uses Apple's ShazamKit on-device service.</li>
+</ul>
+<h2>Deletion</h2>
+<p>Delete the app to remove local data. To delete your published tones and account identifier, email <a href="mailto:s.aybars.yildiz@gmail.com">s.aybars.yildiz@gmail.com</a> from the device and we'll remove them within 30 days.</p>
+<h2>Contact</h2>
+<p>NetNucleus — <a href="mailto:s.aybars.yildiz@gmail.com">s.aybars.yildiz@gmail.com</a></p>
+`;

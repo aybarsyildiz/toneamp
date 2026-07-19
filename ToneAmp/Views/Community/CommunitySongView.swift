@@ -5,10 +5,15 @@ import SwiftUI
 struct CommunitySongView: View {
     @Environment(SessionStore.self) private var session
     @Environment(AIToneCacheStore.self) private var aiCache
+    @Environment(ModerationStore.self) private var moderation
     let song: CatalogSong
 
     @State private var tones: [CommunityTone] = []
     @State private var isLoading = true
+
+    private var visibleTones: [CommunityTone] {
+        tones.filter { !moderation.isHidden($0) }
+    }
     @State private var errorMessage: String?
     @State private var showingEditor = false
     @State private var showingAIFinder = false
@@ -60,7 +65,7 @@ struct CommunitySongView: View {
                     Label(errorMessage, systemImage: "icloud.slash")
                         .font(.callout)
                         .foregroundStyle(.secondary)
-                } else if tones.isEmpty {
+                } else if visibleTones.isEmpty {
                     VStack(spacing: 8) {
                         Image(systemName: "sparkles")
                             .font(.title2)
@@ -73,7 +78,7 @@ struct CommunitySongView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
                 } else {
-                    ForEach(tones) { tone in
+                    ForEach(visibleTones) { tone in
                         NavigationLink(value: tone) {
                             VStack(alignment: .leading, spacing: 6) {
                                 HStack {
