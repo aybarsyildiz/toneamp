@@ -66,6 +66,14 @@ struct SettingsView: View {
                     } label: {
                         Label("ToneAmp Pro", systemImage: "wand.and.stars")
                     }
+                    #if DEBUG
+                    Toggle(isOn: Binding(
+                        get: { session.isPro },
+                        set: { session.setPro($0) }
+                    )) {
+                        Label("Pro Override (debug)", systemImage: "ladybug")
+                    }
+                    #endif
                     if session.isPro {
                         Button {
                             openURL(URL(string: "https://apps.apple.com/account/subscriptions")!)
