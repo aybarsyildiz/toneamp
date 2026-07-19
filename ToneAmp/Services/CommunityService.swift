@@ -70,11 +70,11 @@ enum CommunityService {
     private static let ratingRecordType = "ToneRating"
 
     private static var database: CKDatabase {
-        CKContainer.default().publicCloudDatabase
+        CKContainer(identifier: "iCloud.com.netnucleus.toneamp").publicCloudDatabase
     }
 
     private static func ensureAccount() async throws {
-        let status = try await CKContainer.default().accountStatus()
+        let status = try await CKContainer(identifier: "iCloud.com.netnucleus.toneamp").accountStatus()
         guard status == .available else {
             throw CommunityError.iCloudUnavailable
         }
