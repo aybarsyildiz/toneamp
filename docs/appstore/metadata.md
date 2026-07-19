@@ -10,7 +10,7 @@ Everything below is ready to paste into App Store Connect fields.
 | Subtitle (30 max) | `Amp settings for every song` |
 | Primary category | Music |
 | Secondary category | Education |
-| Bundle ID | com.netnucleus.toneamp |
+| Bundle ID | com.netnucleus.toneampapp |
 | Age rating | 4+ (answer "None" to all content questions; answer YES to "unrestricted user-generated content" → we have report/hide/block, so select the moderation options) |
 
 ## Promotional Text (170 max)

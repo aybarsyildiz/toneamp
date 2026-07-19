@@ -25,7 +25,7 @@ Do these in order. Each step is small. Check it off, move to the next.
 ## Part 3 — App Store Connect setup (30 min, can split)
 
 - [ ] 12. appstoreconnect.apple.com → My Apps → "+" → New App → iOS,
-      name `ToneAmp: Guitar Tone Finder`, bundle `com.netnucleus.toneamp`
+      name `ToneAmp: Guitar Tone Finder`, bundle `com.netnucleus.toneampapp`
 - [ ] 12b. Business (Agreements) → sign the **Paid Applications Agreement**
       + fill banking & tax info. WITHOUT THIS SUBSCRIPTIONS CANNOT GO LIVE
       and Apple can't pay you. Do it early — bank verification takes days.
@@ -38,7 +38,7 @@ Do these in order. Each step is small. Check it off, move to the next.
 ## Part 4 — CloudKit + capabilities (10 min)
 
 - [ ] 17. icloud.developer.apple.com → your container → **Deploy Schema Changes to Production** (this includes the new ToneReport type — publish a tone and file one test report from the app FIRST so the type exists)
-- [ ] 18. developer.apple.com → Identifiers → com.netnucleus.toneamp → App Services → ShazamKit ticked (done earlier — just verify)
+- [ ] 18. developer.apple.com → Identifiers → com.netnucleus.toneampapp → App Services → ShazamKit ticked (done earlier — just verify)
 
 ## Part 5 — Screenshots (20 min)
 
