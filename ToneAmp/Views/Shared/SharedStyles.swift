@@ -346,3 +346,33 @@ struct AILimitReachedView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }
+
+/// Destination-level gate: pushed instead of the real page when signed out.
+/// Observation swaps it for the real content the moment sign-in completes.
+struct SignInRequiredView: View {
+    @Environment(SessionStore.self) private var session
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "person.crop.circle.badge.checkmark")
+                .font(.system(size: 52))
+                .foregroundStyle(.tint)
+            Text("Sign In to Open Tone Sheets")
+                .font(.title3.bold())
+            Text("Browsing the library is open to everyone — the full recipes are tied to your account.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 36)
+            Button("Sign In") {
+                session.showingSignInGate = true
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemGroupedBackground))
+        .onAppear {
+            session.showingSignInGate = true
+        }
+    }
+}

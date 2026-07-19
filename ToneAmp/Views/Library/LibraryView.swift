@@ -3,6 +3,7 @@ import SwiftUI
 struct LibraryView: View {
     @Environment(LibraryStore.self) private var library
     @Environment(FavoritesStore.self) private var favorites
+    @Environment(SessionStore.self) private var session
     @State private var searchText = ""
     @State private var selectedGenre: Genre?
     @State private var showingSettings = false
@@ -122,7 +123,11 @@ struct LibraryView: View {
             }
             .navigationTitle("Library")
             .navigationDestination(for: Song.self) { song in
-                SongDetailView(song: song)
+                if session.isSignedIn {
+                    SongDetailView(song: song)
+                } else {
+                    SignInRequiredView()
+                }
             }
             .searchable(text: $searchText, prompt: "Songs or artists")
             .toolbar {
