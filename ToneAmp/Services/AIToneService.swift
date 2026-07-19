@@ -58,10 +58,12 @@ struct ToneAdaptationInput {
 enum AIToneError: LocalizedError {
     case missingAPIKey
     case httpError(Int, String)
-    case malformedResponse
+    case malformedResponse(String)
+    case degenerate(String)
     case refused
     case truncated
     case noTones
+    case network(String)
 
     var errorDescription: String? {
         switch self {
@@ -69,14 +71,18 @@ enum AIToneError: LocalizedError {
             return "Add your Anthropic API key in Settings → ToneAmp Pro to identify tones."
         case .httpError(let code, let message):
             return "Tone engine error (\(code)): \(message)"
-        case .malformedResponse:
-            return "The tone engine returned an unexpected response. Try again."
+        case .malformedResponse(let detail):
+            return "The tone engine returned an unexpected response after 3 attempts.\n\nEngine said: \(detail)"
+        case .degenerate(let detail):
+            return "The tone engine returned unusable settings after 3 attempts.\n\nEngine said: \(detail)"
         case .refused:
             return "The tone engine declined this request."
         case .truncated:
             return "The response was cut short. Try again."
         case .noTones:
             return "The tone engine couldn't find a guitar tone for this song."
+        case .network(let detail):
+            return "Couldn't reach the tone engine after 3 attempts.\n\n\(detail)"
         }
     }
 }
@@ -119,34 +125,70 @@ enum AIToneService {
         return key
     }
 
+    /// Optional production proxy: when `Secrets.plist` carries a
+    /// `ToneProxyURL`, requests go there with no client-side key — the
+    /// proxy (server/toneamp-proxy) injects it. This is the App Store path.
+    static var proxyURL: URL? {
+        guard let string = secretsValue("ToneProxyURL"),
+              let url = URL(string: string) else {
+            return nil
+        }
+        return url
+    }
+
+    private static func secretsValue(_ key: String) -> String? {
+        guard let url = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
+              let data = try? Data(contentsOf: url),
+              let plist = try? PropertyListSerialization.propertyList(from: data, format: nil),
+              let dict = plist as? [String: Any],
+              let value = dict[key] as? String,
+              !value.isEmpty else {
+            return nil
+        }
+        return value
+    }
+
     static var hasAPIKey: Bool {
-        resolvedAPIKey != nil
+        proxyURL != nil || resolvedAPIKey != nil
+    }
+
+    private static func makeRequest() throws -> URLRequest {
+        var request = URLRequest(url: proxyURL ?? endpoint)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        if proxyURL != nil {
+            if let token = secretsValue("ToneProxyToken") {
+                request.setValue(token, forHTTPHeaderField: "x-toneamp-token")
+            }
+        } else {
+            guard let apiKey = resolvedAPIKey else {
+                throw AIToneError.missingAPIKey
+            }
+            request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        }
+        return request
     }
 
     static func identifyTones(for song: CatalogSong, rig: UserRig? = nil) async throws -> [AIGeneratedTone] {
-        guard let apiKey = resolvedAPIKey else {
-            throw AIToneError.missingAPIKey
-        }
-
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        var request = try makeRequest()
         request.httpBody = try JSONSerialization.data(withJSONObject: requestBody(song: song, rig: rig))
 
-        // Validate + retry: a degenerate (all-zero) response is silently
-        // re-requested once instead of ever reaching the screen.
-        var lastError: Error = AIToneError.malformedResponse
-        for _ in 0..<2 {
+        // Validate + retry: a degenerate (all-zero), malformed, or dropped
+        // response is silently re-requested (3 attempts) instead of ever
+        // reaching the screen; the final failure carries what the engine
+        // actually returned so the error state is diagnosable.
+        var lastError: Error = AIToneError.malformedResponse("No response received.")
+        for _ in 0..<3 {
             do {
                 let (data, response) = try await session.data(for: request)
                 guard let http = response as? HTTPURLResponse else {
-                    throw AIToneError.malformedResponse
+                    throw AIToneError.malformedResponse("Non-HTTP response.")
                 }
                 guard http.statusCode == 200 else {
                     let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
-                    throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
+                    let detail = envelope?.error.message ?? String(decoding: data.prefix(300), as: UTF8.self)
+                    throw AIToneError.httpError(http.statusCode, detail)
                 }
 
                 let message = try JSONDecoder().decode(APIResponse.self, from: data)
@@ -158,16 +200,18 @@ enum AIToneService {
                 }
                 guard let text = message.content.first(where: { $0.type == "text" })?.text,
                       let jsonData = text.data(using: .utf8) else {
-                    throw AIToneError.malformedResponse
+                    throw AIToneError.malformedResponse("Empty response (stop reason: \(message.stopReason ?? "none")).")
                 }
 
-                let payload = try JSONDecoder().decode(GeneratedPayload.self, from: jsonData)
+                guard let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData) else {
+                    throw AIToneError.malformedResponse(String(text.prefix(400)))
+                }
                 guard payload.found, !payload.tones.isEmpty else {
                     throw AIToneError.noTones
                 }
                 let valid = payload.tones.map { $0.toGeneratedTone() }.filter { !isDegenerate($0) }
                 if valid.isEmpty {
-                    lastError = AIToneError.malformedResponse
+                    lastError = AIToneError.degenerate(String(text.prefix(400)))
                     continue
                 }
                 return valid
@@ -178,6 +222,8 @@ enum AIToneService {
                 default:
                     lastError = error
                 }
+            } catch {
+                lastError = AIToneError.network(error.localizedDescription)
             }
         }
         throw lastError
@@ -186,15 +232,7 @@ enum AIToneService {
     /// Pro: translate a specific existing tone onto the player's rig.
     /// Returns exactly one adapted tone (same schema as identifyTones).
     static func adaptTone(_ input: ToneAdaptationInput, rig: UserRig) async throws -> AIGeneratedTone {
-        guard let apiKey = resolvedAPIKey else {
-            throw AIToneError.missingAPIKey
-        }
-
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        var request = try makeRequest()
 
         let schemaData = Data(schemaJSON.utf8)
         let schema = try JSONSerialization.jsonObject(with: schemaData)
@@ -237,33 +275,37 @@ enum AIToneService {
             "output_config": ["format": ["type": "json_schema", "schema": schema]],
         ] as [String: Any])
 
-        // One automatic retry: sparse rigs occasionally produce a degenerate
-        // (all-zero / empty) first attempt.
-        var lastError: Error = AIToneError.malformedResponse
-        for _ in 0..<2 {
+        // Retry loop: sparse rigs occasionally produce a degenerate
+        // (all-zero / empty) attempt — 3 tries, and the final failure
+        // carries what the engine actually returned.
+        var lastError: Error = AIToneError.malformedResponse("No response received.")
+        for _ in 0..<3 {
             do {
                 let (data, response) = try await session.data(for: request)
                 guard let http = response as? HTTPURLResponse else {
-                    throw AIToneError.malformedResponse
+                    throw AIToneError.malformedResponse("Non-HTTP response.")
                 }
                 guard http.statusCode == 200 else {
                     let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
-                    throw AIToneError.httpError(http.statusCode, envelope?.error.message ?? "Unknown error")
+                    let detail = envelope?.error.message ?? String(decoding: data.prefix(300), as: UTF8.self)
+                    throw AIToneError.httpError(http.statusCode, detail)
                 }
                 let message = try JSONDecoder().decode(APIResponse.self, from: data)
                 if message.stopReason == "refusal" {
                     throw AIToneError.refused
                 }
                 guard let text = message.content.first(where: { $0.type == "text" })?.text,
-                      let jsonData = text.data(using: .utf8),
-                      let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData),
+                      let jsonData = text.data(using: .utf8) else {
+                    throw AIToneError.malformedResponse("Empty response (stop reason: \(message.stopReason ?? "none")).")
+                }
+                guard let payload = try? JSONDecoder().decode(GeneratedPayload.self, from: jsonData),
                       payload.found,
                       let generated = payload.tones.first else {
-                    throw AIToneError.malformedResponse
+                    throw AIToneError.malformedResponse(String(text.prefix(400)))
                 }
                 let tone = generated.toGeneratedTone()
                 if isDegenerate(tone) {
-                    lastError = AIToneError.malformedResponse
+                    lastError = AIToneError.degenerate(String(text.prefix(400)))
                     continue
                 }
                 return tone
@@ -274,6 +316,8 @@ enum AIToneService {
                 default:
                     lastError = error
                 }
+            } catch {
+                lastError = AIToneError.network(error.localizedDescription)
             }
         }
         throw lastError
@@ -296,7 +340,7 @@ enum AIToneService {
         let yearText = song.year > 0 ? String(song.year) : "unknown year"
         var content = "Identify the guitar tones for \u{201C}\(song.trackName)\u{201D} by \(song.artistName) (\(yearText), \(genreName))."
         if let rig, rig.isConfigured {
-            content += "\n\nThe player's own rig — \(rig.aiDescription). For each tone, fill rigTips with 1–3 short, concrete tips adapting the settings to this exact rig; name their gear (e.g. specific amp model) in the tips."
+            content += "\n\nThe player's own rig — \(rig.aiDescription). For each tone, fill rigTips with 1–3 short, concrete tips translating the recording's settings onto this exact rig, naming their gear. If they use a multi-FX or modeler, name the exact block/model inside their unit for each effect (e.g. \u{201C}on the HeadRush, use the Tube Drive block for the TS9\u{201D}). IMPORTANT: the rig affects ONLY rigTips — the amp, settings, guitar, pickup, and pedals fields must describe the gear heard on the ORIGINAL RECORDING, never the player's own gear."
         } else {
             content += "\n\nNo rig information — leave rigTips as an empty array."
         }
@@ -343,6 +387,13 @@ enum AIToneService {
     - Knob values must always be realistic, playable settings. A tone whose gain, bass, \
     mid, and treble are all 0 is INVALID — never return one. Amp, guitar, and pickup \
     fields must never be empty strings.
+    - Pedal names must be specific commercial products — brand + model, e.g. \
+    "Ibanez TS9 Tube Screamer", "Boss DD-3 Digital Delay", "MXR Carbon Copy". NEVER a \
+    bare effect type like "Overdrive", "Delay", or "Noise Gate": players on modelers \
+    (HeadRush, Helix, GT-series) need an exact model to pick the right block.
+    - When a player's rig is mentioned, it exists ONLY to write rigTips. Unless the \
+    task is explicitly to adapt a tone onto the player's rig, the amp, settings, \
+    guitar, pickup, and pedals fields always describe the ORIGINAL RECORDING.
     """
 
     private static let schemaJSON = """

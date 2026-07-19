@@ -1,0 +1,59 @@
+/**
+ * ToneAmp tone-engine proxy — Cloudflare Worker.
+ *
+ * The app POSTs Anthropic Messages API bodies here instead of to
+ * api.anthropic.com; the Worker injects the API key (stored as a
+ * Cloudflare secret, never shipped in the app), pins the model, and
+ * forwards the response unchanged. Deploy steps in README.md.
+ */
+const UPSTREAM = "https://api.anthropic.com/v1/messages";
+const MODEL = "claude-opus-4-8";
+const MAX_TOKENS_CAP = 8000;
+
+export default {
+  async fetch(request, env) {
+    if (request.method !== "POST") {
+      return json(405, { error: { message: "POST only" } });
+    }
+    // Optional shared secret: set APP_TOKEN to require the app's
+    // x-toneamp-token header (basic abuse protection).
+    if (env.APP_TOKEN) {
+      if (request.headers.get("x-toneamp-token") !== env.APP_TOKEN) {
+        return json(401, { error: { message: "Unauthorized" } });
+      }
+    }
+
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return json(400, { error: { message: "Body must be JSON" } });
+    }
+
+    // The proxy, not the client, decides model and limits.
+    body.model = MODEL;
+    body.max_tokens = Math.min(body.max_tokens ?? MAX_TOKENS_CAP, MAX_TOKENS_CAP);
+
+    const upstream = await fetch(UPSTREAM, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify(body),
+    });
+
+    return new Response(upstream.body, {
+      status: upstream.status,
+      headers: { "content-type": "application/json" },
+    });
+  },
+};
+
+function json(status, payload) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+}

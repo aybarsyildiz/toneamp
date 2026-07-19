@@ -29,16 +29,9 @@ struct AIToneFinderView: View {
                 case .loading:
                     MagicalLoadingView(song: song)
                 case .failed(let message):
-                    ContentUnavailableView {
-                        Label("No Magic This Time", systemImage: "wand.and.stars.inverse")
-                    } description: {
-                        Text(message)
-                    } actions: {
-                        Button("Try Again") {
-                            phase = .loading
-                            Task { await identify() }
-                        }
-                        .buttonStyle(.borderedProminent)
+                    AIFailureView(title: "No Magic This Time", message: message) {
+                        phase = .loading
+                        Task { await identify() }
                     }
                 case .result(let tones):
                     resultList(tones)

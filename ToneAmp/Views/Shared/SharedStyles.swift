@@ -270,3 +270,39 @@ struct SongRow: View {
         .padding(.vertical, 3)
     }
 }
+
+/// Failure state for the AI flows — headline plus the engine's actual
+/// output in a selectable box, so "why did this fail" is never a mystery.
+struct AIFailureView: View {
+    let title: String
+    let message: String
+    let retry: () -> Void
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                Image(systemName: "wand.and.stars.inverse")
+                    .font(.system(size: 44))
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 48)
+                Text(title)
+                    .font(.title2.bold())
+                Button("Try Again", action: retry)
+                    .buttonStyle(.borderedProminent)
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.leading)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(12)
+                    .background(
+                        Color(.secondarySystemGroupedBackground),
+                        in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    )
+                    .padding(.top, 8)
+            }
+            .padding(24)
+        }
+    }
+}

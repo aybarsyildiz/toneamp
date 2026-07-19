@@ -5,12 +5,13 @@ extension GearItem.Category: Identifiable {
 }
 
 /// The rig as a visual signal chain: guitar → effects → amp/output.
-/// Tap any slot to fill it; the cable pulses once something's connected.
+/// Styled like a native grouped list — icon squircles, hairline rows —
+/// with a live signal dot running the cable once the chain is connected.
 struct MyRigView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(RigStore.self) private var rigStore
 
-    /// False when hosted as a tab (no Done button needed).
+    /// False when hosted as a tab (large title, no Done button).
     var showsDone: Bool = true
 
     @State private var pickerCategory: GearItem.Category?
@@ -19,17 +20,13 @@ struct MyRigView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 0) {
-                    Text("Your signal chain")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .padding(.top, 12)
-                        .padding(.bottom, 16)
+                VStack(alignment: .leading, spacing: 7) {
+                    sectionHeader("Signal Chain")
 
                     RigSlotCard(
                         symbol: "guitars.fill",
-                        title: guitarTitle,
-                        subtitle: guitarSubtitle,
+                        title: hasGuitar ? guitarTitle : "Add Your Guitar",
+                        subtitle: hasGuitar ? "Guitar" : nil,
                         isFilled: hasGuitar
                     ) {
                         pickerCategory = .guitar
@@ -37,13 +34,13 @@ struct MyRigView: View {
 
                     SignalConnector(isLive: hasGuitar)
 
-                    effectsBoard
+                    effectsCard
 
                     SignalConnector(isLive: hasGuitar && hasOutput)
 
                     RigSlotCard(
                         symbol: outputSymbol,
-                        title: outputTitle,
+                        title: hasOutput ? outputTitle : "Add Your Amp",
                         subtitle: outputSubtitle,
                         isFilled: hasOutput
                     ) {
@@ -51,16 +48,18 @@ struct MyRigView: View {
                     }
 
                     Text("Every tone in ToneAmp gets translated to this rig.")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                        .padding(.top, 22)
-                        .padding(.bottom, 12)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 18)
                 }
-                .padding(.horizontal, 18)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("My Rig")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(showsDone ? .inline : .large)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Advanced") {
@@ -95,6 +94,14 @@ struct MyRigView: View {
         }
     }
 
+    private func sectionHeader(_ title: String) -> some View {
+        Text(title.uppercased())
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .padding(.leading, 16)
+            .padding(.bottom, 2)
+    }
+
     // MARK: Slot state
 
     private var hasGuitar: Bool {
@@ -103,11 +110,7 @@ struct MyRigView: View {
 
     private var guitarTitle: String {
         let all = ([rigStore.rig.guitarText] + rigStore.rig.guitars).filter { !$0.isEmpty }
-        return all.isEmpty ? "Add your guitar" : all.joined(separator: ", ")
-    }
-
-    private var guitarSubtitle: String {
-        hasGuitar ? "Tap to change" : "What do you play?"
+        return all.joined(separator: ", ")
     }
 
     private var hasOutput: Bool {
@@ -125,17 +128,15 @@ struct MyRigView: View {
 
     private var outputTitle: String {
         let all = ([rigStore.rig.ampText] + [rigStore.rig.amp]).filter { !$0.isEmpty }
-        return all.isEmpty ? "Add your amp" : all.joined(separator: " · ")
+        return all.joined(separator: " · ")
     }
 
-    private var outputSubtitle: String {
-        if !hasOutput {
-            return "Amp, modeler, or direct to PC"
-        }
-        return isDirect ? "Direct — no amp needed" : "Tap to change"
+    private var outputSubtitle: String? {
+        guard hasOutput else { return nil }
+        return isDirect ? "Direct — no amp needed" : "Amp"
     }
 
-    // MARK: Effects board
+    // MARK: Effects card
 
     private var fxTokens: [String] {
         rigStore.rig.pedalsText
@@ -152,132 +153,158 @@ struct MyRigView: View {
             }
     }
 
-    private var effectsBoard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Label("Effects", systemImage: "bolt.fill")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                Spacer()
+    private var effectsCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if fxTokens.isEmpty {
+                Button {
+                    pickerCategory = .pedal
+                } label: {
+                    HStack(spacing: 12) {
+                        SlotIcon(symbol: "bolt.fill", isFilled: false)
+                        Text("Add Pedals or a Multi-FX")
+                            .font(.body)
+                            .foregroundStyle(.tint)
+                        Spacer()
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(.tint)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            } else {
+                ForEach(Array(fxTokens.enumerated()), id: \.element) { index, token in
+                    HStack(spacing: 12) {
+                        SlotIcon(symbol: "bolt.fill", isFilled: true)
+                        Text(token)
+                            .font(.body)
+                            .lineLimit(1)
+                        Spacer()
+                        Button {
+                            withAnimation(.snappy) {
+                                rigStore.rig.pedalsText = RigStore.togglingToken(token, in: rigStore.rig.pedalsText)
+                            }
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.tertiary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 11)
+                    if index < fxTokens.count - 1 {
+                        Divider()
+                            .padding(.leading, 55)
+                    }
+                }
+                Divider()
+                    .padding(.leading, 55)
                 Menu {
                     Button {
                         pickerCategory = .pedal
                     } label: {
-                        Label("Add pedal", systemImage: "bolt.fill")
+                        Label("Add Pedal", systemImage: "bolt.fill")
                     }
                     Button {
                         pickerCategory = .multiFX
                     } label: {
-                        Label("Add multi-FX / modeler", systemImage: "square.grid.3x3.fill")
+                        Label("Add Multi-FX / Modeler", systemImage: "square.grid.3x3.fill")
                     }
                 } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title3)
-                }
-            }
-
-            if fxTokens.isEmpty && categoryCapsules.isEmpty {
-                Button {
-                    pickerCategory = .pedal
-                } label: {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text("Add pedals or a multi-FX")
+                    HStack(spacing: 12) {
+                        SlotIcon(symbol: "plus", isFilled: false)
+                        Text("Add Effect")
+                            .font(.body)
+                            .foregroundStyle(.tint)
+                        Spacer()
                     }
-                    .font(.subheadline)
-                    .foregroundStyle(.tint)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 22)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [6]))
-                            .foregroundStyle(Color(.systemGray3))
-                    )
-                }
-                .buttonStyle(.plain)
-            } else {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 8)], spacing: 8) {
-                    ForEach(fxTokens, id: \.self) { token in
-                        FXTile(name: token) {
-                            withAnimation(.snappy) {
-                                rigStore.rig.pedalsText = RigStore.togglingToken(token, in: rigStore.rig.pedalsText)
-                            }
-                        }
-                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 11)
+                    .contentShape(Rectangle())
                 }
                 if !categoryCapsules.isEmpty {
+                    Divider()
+                        .padding(.leading, 55)
                     HStack(spacing: 6) {
-                        Text("Covers:")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
+                        Text("Covers")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                         ForEach(categoryCapsules.prefix(5), id: \.self) { name in
                             Text(name)
-                                .font(.caption2.weight(.medium))
-                                .padding(.horizontal, 7)
+                                .font(.caption.weight(.medium))
+                                .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
                                 .background(Color(.tertiarySystemFill), in: Capsule())
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 10)
                 }
             }
         }
-        .padding(14)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(
+            Color(.secondarySystemGroupedBackground),
+            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+        )
     }
 }
 
-/// One slot in the chain (guitar / amp).
+/// Settings-style icon squircle.
+private struct SlotIcon: View {
+    let symbol: String
+    let isFilled: Bool
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 7, style: .continuous)
+                .fill(isFilled ? AnyShapeStyle(.tint) : AnyShapeStyle(Color(.tertiarySystemFill)))
+                .frame(width: 29, height: 29)
+            Image(systemName: symbol)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(isFilled ? AnyShapeStyle(.white) : AnyShapeStyle(.secondary))
+        }
+    }
+}
+
+/// One slot in the chain (guitar / amp) as a single grouped-list-style row.
 private struct RigSlotCard: View {
     let symbol: String
     let title: String
-    let subtitle: String
+    let subtitle: String?
     let isFilled: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
-                ZStack {
-                    Circle()
-                        .fill(isFilled ? Color.accentColor.opacity(0.14) : Color(.tertiarySystemFill))
-                        .frame(width: 46, height: 46)
-                    Image(systemName: symbol)
-                        .font(.title3)
-                        .foregroundStyle(isFilled ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
-                }
-                VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 12) {
+                SlotIcon(symbol: symbol, isFilled: isFilled)
+                VStack(alignment: .leading, spacing: 1) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(isFilled ? .primary : Color.accentColor)
+                        .font(.body)
+                        .foregroundStyle(isFilled ? AnyShapeStyle(.primary) : AnyShapeStyle(.tint))
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
-                    Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 Spacer()
                 Image(systemName: isFilled ? "chevron.right" : "plus.circle.fill")
+                    .font(isFilled ? .footnote.weight(.semibold) : .body)
                     .foregroundStyle(isFilled ? AnyShapeStyle(.tertiary) : AnyShapeStyle(.tint))
             }
-            .padding(14)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .background(
-                Group {
-                    if isFilled {
-                        AnyView(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(Color(.secondarySystemGroupedBackground))
-                        )
-                    } else {
-                        AnyView(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [6]))
-                                .foregroundStyle(Color(.systemGray3))
-                        )
-                    }
-                }
+                Color(.secondarySystemGroupedBackground),
+                in: RoundedRectangle(cornerRadius: 12, style: .continuous)
             )
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .sensoryFeedback(.selection, trigger: isFilled)
@@ -291,47 +318,21 @@ private struct SignalConnector: View {
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 2)
+            Rectangle()
                 .fill(Color(.systemGray4))
-                .frame(width: 3, height: 34)
+                .frame(width: 2, height: 26)
             if isLive {
                 Circle()
                     .fill(Color.accentColor)
-                    .frame(width: 7, height: 7)
-                    .offset(y: pulse ? 14 : -14)
+                    .frame(width: 6, height: 6)
+                    .offset(y: pulse ? 11 : -11)
                     .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: false), value: pulse)
             }
         }
-        .frame(height: 34)
+        .frame(maxWidth: .infinity)
+        .frame(height: 26)
         .onAppear {
             pulse = true
         }
-    }
-}
-
-/// A pedal (or multi-FX) as a little stompbox tile.
-private struct FXTile: View {
-    let name: String
-    let onRemove: () -> Void
-
-    var body: some View {
-        HStack(spacing: 6) {
-            RoundedRectangle(cornerRadius: 3)
-                .fill(Color.accentColor)
-                .frame(width: 8, height: 8)
-            Text(name)
-                .font(.caption.weight(.medium))
-                .lineLimit(1)
-            Spacer(minLength: 0)
-            Button(action: onRemove) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(.tertiary)
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 9)
-        .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
     }
 }

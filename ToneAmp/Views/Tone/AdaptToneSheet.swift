@@ -37,16 +37,9 @@ struct AdaptToneSheet: View {
                         ]
                     )
                 case .failed(let message):
-                    ContentUnavailableView {
-                        Label("Couldn't Adapt", systemImage: "wand.and.stars.inverse")
-                    } description: {
-                        Text(message)
-                    } actions: {
-                        Button("Try Again") {
-                            phase = .loading
-                            Task { await adapt() }
-                        }
-                        .buttonStyle(.borderedProminent)
+                    AIFailureView(title: "Couldn't Adapt", message: message) {
+                        phase = .loading
+                        Task { await adapt() }
                     }
                 case .result(let tone):
                     resultList(tone)

@@ -1452,16 +1452,16 @@ PEDAL_SETS = {
     ],
     "Crunch": [
         [],
-        [("Ibanez Tube Screamer", "overdrive", [("Drive", 3.5), ("Tone", 5.0), ("Level", 6.5)], "Pushes the amp's own breakup harder.")],
+        [("Ibanez TS9 Tube Screamer", "overdrive", [("Drive", 3.5), ("Tone", 5.0), ("Level", 6.5)], "Pushes the amp's own breakup harder.")],
         [("Boss SD-1", "overdrive", [("Drive", 4.0), ("Tone", 5.0), ("Level", 6.0)], "Mild push for the dirty rhythm parts.")],
     ],
     "Overdrive": [
-        [("Ibanez Tube Screamer", "overdrive", [("Drive", 5.5), ("Tone", 5.0), ("Level", 6.0)], "The core drive — amp set on the edge of breakup.")],
+        [("Ibanez TS9 Tube Screamer", "overdrive", [("Drive", 5.5), ("Tone", 5.0), ("Level", 6.0)], "The core drive — amp set on the edge of breakup.")],
         [("Boss BD-2 Blues Driver", "overdrive", [("Gain", 5.5), ("Tone", 5.5), ("Level", 6.0)], "Open, amp-like drive that follows pick attack.")],
     ],
     "High Gain": [
-        [("Ibanez Tube Screamer", "boost", [("Drive", 1.0), ("Tone", 5.0), ("Level", 8.5)], "Nearly-clean boost that tightens the low end."),
-         ("Noise Gate", "eq", [("Threshold", 5.0)], "Keeps the palm-muted riffs tight and quiet.")],
+        [("Ibanez TS9 Tube Screamer", "boost", [("Drive", 1.0), ("Tone", 5.0), ("Level", 8.5)], "Nearly-clean boost that tightens the low end."),
+         ("Boss NS-2 Noise Suppressor", "eq", [("Threshold", 5.0)], "Keeps the palm-muted riffs tight and quiet.")],
         [("Maxon OD808", "boost", [("Drive", 1.5), ("Tone", 5.0), ("Level", 8.0)], "Tightening boost in front of the high-gain channel.")],
     ],
     "Fuzz": [
@@ -1469,10 +1469,10 @@ PEDAL_SETS = {
         [("Dunlop Fuzz Face", "fuzz", [("Fuzz", 7.5), ("Volume", 6.5)], "Clean up with the guitar's volume knob.")],
     ],
     "Lead": [
-        [("Ibanez Tube Screamer", "overdrive", [("Drive", 5.0), ("Tone", 5.5), ("Level", 7.0)], "Saturation and sustain for the lead lines."),
-         ("Analog Delay", "delay", [("Time", 4.0), ("Repeats", 3.5), ("Mix", 3.0)], "Space around the solo — repeats tucked under.")],
+        [("Ibanez TS9 Tube Screamer", "overdrive", [("Drive", 5.0), ("Tone", 5.5), ("Level", 7.0)], "Saturation and sustain for the lead lines."),
+         ("MXR Carbon Copy", "delay", [("Time", 4.0), ("Repeats", 3.5), ("Mix", 3.0)], "Space around the solo — repeats tucked under.")],
         [("Boss DS-1", "distortion", [("Dist", 6.0), ("Tone", 5.0), ("Level", 6.0)], "Focused distortion for singing leads."),
-         ("Digital Delay", "delay", [("Time", 4.5), ("Repeats", 3.0), ("Mix", 2.5)], "Adds depth to held notes.")],
+         ("Boss DD-3 Digital Delay", "delay", [("Time", 4.5), ("Repeats", 3.0), ("Mix", 2.5)], "Adds depth to held notes.")],
     ],
 }
 NOTES = {
