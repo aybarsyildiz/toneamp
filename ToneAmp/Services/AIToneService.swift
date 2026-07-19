@@ -64,6 +64,7 @@ enum AIToneError: LocalizedError {
     case truncated
     case noTones
     case network(String)
+    case rateLimited(String)
 
     var errorDescription: String? {
         switch self {
@@ -83,6 +84,8 @@ enum AIToneError: LocalizedError {
             return "The tone engine couldn't find a guitar tone for this song."
         case .network(let detail):
             return "Couldn't reach the tone engine after 3 attempts.\n\n\(detail)"
+        case .rateLimited(let detail):
+            return detail
         }
     }
 }
@@ -191,6 +194,9 @@ enum AIToneService {
                 guard http.statusCode == 200 else {
                     let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
                     let detail = envelope?.error.message ?? String(decoding: data.prefix(300), as: UTF8.self)
+                    if http.statusCode == 429 {
+                        throw AIToneError.rateLimited(detail)
+                    }
                     throw AIToneError.httpError(http.statusCode, detail)
                 }
 
@@ -220,7 +226,7 @@ enum AIToneService {
                 return valid
             } catch let error as AIToneError {
                 switch error {
-                case .httpError, .refused, .missingAPIKey, .noTones, .truncated:
+                case .httpError, .refused, .missingAPIKey, .noTones, .truncated, .rateLimited:
                     throw error
                 default:
                     lastError = error
@@ -291,6 +297,9 @@ enum AIToneService {
                 guard http.statusCode == 200 else {
                     let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: data)
                     let detail = envelope?.error.message ?? String(decoding: data.prefix(300), as: UTF8.self)
+                    if http.statusCode == 429 {
+                        throw AIToneError.rateLimited(detail)
+                    }
                     throw AIToneError.httpError(http.statusCode, detail)
                 }
                 let message = try JSONDecoder().decode(APIResponse.self, from: data)
@@ -314,7 +323,7 @@ enum AIToneService {
                 return tone
             } catch let error as AIToneError {
                 switch error {
-                case .httpError, .refused, .missingAPIKey:
+                case .httpError, .refused, .missingAPIKey, .rateLimited:
                     throw error
                 default:
                     lastError = error

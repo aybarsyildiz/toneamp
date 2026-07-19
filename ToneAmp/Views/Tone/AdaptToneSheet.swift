@@ -11,6 +11,7 @@ struct AdaptToneSheet: View {
     private enum Phase {
         case loading
         case failed(String)
+        case limited(String)
         case result(AIGeneratedTone)
     }
 
@@ -41,6 +42,8 @@ struct AdaptToneSheet: View {
                         phase = .loading
                         Task { await adapt() }
                     }
+                case .limited(let detail):
+                    AILimitReachedView(detail: detail)
                 case .result(let tone):
                     resultList(tone)
                 }
@@ -77,7 +80,12 @@ struct AdaptToneSheet: View {
                 phase = .result(tone)
             }
         } catch {
-            phase = .failed(error.localizedDescription)
+            if let toneError = error as? AIToneError,
+               case .rateLimited(let detail) = toneError {
+                phase = .limited(detail)
+            } else {
+                phase = .failed(error.localizedDescription)
+            }
         }
     }
 

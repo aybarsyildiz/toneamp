@@ -306,3 +306,43 @@ struct AIFailureView: View {
         }
     }
 }
+
+/// Shown when the tone engine's daily allowance is used up — a calm
+/// policy state, not an error: no retry button, just when it comes back.
+struct AILimitReachedView: View {
+    let detail: String
+
+    private var resetText: String {
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = TimeZone(identifier: "UTC") ?? .current
+        let nextMidnightUTC = utc.startOfDay(for: Date().addingTimeInterval(86_400))
+        return nextMidnightUTC.formatted(date: .omitted, time: .shortened)
+    }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "moon.stars.fill")
+                .font(.system(size: 44))
+                .foregroundStyle(.tint)
+                .padding(.top, 48)
+            Text("That's Today's Magic")
+                .font(.title2.bold())
+            Text("You've used all of today's AI generations. They're back at \(resetText).")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            Label("Everything you've generated is saved in Profile → My AI Tones.", systemImage: "sparkles")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                )
+                .padding(.top, 8)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+}

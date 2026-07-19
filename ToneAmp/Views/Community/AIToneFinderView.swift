@@ -13,6 +13,7 @@ struct AIToneFinderView: View {
     private enum Phase {
         case loading
         case failed(String)
+        case limited(String)
         case result([AIGeneratedTone])
     }
 
@@ -33,6 +34,8 @@ struct AIToneFinderView: View {
                         phase = .loading
                         Task { await identify() }
                     }
+                case .limited(let detail):
+                    AILimitReachedView(detail: detail)
                 case .result(let tones):
                     resultList(tones)
                 }
@@ -73,7 +76,12 @@ struct AIToneFinderView: View {
                 phase = .result(tones)
             }
         } catch {
-            phase = .failed(error.localizedDescription)
+            if let toneError = error as? AIToneError,
+               case .rateLimited(let detail) = toneError {
+                phase = .limited(detail)
+            } else {
+                phase = .failed(error.localizedDescription)
+            }
         }
     }
 
