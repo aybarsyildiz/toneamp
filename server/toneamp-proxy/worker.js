@@ -20,6 +20,9 @@ export default {
       const path = new URL(request.url).pathname;
       if (path === "/privacy") return html(PRIVACY_HTML);
       if (path === "/support" || path === "/") return html(SUPPORT_HTML);
+      // App Review demo kill switch: set the DEMO_DISABLED env var (any
+      // value) after launch to permanently disable the in-app demo code.
+      if (path === "/demo") return json(200, { enabled: !env.DEMO_DISABLED });
       return json(404, { error: { message: "Not found" } });
     }
     if (request.method !== "POST") {

@@ -558,6 +558,7 @@ struct SignInSheet: View {
 
     @State private var showingDemoPrompt = false
     @State private var demoCode = ""
+    @State private var demoTapCount = 0
 
     var body: some View {
         VStack(spacing: 18) {
@@ -565,6 +566,18 @@ struct SignInSheet: View {
                 .font(.system(size: 56))
                 .foregroundStyle(.tint)
                 .padding(.top, 40)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    // App Review demo entry (2.1a): five taps on the icon.
+                    // Invisible to normal use; documented only in the App
+                    // Store Connect review notes, and server-gated so it can
+                    // be disabled remotely after approval.
+                    demoTapCount += 1
+                    if demoTapCount >= 5 {
+                        demoTapCount = 0
+                        showingDemoPrompt = true
+                    }
+                }
             Text("Sign In to Continue")
                 .font(.title2.bold())
             Text("Browsing is open to everyone. Favorites, song identification, publishing, rating, and the AI tone engine are tied to your account — so your library follows you and every tone has a real author.")
@@ -596,12 +609,7 @@ struct SignInSheet: View {
                 dismiss()
             }
             .foregroundStyle(.secondary)
-            Button("Demo access code") {
-                showingDemoPrompt = true
-            }
-            .font(.footnote)
-            .foregroundStyle(.tertiary)
-            .padding(.bottom, 28)
+            .padding(.bottom, 32)
         }
         .presentationDetents([.medium])
         .alert("Demo Access", isPresented: $showingDemoPrompt) {
@@ -609,18 +617,36 @@ struct SignInSheet: View {
                 .textInputAutocapitalization(.characters)
                 .autocorrectionDisabled()
             Button("Unlock") {
-                let normalized = demoCode.trimmingCharacters(in: .whitespaces).uppercased()
-                if normalized == "TONEAMP-REVIEW" {
-                    session.startReviewDemo()
-                    dismiss()
-                }
+                let entered = demoCode.trimmingCharacters(in: .whitespaces).uppercased()
                 demoCode = ""
+                guard entered == "TONEAMP-REVIEW" else { return }
+                Task { @MainActor in
+                    if await Self.demoAllowedByServer() {
+                        session.startReviewDemo()
+                        dismiss()
+                    }
+                }
             }
             Button("Cancel", role: .cancel) {
                 demoCode = ""
             }
         } message: {
-            Text("For App Review and demos: unlocks a full-featured account.")
+            Text("Reserved for App Review.")
         }
+    }
+
+    /// Remote kill switch: the demo only unlocks while the proxy allows it.
+    /// Fails OPEN on network trouble (review must never break on a blip);
+    /// an explicit {"enabled": false} from the server disables it for good.
+    private static func demoAllowedByServer() async -> Bool {
+        guard let base = AIToneService.proxyURL else { return true }
+        var request = URLRequest(url: base.appendingPathComponent("demo"))
+        request.timeoutInterval = 5
+        guard let (data, _) = try? await URLSession.shared.data(for: request),
+              let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let enabled = obj["enabled"] as? Bool else {
+            return true
+        }
+        return enabled
     }
 }
