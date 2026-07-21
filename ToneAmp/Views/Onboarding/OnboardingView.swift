@@ -556,6 +556,9 @@ struct SignInSheet: View {
     @Environment(AvatarStore.self) private var avatarStore
     @Environment(\.dismiss) private var dismiss
 
+    @State private var showingDemoPrompt = false
+    @State private var demoCode = ""
+
     var body: some View {
         VStack(spacing: 18) {
             Image(systemName: "person.crop.circle.badge.checkmark")
@@ -593,8 +596,31 @@ struct SignInSheet: View {
                 dismiss()
             }
             .foregroundStyle(.secondary)
-            .padding(.bottom, 32)
+            Button("Demo access code") {
+                showingDemoPrompt = true
+            }
+            .font(.footnote)
+            .foregroundStyle(.tertiary)
+            .padding(.bottom, 28)
         }
         .presentationDetents([.medium])
+        .alert("Demo Access", isPresented: $showingDemoPrompt) {
+            TextField("Access code", text: $demoCode)
+                .textInputAutocapitalization(.characters)
+                .autocorrectionDisabled()
+            Button("Unlock") {
+                let normalized = demoCode.trimmingCharacters(in: .whitespaces).uppercased()
+                if normalized == "TONEAMP-REVIEW" {
+                    session.startReviewDemo()
+                    dismiss()
+                }
+                demoCode = ""
+            }
+            Button("Cancel", role: .cancel) {
+                demoCode = ""
+            }
+        } message: {
+            Text("For App Review and demos: unlocks a full-featured account.")
+        }
     }
 }

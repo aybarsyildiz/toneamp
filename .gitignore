@@ -20,3 +20,4 @@ build/
 
 # Local secrets — bundled into dev builds only, never committed
 ToneAmp/Secrets.plist
+web/

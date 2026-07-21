@@ -42,6 +42,8 @@ TONEAMP PRO
 • Every AI result is saved to your personal tone library.
 
 No ads. No tracking. Made by a guitarist, for guitarists.
+
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 ```
 
 ## Keywords (100 max, comma-separated)

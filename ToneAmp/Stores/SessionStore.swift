@@ -59,6 +59,15 @@ final class SessionStore {
         UserDefaults.standard.set(false, forKey: Self.onboardedKey)
     }
 
+    /// App Review demo mode (Guideline 2.1a): unlocks a full-featured local
+    /// account including Pro, no Apple ID or purchase needed. Entered via
+    /// the access code on the sign-in sheet; the code lives in App Store
+    /// Connect's review notes.
+    func startReviewDemo() {
+        completeSignIn(userID: "demo-app-review", displayName: "App Reviewer")
+        setPro(true)
+    }
+
     func completeSignIn(userID: String, displayName: String) {
         self.userID = userID
         KeychainStore.save(userID, forKey: KeychainStore.appleUserIDAccount)
