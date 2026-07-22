@@ -174,6 +174,28 @@ enum CommunityService {
     /// both IDs, so re-rating overwrites instead of duplicating.
     // MARK: - Author profiles
 
+    /// Renames the author everywhere: published tones carry a snapshot of
+    /// the name, so a rename rewrites each of the author's own records
+    /// (public-DB permissions only allow editing your own anyway).
+    static func renameAuthor(authorID: String, to newName: String) async throws {
+        try await ensureAccount()
+        let query = CKQuery(
+            recordType: toneRecordType,
+            predicate: NSPredicate(format: "authorID == %@", authorID)
+        )
+        let (matchResults, _) = try await database.records(
+            matching: query,
+            inZoneWith: nil,
+            desiredKeys: nil,
+            resultsLimit: 200
+        )
+        for (_, result) in matchResults {
+            guard let record = try? result.get() else { continue }
+            record["authorName"] = newName as CKRecordValue
+            _ = try? await database.save(record)
+        }
+    }
+
     /// One public profile record per author (deterministic record name, so
     /// updates overwrite): display name + avatar shown on author pages.
     static func upsertProfile(authorID: String, displayName: String, avatarData: Data?) async throws {

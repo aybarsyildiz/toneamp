@@ -7,6 +7,7 @@ struct OnboardingView: View {
     @Environment(SessionStore.self) private var session
     @Environment(RigStore.self) private var rigStore
     @State private var page = 0
+    @State private var onboardName = ""
     @State private var expandedSearch: Set<GearItem.Category> = []
 
     private let lastPage = 6
@@ -435,6 +436,14 @@ struct OnboardingView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
+            TextField("Your name (shown on your tones)", text: $onboardName)
+                .textFieldStyle(.plain)
+                .textContentType(.name)
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .padding(.horizontal, 40)
             Spacer()
             SignInWithAppleButton(.signIn) { request in
                 request.requestedScopes = [.fullName]
@@ -463,6 +472,10 @@ struct OnboardingView: View {
                 .compactMap { $0 }
                 .joined(separator: " ")
                 session.completeSignIn(userID: credential.user, displayName: name)
+            }
+            // A typed name beats the credential's.
+            if !onboardName.trimmingCharacters(in: .whitespaces).isEmpty {
+                session.setDisplayName(onboardName)
             }
             session.completeOnboarding()
         case .failure:

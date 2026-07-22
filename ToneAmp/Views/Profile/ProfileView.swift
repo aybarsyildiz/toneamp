@@ -17,6 +17,8 @@ struct ProfileView: View {
     @State private var showingSignIn = false
     @State private var showingPhotoPicker = false
     @State private var photoItem: PhotosPickerItem?
+    @State private var showingRenamePrompt = false
+    @State private var nameInput = ""
 
     var body: some View {
         NavigationStack {
@@ -221,8 +223,43 @@ struct ProfileView: View {
             }
             .buttonStyle(.plain)
             VStack(spacing: 4) {
-                Text(session.isSignedIn ? session.authorName : "Guest Guitarist")
-                    .font(.title3.bold())
+                Button {
+                    guard session.isSignedIn else { return }
+                    nameInput = session.authorName
+                    showingRenamePrompt = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(session.isSignedIn ? session.authorName : "Guest Guitarist")
+                            .font(.title3.bold())
+                            .foregroundStyle(.primary)
+                        if session.isSignedIn {
+                            Image(systemName: "pencil")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
+                .alert("Display Name", isPresented: $showingRenamePrompt) {
+                    TextField("Your name", text: $nameInput)
+                        .textContentType(.name)
+                    Button("Save") {
+                        let trimmed = nameInput.trimmingCharacters(in: .whitespaces)
+                        guard !trimmed.isEmpty else { return }
+                        session.setDisplayName(trimmed)
+                        // Push the new name to the community: profile record
+                        // plus the name snapshot on every published tone.
+                        avatarStore.syncToCommunity(session: session)
+                        if let userID = session.userID {
+                            Task {
+                                try? await CommunityService.renameAuthor(authorID: userID, to: trimmed)
+                            }
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Shown on your published tones and ratings.")
+                }
                 HStack(spacing: 6) {
                     if session.isPro {
                         Text("PRO")

@@ -71,12 +71,20 @@ final class SessionStore {
     func completeSignIn(userID: String, displayName: String) {
         self.userID = userID
         KeychainStore.save(userID, forKey: KeychainStore.appleUserIDAccount)
-        // Apple only provides the name on first authorization — keep any
-        // previously stored name when the credential comes back empty.
-        if !displayName.isEmpty {
+        // Apple only provides the name on first authorization, and a name
+        // the user typed themselves always wins over the credential's.
+        if !displayName.isEmpty && self.displayName.isEmpty {
             self.displayName = displayName
             UserDefaults.standard.set(displayName, forKey: Self.displayNameKey)
         }
+    }
+
+    /// User-chosen display name — editable any time, like the avatar.
+    func setDisplayName(_ name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        displayName = trimmed
+        UserDefaults.standard.set(trimmed, forKey: Self.displayNameKey)
     }
 
     func signOut() {
