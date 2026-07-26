@@ -3,6 +3,7 @@ import SwiftUI
 struct SongDetailView: View {
     @Environment(FavoritesStore.self) private var favorites
     @Environment(SessionStore.self) private var session
+    @Environment(SetlistStore.self) private var setlistStore
     let song: Song
 
     @State private var favoriteToggleCount = 0
@@ -80,6 +81,26 @@ struct SongDetailView: View {
             ToneDetailView(tone: tone, song: song)
         }
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    if setlistStore.setlists.isEmpty {
+                        Text("No setlists yet — create one in Profile.")
+                    }
+                    ForEach(setlistStore.setlists) { setlist in
+                        Button {
+                            setlistStore.toggle(songID: song.id, in: setlist.id)
+                        } label: {
+                            if setlistStore.contains(songID: song.id, in: setlist.id) {
+                                Label(setlist.name, systemImage: "checkmark")
+                            } else {
+                                Text(setlist.name)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "music.note.list")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     guard session.requireSignIn() else { return }

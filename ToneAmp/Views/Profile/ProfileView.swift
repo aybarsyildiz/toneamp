@@ -9,6 +9,7 @@ struct ProfileView: View {
     @Environment(RigStore.self) private var rigStore
     @Environment(AIToneCacheStore.self) private var aiCache
     @Environment(AvatarStore.self) private var avatarStore
+    @Environment(SetlistStore.self) private var setlistStore
 
     @State private var myTones: [CommunityTone] = []
     @State private var isLoadingTones = false
@@ -19,6 +20,8 @@ struct ProfileView: View {
     @State private var photoItem: PhotosPickerItem?
     @State private var showingRenamePrompt = false
     @State private var nameInput = ""
+    @State private var showingNewSetlist = false
+    @State private var newSetlistName = ""
 
     var body: some View {
         NavigationStack {
@@ -110,6 +113,37 @@ struct ProfileView: View {
                     Text("Tone pages use your rig to translate settings to your gear.")
                 }
 
+                Section("My Setlists") {
+                    ForEach(setlistStore.setlists) { setlist in
+                        NavigationLink(value: setlist.id) {
+                            Label {
+                                Text(setlist.name)
+                            } icon: {
+                                Image(systemName: "music.note.list")
+                            }
+                            .badge(setlist.songIDs.count)
+                        }
+                    }
+                    .onDelete { offsets in
+                        for index in offsets {
+                            setlistStore.delete(setlistStore.setlists[index])
+                        }
+                    }
+                    Button {
+                        newSetlistName = ""
+                        showingNewSetlist = true
+                    } label: {
+                        Label("New Setlist", systemImage: "plus")
+                    }
+                    .alert("New Setlist", isPresented: $showingNewSetlist) {
+                        TextField("Name", text: $newSetlistName)
+                        Button("Create") {
+                            setlistStore.create(name: newSetlistName)
+                        }
+                        Button("Cancel", role: .cancel) {}
+                    }
+                }
+
                 if !aiCache.tones.isEmpty {
                     Section("My AI Tones") {
                         ForEach(aiCache.tones) { saved in
@@ -169,6 +203,12 @@ struct ProfileView: View {
             }
             .navigationDestination(for: CommunityTone.self) { tone in
                 CommunityToneDetailView(tone: tone)
+            }
+            .navigationDestination(for: UUID.self) { setlistID in
+                SetlistDetailView(setlistID: setlistID)
+            }
+            .navigationDestination(for: Song.self) { song in
+                SongDetailView(song: song)
             }
             .navigationDestination(for: SavedAITone.self) { saved in
                 SavedAIToneDetailView(tone: saved)

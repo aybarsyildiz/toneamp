@@ -4,6 +4,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(SessionStore.self) private var session
+    @Environment(LibraryStore.self) private var library
     @Environment(ProStore.self) private var pro
     @Environment(ModerationStore.self) private var moderation
 
@@ -11,6 +12,7 @@ struct SettingsView: View {
     @State private var confirmingSignOut = false
     @State private var showingPaywall = false
     @State private var isRestoring = false
+    @State private var dailyReminder = NotificationManager.isEnabled
 
     private var privacyURL: URL {
         AIToneService.proxyURL?.appendingPathComponent("privacy")
@@ -112,6 +114,15 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Toggle(isOn: $dailyReminder) {
+                        Label("Daily Tone Reminder", systemImage: "bell.badge")
+                    }
+                    .onChange(of: dailyReminder) { _, enabled in
+                        Task {
+                            await NotificationManager.setEnabled(enabled, songs: library.songs)
+                            dailyReminder = NotificationManager.isEnabled
+                        }
+                    }
                     Button {
                         moderation.unhideAll()
                     } label: {

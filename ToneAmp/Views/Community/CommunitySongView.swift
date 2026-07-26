@@ -6,6 +6,7 @@ struct CommunitySongView: View {
     @Environment(SessionStore.self) private var session
     @Environment(AIToneCacheStore.self) private var aiCache
     @Environment(ModerationStore.self) private var moderation
+    @Environment(LibraryStore.self) private var library
     let song: CatalogSong
 
     @State private var tones: [CommunityTone] = []
@@ -13,6 +14,18 @@ struct CommunitySongView: View {
 
     private var visibleTones: [CommunityTone] {
         tones.filter { !moderation.isHidden($0) }
+    }
+
+    /// True when this song is the week's contest song.
+    private var isContestSong: Bool {
+        guard let weekly = WeeklyContest.song(in: library.songs) else { return false }
+        return ToneAdaptationInput.syntheticTrackID(for: weekly.id) == song.trackId
+    }
+
+    /// The reigning tone: top-rated on the contest song (list is served
+    /// rating-sorted, so the first rated tone reigns).
+    private func wearsCrown(_ tone: CommunityTone) -> Bool {
+        isContestSong && tone.averageRating != nil && tone.id == visibleTones.first?.id
     }
     @State private var errorMessage: String?
     @State private var showingEditor = false
@@ -88,6 +101,11 @@ struct CommunitySongView: View {
                         NavigationLink(value: tone) {
                             VStack(alignment: .leading, spacing: 6) {
                                 HStack {
+                                    if wearsCrown(tone) {
+                                        Image(systemName: "crown.fill")
+                                            .font(.caption)
+                                            .foregroundStyle(.yellow)
+                                    }
                                     Text(tone.toneName)
                                     Spacer()
                                     CharacterBadge(character: tone.character)

@@ -10,6 +10,7 @@ struct ToneAmpApp: App {
     @State private var pro = ProStore()
     @State private var moderation = ModerationStore()
     @State private var avatar = AvatarStore()
+    @State private var setlists = SetlistStore()
 
     var body: some Scene {
         WindowGroup {
@@ -22,11 +23,13 @@ struct ToneAmpApp: App {
                 .environment(pro)
                 .environment(moderation)
                 .environment(avatar)
+                .environment(setlists)
                 .task {
                     pro.onEntitlementChange = { active in
                         session.setPro(active)
                     }
                     pro.start()
+                    await NotificationManager.refresh(songs: library.songs)
                 }
         }
     }

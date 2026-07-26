@@ -172,6 +172,42 @@ enum CommunityService {
 
     /// One rating per user per tone: the rating record name is derived from
     /// both IDs, so re-rating overwrites instead of duplicating.
+    // MARK: - Nailed it
+
+    /// "I nailed this tone" — social proof per tone. One personal marker
+    /// record per user (deterministic ID prevents doubles) plus a small
+    /// aggregate record holding the public count.
+    static func nailCount(toneKey: String) async -> Int {
+        let recordID = CKRecord.ID(recordName: "nailcount|\(toneKey)".prefix(250).description)
+        guard let record = try? await database.record(for: recordID) else { return 0 }
+        return record["count"] as? Int ?? 0
+    }
+
+    /// Marks the tone nailed for this user; returns the updated count.
+    static func nailIt(toneKey: String, userID: String) async throws -> Int {
+        try await ensureAccount()
+        let markerID = CKRecord.ID(recordName: "nail|\(toneKey)|\(userID)".prefix(250).description)
+        if (try? await database.record(for: markerID)) != nil {
+            return await nailCount(toneKey: toneKey)
+        }
+        let marker = CKRecord(recordType: "ToneNail", recordID: markerID)
+        marker["toneKey"] = String(toneKey.prefix(200)) as CKRecordValue
+        marker["userID"] = userID as CKRecordValue
+        _ = try await database.save(marker)
+
+        let countID = CKRecord.ID(recordName: "nailcount|\(toneKey)".prefix(250).description)
+        let record: CKRecord
+        if let existing = try? await database.record(for: countID) {
+            record = existing
+        } else {
+            record = CKRecord(recordType: "NailCount", recordID: countID)
+        }
+        let next = (record["count"] as? Int ?? 0) + 1
+        record["count"] = next as CKRecordValue
+        _ = try await database.save(record)
+        return next
+    }
+
     // MARK: - Author profiles
 
     /// Renames the author everywhere: published tones carry a snapshot of

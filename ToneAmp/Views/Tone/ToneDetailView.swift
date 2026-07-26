@@ -35,6 +35,19 @@ struct ToneDetailView: View {
 
             Section("For Your Rig") {
                 RigTipsView(pickup: tone.pickup, amp: tone.amp, pedals: tone.pedals)
+                NailedItButton(toneKey: "lib|\(song.id)|\(tone.id)")
+                ShareToneCardButton(payload: ToneCardPayload(
+                    songTitle: song.title,
+                    artist: song.artist,
+                    toneName: tone.name,
+                    character: tone.character,
+                    ampName: tone.amp,
+                    settings: tone.settings,
+                    guitar: tone.guitar,
+                    pickup: tone.pickup,
+                    pedalNames: tone.pedals.map(\.name),
+                    key: song.key
+                ))
                 AdaptToMyGearButton(
                     input: ToneAdaptationInput(
                         trackID: ToneAdaptationInput.syntheticTrackID(for: song.id),

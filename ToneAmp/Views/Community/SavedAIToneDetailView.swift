@@ -111,6 +111,18 @@ struct SavedAIToneDetailView: View {
             }
 
             Section {
+                ShareToneCardButton(payload: ToneCardPayload(
+                    songTitle: tone.songTitle,
+                    artist: tone.artistName,
+                    toneName: tone.name,
+                    character: tone.character,
+                    ampName: tone.ampName,
+                    settings: tone.settings,
+                    guitar: tone.guitar,
+                    pickup: tone.pickup,
+                    pedalNames: tone.pedals.map(\.name),
+                    key: tone.key
+                ))
                 if isPublished {
                     Label("Published to the community", systemImage: "checkmark.circle.fill")
                         .foregroundStyle(.green)

@@ -376,3 +376,81 @@ struct SignInRequiredView: View {
         }
     }
 }
+
+/// "I nailed this" — per-tone social proof. Count lives in CloudKit; the
+/// user's own nailed set is mirrored locally for instant state.
+struct NailedItButton: View {
+    let toneKey: String
+
+    @Environment(SessionStore.self) private var session
+    @State private var count = 0
+    @State private var nailed = false
+    @State private var busy = false
+
+    private static let localKey = "toneamp.nailedTones"
+
+    var body: some View {
+        Button {
+            guard !nailed, !busy else { return }
+            guard session.requireSignIn() else { return }
+            busy = true
+            Task { @MainActor in
+                if let userID = session.userID,
+                   let newCount = try? await CommunityService.nailIt(toneKey: toneKey, userID: userID) {
+                    count = newCount
+                    nailed = true
+                    var set = Set(UserDefaults.standard.stringArray(forKey: Self.localKey) ?? [])
+                    set.insert(toneKey)
+                    UserDefaults.standard.set(Array(set), forKey: Self.localKey)
+                }
+                busy = false
+            }
+        } label: {
+            HStack {
+                Label(
+                    nailed ? "You nailed this" : "I Nailed This Tone",
+                    systemImage: nailed ? "scope" : "scope"
+                )
+                .foregroundStyle(nailed ? AnyShapeStyle(.tint) : AnyShapeStyle(.primary))
+                Spacer()
+                if busy {
+                    ProgressView()
+                } else if count > 0 {
+                    Text(count == 1 ? "1 player" : "\(count) players")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .sensoryFeedback(.success, trigger: nailed)
+        .task {
+            let set = Set(UserDefaults.standard.stringArray(forKey: Self.localKey) ?? [])
+            nailed = set.contains(toneKey)
+            count = await CommunityService.nailCount(toneKey: toneKey)
+        }
+    }
+}
+
+/// Tone of the Week: one deterministic song per ISO week. The community
+/// competes on it; the top-rated published tone wears the crown.
+enum WeeklyContest {
+    static func song(in songs: [Song]) -> Song? {
+        guard !songs.isEmpty else { return nil }
+        let calendar = Calendar(identifier: .iso8601)
+        let week = calendar.component(.weekOfYear, from: Date())
+        let year = calendar.component(.yearForWeekOfYear, from: Date())
+        return songs[(week * 53 + year * 7) % songs.count]
+    }
+
+    static func catalogSong(for song: Song) -> CatalogSong {
+        CatalogSong(
+            trackId: ToneAdaptationInput.syntheticTrackID(for: song.id),
+            trackName: song.title,
+            artistName: song.artist,
+            collectionName: song.album.isEmpty ? nil : song.album,
+            releaseDate: song.year > 0 ? "\(song.year)-01-01" : nil,
+            primaryGenreName: song.genre.rawValue,
+            artworkUrl100: song.artworkURL?.absoluteString
+        )
+    }
+}

@@ -10,6 +10,7 @@ struct CommunityView: View {
     }
 
     @Environment(ModerationStore.self) private var moderation
+    @Environment(LibraryStore.self) private var library
 
     @State private var searchText = ""
     @State private var searchResults: [CatalogSong] = []
@@ -151,6 +152,30 @@ struct CommunityView: View {
             }
         } else {
             List {
+                if let weekly = WeeklyContest.song(in: library.songs) {
+                    Section {
+                        NavigationLink(value: WeeklyContest.catalogSong(for: weekly)) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "crown.fill")
+                                    .font(.title3)
+                                    .foregroundStyle(.yellow)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Tone of the Week")
+                                        .font(.caption.weight(.semibold))
+                                        .foregroundStyle(.secondary)
+                                        .textCase(.uppercase)
+                                    Text("\(weekly.title) · \(weekly.artist)")
+                                        .font(.subheadline.weight(.semibold))
+                                        .lineLimit(1)
+                                    Text("Publish your best take — top-rated wins the crown.")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .padding(.vertical, 2)
+                        }
+                    }
+                }
                 if !topContributors.isEmpty {
                     Section("Top Contributors") {
                         HStack(spacing: 14) {
