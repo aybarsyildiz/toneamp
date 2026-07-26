@@ -22,6 +22,7 @@ struct ToneEditorView: View {
     @State private var notes = ""
     @State private var showingPedalEditor = false
     @State private var isPublishing = false
+    @State private var publishCelebration = 0
     @State private var errorMessage: String?
     @State private var showingSignIn = false
 
@@ -113,6 +114,7 @@ struct ToneEditorView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(!canPublish)
+                    .sensoryFeedback(.success, trigger: publishCelebration)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
                 } footer: {
@@ -175,6 +177,7 @@ struct ToneEditorView: View {
                     authorName: session.authorName,
                     authorID: userID
                 )
+                publishCelebration += 1
                 onPublished()
                 dismiss()
             } catch {

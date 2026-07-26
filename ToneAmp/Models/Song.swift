@@ -9,6 +9,10 @@ struct Song: Identifiable, Codable, Hashable {
     let genre: Genre
     let tones: [Tone]
     let artworkURL: URL?
+    /// Musical key of the song, e.g. "E minor".
+    let key: String?
+    /// Main chords, e.g. "Em – G – D – A".
+    let chords: String?
 
     init(
         id: String,
@@ -18,7 +22,9 @@ struct Song: Identifiable, Codable, Hashable {
         year: Int,
         genre: Genre,
         tones: [Tone],
-        artworkURL: URL? = nil
+        artworkURL: URL? = nil,
+        key: String? = nil,
+        chords: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -28,10 +34,12 @@ struct Song: Identifiable, Codable, Hashable {
         self.genre = genre
         self.tones = tones
         self.artworkURL = artworkURL
+        self.key = key
+        self.chords = chords
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, artist, album, year, genre, tones, artworkURL
+        case id, title, artist, album, year, genre, tones, artworkURL, key, chords
     }
 
     init(from decoder: Decoder) throws {
@@ -44,6 +52,8 @@ struct Song: Identifiable, Codable, Hashable {
         genre = try container.decode(Genre.self, forKey: .genre)
         tones = try container.decode([Tone].self, forKey: .tones)
         artworkURL = try container.decodeIfPresent(URL.self, forKey: .artworkURL)
+        key = try container.decodeIfPresent(String.self, forKey: .key)
+        chords = try container.decodeIfPresent(String.self, forKey: .chords)
     }
 
     func withArtwork(_ url: URL) -> Song {
@@ -55,7 +65,9 @@ struct Song: Identifiable, Codable, Hashable {
             year: year,
             genre: genre,
             tones: tones,
-            artworkURL: url
+            artworkURL: url,
+            key: key,
+            chords: chords
         )
     }
 }

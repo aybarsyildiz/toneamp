@@ -113,6 +113,13 @@ struct AIToneFinderView: View {
                         CharacterBadge(character: tone.character)
                     }
                     AmpPanelView(settings: tone.settings)
+                    if !tone.key.isEmpty {
+                        LabeledContent {
+                            Text(tone.key)
+                        } label: {
+                            Label("Key", systemImage: "music.quarternote.3")
+                        }
+                    }
                     LabeledContent {
                         Text(tone.guitar)
                             .multilineTextAlignment(.trailing)

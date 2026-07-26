@@ -24,12 +24,32 @@ struct SongDetailView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Text(song.genre.rawValue)
-                        .font(.caption.weight(.semibold))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(song.genre.tint.opacity(0.15), in: Capsule())
-                        .foregroundStyle(song.genre.tint)
+                    HStack(spacing: 8) {
+                        Text(song.genre.rawValue)
+                            .font(.caption.weight(.semibold))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(song.genre.tint.opacity(0.15), in: Capsule())
+                            .foregroundStyle(song.genre.tint)
+                        if let key = song.key, !key.isEmpty {
+                            Label(key, systemImage: "music.quarternote.3")
+                                .font(.caption.weight(.semibold))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 4)
+                                .background(Color(.tertiarySystemFill), in: Capsule())
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    if let chords = song.chords, !chords.isEmpty {
+                        Text(chords)
+                            .font(.caption.monospaced().weight(.medium))
+                            .foregroundStyle(.secondary)
+                    }
+                    ReferencePlayButton(
+                        trackID: ToneAdaptationInput.syntheticTrackID(for: song.id),
+                        songTitle: song.title,
+                        artist: song.artist
+                    )
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)

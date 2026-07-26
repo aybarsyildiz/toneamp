@@ -103,7 +103,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/70/d0/0970d0fa-a46d-049b-125c-d131171fce1c/603497877393.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/70/d0/0970d0fa-a46d-049b-125c-d131171fce1c/603497877393.jpg/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "G5 – B♭5 – C5 riff"
  },
  {
   "id": "highway-star-deep-purple",
@@ -144,7 +146,9 @@
     "notes": "The solo is Bach-like sequences — alternate pick every note, no legato shortcuts."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/70/d0/0970d0fa-a46d-049b-125c-d131171fce1c/603497877393.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/70/d0/0970d0fa-a46d-049b-125c-d131171fce1c/603497877393.jpg/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "G5 driving riff"
  },
  {
   "id": "child-in-time-deep-purple",
@@ -250,7 +254,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/d0/a7/34/d0a73465-1217-217e-376f-0afc99996dc2/190295974220.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/d0/a7/34/d0a73465-1217-217e-376f-0afc99996dc2/190295974220.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – G – F"
  },
  {
   "id": "burn-deep-purple",
@@ -291,7 +297,9 @@
     "notes": "Fast riff in G minor — mute between stabs so the horns of the riff stay clean."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/71/60/09716042-e912-1fb8-de4f-1d2de8bf5c57/603497877751.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/71/60/09716042-e912-1fb8-de4f-1d2de8bf5c57/603497877751.jpg/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "G5 riff – E♭ – F"
  },
  {
   "id": "black-night-deep-purple",
@@ -614,7 +622,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1a/3d/bb/1a3dbb86-c1f8-737e-571f-d6b647a230be/dj.rhubuvkd.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1a/3d/bb/1a3dbb86-c1f8-737e-571f-d6b647a230be/dj.rhubuvkd.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E5 – D5 riff"
  },
  {
   "id": "stairway-to-heaven-led-zeppelin",
@@ -661,7 +671,9 @@
     "notes": "The solo is a Telecaster, not a Les Paul — cutting, vocal, every phrase answered."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – E+ – C – D – F"
  },
  {
   "id": "kashmir-led-zeppelin",
@@ -690,7 +702,9 @@
     "notes": "DADGAD tuning. The riff is a loop — lock to the drums, not the orchestra."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/6c/5d/826c5d66-67b7-62f2-4d78-dd3c7b415e08/dj.pifhrvpa.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/6c/5d/826c5d66-67b7-62f2-4d78-dd3c7b415e08/dj.pifhrvpa.jpg/600x600bb.jpg",
+  "key": "D (DADGAD)",
+  "chords": "D – Dsus4 ascending riff"
  },
  {
   "id": "black-dog-led-zeppelin",
@@ -719,7 +733,9 @@
     "notes": "Recorded through a direct box into compressors — a mid-heavy cranked Marshall gets you there."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A blues riff"
  },
  {
   "id": "rock-and-roll-led-zeppelin",
@@ -748,7 +764,9 @@
     "notes": "Straight 12-bar fire; solo is pure pentatonic release."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – D – E 12-bar"
  },
  {
   "id": "immigrant-song-led-zeppelin",
@@ -777,7 +795,9 @@
     "notes": "Gallop with strict palm muting; the octave stabs must snap."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/62/fd/14/62fd14aa-d202-a86a-d948-0a5550b35fc3/dj.rkzuiqye.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/62/fd/14/62fd14aa-d202-a86a-d948-0a5550b35fc3/dj.rkzuiqye.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#5 gallop riff"
  },
  {
   "id": "good-times-bad-times-led-zeppelin",
@@ -941,7 +961,9 @@
     "notes": "Dynamics from a whisper to a scream — ride the guitar volume all song."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/62/fd/14/62fd14aa-d202-a86a-d948-0a5550b35fc3/dj.rkzuiqye.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/62/fd/14/62fd14aa-d202-a86a-d948-0a5550b35fc3/dj.rkzuiqye.jpg/600x600bb.jpg",
+  "key": "C minor",
+  "chords": "Cm slow blues"
  },
  {
   "id": "heartbreaker-led-zeppelin",
@@ -1617,7 +1639,9 @@
     "notes": "Sustain comes from the amp working hard, not just the pedal."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3e/17/ec/3e17ec6d-f980-c64f-19e0-a6fd8bbf0c10/886445635850.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3e/17/ec/3e17ec6d-f980-c64f-19e0-a6fd8bbf0c10/886445635850.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – A – G – Em"
  },
  {
   "id": "another-brick-in-the-wall-part-2-pink-floyd",
@@ -1767,7 +1791,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/49/86/18/49861852-877b-0992-fa27-58b25fa032b5/196589805232.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/49/86/18/49861852-877b-0992-fa27-58b25fa032b5/196589805232.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm7 – F#m – Em"
  },
  {
   "id": "time-pink-floyd",
@@ -1835,7 +1861,9 @@
     "notes": "Take your time with the bends — every note counts."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3e/76/b0/3e76b0e3-762b-2286-a019-8afb19cee541/886445635829.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3e/76/b0/3e76b0e3-762b-2286-a019-8afb19cee541/886445635829.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#m – A – E – F#m"
  },
  {
   "id": "shine-on-you-crazy-diamond-pink-floyd",
@@ -1903,7 +1931,9 @@
     "notes": "Sustain comes from the amp working hard, not just the pedal."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/aa/e0/ab/aae0ab6a-d906-a189-81bf-70b56aa43f7a/886445635843.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/aa/e0/ab/aae0ab6a-d906-a189-81bf-70b56aa43f7a/886445635843.jpg/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "Gm – Cm – D"
  },
  {
   "id": "wish-you-were-here-pink-floyd",
@@ -1948,7 +1978,9 @@
     "notes": "Roll the guitar volume back slightly for extra sparkle."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/aa/e0/ab/aae0ab6a-d906-a189-81bf-70b56aa43f7a/886445635843.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/aa/e0/ab/aae0ab6a-d906-a189-81bf-70b56aa43f7a/886445635843.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "Em7 – G – A7sus4 – C – D"
  },
  {
   "id": "have-a-cigar-pink-floyd",
@@ -2446,7 +2478,9 @@
     "notes": "Fuzz into a loud, mostly clean amp — the speaker breakup is part of the sound."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg",
+  "key": "E (E7#9)",
+  "chords": "E7#9 – G – A"
  },
  {
   "id": "voodoo-child-slight-return-jimi-hendrix",
@@ -2497,7 +2531,9 @@
     "notes": "Tuned down a half step. Intro is muted wah scratching before the riff lands."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a6/b8/45/a6b84589-6ff7-a462-9ff9-170b724980d5/dj.wjkdwlks.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a6/b8/45/a6b84589-6ff7-a462-9ff9-170b724980d5/dj.wjkdwlks.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E7#9 riff – wah groove"
  },
  {
   "id": "little-wing-jimi-hendrix",
@@ -2542,7 +2578,9 @@
     "notes": "Thumb-over chord embellishments; hammer-ons inside chords do the singing."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/93/5d/c5/935dc5d5-a985-333d-0825-879ddb36e461/884977526585.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/93/5d/c5/935dc5d5-a985-333d-0825-879ddb36e461/884977526585.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – G – Am – Bm – B♭ – C – D"
  },
  {
   "id": "hey-joe-jimi-hendrix",
@@ -2571,7 +2609,9 @@
     "notes": "Amp edge-of-breakup only; the double-stop fills answer every vocal line."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/e0/6d/c2e06da8-f46e-9809-8d8b-5e68a54426c3/mzi.xpgkygsu.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/e0/6d/c2e06da8-f46e-9809-8d8b-5e68a54426c3/mzi.xpgkygsu.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "C – G – D – A – E"
  },
  {
   "id": "all-along-the-watchtower-jimi-hendrix",
@@ -2622,7 +2662,9 @@
     "notes": "Half-step down. Layered solos: slide, wah, and octave phrases each get a verse."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/04/85/97/0485973d-6920-b651-f20d-5393755a6665/mzi.uexbwasy.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/04/85/97/0485973d-6920-b651-f20d-5393755a6665/mzi.uexbwasy.jpg/600x600bb.jpg",
+  "key": "C# minor",
+  "chords": "C#m – B – A – B"
  },
  {
   "id": "foxey-lady-jimi-hendrix",
@@ -2818,7 +2860,9 @@
     "notes": "Roll the guitar volume back slightly for extra sparkle."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg",
+  "key": "F major",
+  "chords": "E♭ – E – F chromatic"
  },
  {
   "id": "crosstown-traffic-jimi-hendrix",
@@ -3001,7 +3045,9 @@
     "notes": "Clapton's 'woman tone': neck pickup with the tone knob rolled almost fully off, cranked Marshall."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/9f/3f/da/9f3fdaab-98af-bec1-633c-212a2705ccf3/00602537802913.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/9f/3f/da/9f3fdaab-98af-bec1-633c-212a2705ccf3/00602537802913.rgb.jpg/600x600bb.jpg",
+  "key": "D major",
+  "chords": "D blues riff – G – A"
  },
  {
   "id": "white-room-cream",
@@ -3037,7 +3083,9 @@
     "notes": "Verse chords big and open; the outro solo is continuous wah phrasing."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/3d/f7/c33df7d6-72be-fefe-d517-907633e2aa59/00602537803163.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/3d/f7/c33df7d6-72be-fefe-d517-907633e2aa59/00602537803163.rgb.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – C – G/B – B♭"
  },
  {
   "id": "crossroads-cream",
@@ -3066,7 +3114,9 @@
     "notes": "No pedals — a loud Plexi and precise picking. Solo lines land right on the beat."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/97/ee/ab/97eeab5d-4b32-f10c-e609-0bbe45a1c52f/00600753256787.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/97/ee/ab/97eeab5d-4b32-f10c-e609-0bbe45a1c52f/00600753256787.rgb.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – D – E blues"
  },
  {
   "id": "badge-cream",
@@ -6482,7 +6532,9 @@
     "notes": "Take your time with the bends — every note counts."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – F# – A – E – G – D – Em – F#"
  },
  {
   "id": "life-in-the-fast-lane-eagles",
@@ -6518,7 +6570,9 @@
     "notes": "Walsh's riff: staccato and greasy, right behind the beat."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E7#9 funk riff"
  },
  {
   "id": "take-it-easy-eagles",
@@ -8105,7 +8159,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – D – A riff"
  },
  {
   "id": "highway-to-hell-ac-dc",
@@ -8211,7 +8267,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – D/F# – G riff"
  },
  {
   "id": "thunderstruck-ac-dc",
@@ -8317,7 +8375,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features114/v4/fc/c2/f8/fcc2f850-1d81-7440-c0a0-de7fcef1e911/dj.rrgizfic.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features114/v4/fc/c2/f8/fcc2f850-1d81-7440-c0a0-de7fcef1e911/dj.rrgizfic.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "B pull-off riff – A – E"
  },
  {
   "id": "you-shook-me-all-night-long-ac-dc",
@@ -8423,7 +8483,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features114/v4/12/ec/14/12ec1405-f963-4f7c-b107-356fb229f091/dj.sehkbvta.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features114/v4/12/ec/14/12ec1405-f963-4f7c-b107-356fb229f091/dj.sehkbvta.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – C – D"
  },
  {
   "id": "hells-bells-ac-dc",
@@ -8529,7 +8591,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – C – G arpeggio riff"
  },
  {
   "id": "shoot-to-thrill-ac-dc",
@@ -9657,7 +9721,9 @@
     "notes": "Add a touch more delay for the held notes at the top of the solo."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/600x600bb.jpg",
+  "key": "B♭ major",
+  "chords": "B♭ – Gm – Cm – F"
  },
  {
   "id": "we-will-rock-you-queen",
@@ -9725,7 +9791,9 @@
     "notes": "Sustain comes from the amp working hard, not just the pedal."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/4d/08/2a/4d082a9e-7898-1aa1-a02f-339810058d9e/14DMGIM05632.rgb.jpg/600x600bb.jpg",
+  "key": "C major",
+  "chords": "C5 stomp – A – D solo"
  },
  {
   "id": "killer-queen-queen",
@@ -10811,7 +10879,9 @@
     ],
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
-  ]
+  ],
+  "key": "E minor",
+  "chords": "E5 – D5 – G5 riff"
  },
  {
   "id": "iron-man-black-sabbath",
@@ -10851,7 +10921,9 @@
     ],
     "notes": "Bend into every riff note — Iommi's light-gauge strings and downtuned menace."
    }
-  ]
+  ],
+  "key": "B minor",
+  "chords": "B5 – D5 – E5 riff"
  },
  {
   "id": "war-pigs-black-sabbath",
@@ -10891,7 +10963,9 @@
     ],
     "notes": "Space is the riff — those silences between chords are load-bearing."
    }
-  ]
+  ],
+  "key": "E minor",
+  "chords": "E5 – D5 swing riff"
  },
  {
   "id": "children-of-the-grave-black-sabbath",
@@ -10971,7 +11045,9 @@
     ],
     "notes": "Follow the bassline riff exactly — guitar and bass in lockstep."
    }
-  ]
+  ],
+  "key": "E minor",
+  "chords": "E5 – G5 – A5 riff"
  },
  {
   "id": "sweet-leaf-black-sabbath",
@@ -11383,7 +11459,9 @@
     "notes": "Downpicked minor riff — punk energy, metal precision."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/3e/ce/c7/3ecec7e6-66a3-7ca8-d70f-5a4512aa21ba/dj.stjulnox.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/3e/ce/c7/3ecec7e6-66a3-7ca8-d70f-5a4512aa21ba/dj.stjulnox.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – G riff"
  },
  {
   "id": "painkiller-judas-priest",
@@ -11424,7 +11502,9 @@
     "notes": "Screaming top-end — solos are whammy-abused chaos over double kick."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d0/f4/d9/d0f4d907-d333-1c26-703d-7245a348a519/dj.xjjnnhmb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/d0/f4/d9/d0f4d907-d333-1c26-703d-7245a348a519/dj.xjjnnhmb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 speed riff"
  },
  {
   "id": "living-after-midnight-judas-priest",
@@ -11957,7 +12037,9 @@
     "notes": "Galloping triplets + twin harmonies — the Maiden formula at full charge."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/f8/cd/38/f8cd3816-a840-209a-e9f6-cf3f3e47da21/0881034134455.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/f8/cd/38/f8cd3816-a840-209a-e9f6-cf3f3e47da21/0881034134455.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – D – C gallop"
  },
  {
   "id": "run-to-the-hills-iron-maiden",
@@ -11986,7 +12068,9 @@
     "notes": "The gallop IS the war drums — lock to the kick exactly."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1d/cb/ac/1dcbac1b-737d-b7c8-8bed-b5a98ae9df77/0881034134448.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1d/cb/ac/1dcbac1b-737d-b7c8-8bed-b5a98ae9df77/0881034134448.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – D – G gallop"
  },
  {
   "id": "the-number-of-the-beast-iron-maiden",
@@ -12044,7 +12128,9 @@
     "notes": "The quiet intro returns as a stadium chant — dynamics sell it."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/05/ae/cd/05aecd3e-2e71-ad31-723c-2e007d8246ff/0881034134516.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/05/ae/cd/05aecd3e-2e71-ad31-723c-2e007d8246ff/0881034134516.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – D – Em"
  },
  {
   "id": "hallowed-be-thy-name-iron-maiden",
@@ -12073,7 +12159,9 @@
     "notes": "Bell-toll intro arpeggios build to the greatest closing solo section in metal."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1d/cb/ac/1dcbac1b-737d-b7c8-8bed-b5a98ae9df77/0881034134448.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1d/cb/ac/1dcbac1b-737d-b7c8-8bed-b5a98ae9df77/0881034134448.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – D – C – B"
  },
  {
   "id": "2-minutes-to-midnight-iron-maiden",
@@ -13342,7 +13430,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – A♭dim riff"
  },
  {
   "id": "master-of-puppets-metallica",
@@ -13425,7 +13515,9 @@
     "notes": "The clean middle section — arpeggios with volume swells."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 chromatic riff"
  },
  {
   "id": "one-metallica",
@@ -13504,7 +13596,9 @@
     "notes": "The machine-gun section doubles the double-kick exactly."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – G – A intro"
  },
  {
   "id": "nothing-else-matters-metallica",
@@ -13549,7 +13643,9 @@
     "notes": "Neck-position warmth carries the melody — dig in only for accents."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – Am – C – D"
  },
  {
   "id": "fade-to-black-metallica",
@@ -13596,7 +13692,9 @@
     "notes": "Hammett's fastest melodic playing — loops of pull-offs that climb forever."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/0f/7a/74/0f7a7472-92fa-e77d-384a-1e4304705e83/dj.jbiruenb.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/0f/7a/74/0f7a7472-92fa-e77d-384a-1e4304705e83/dj.jbiruenb.png/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – A – G – Em arpeggios"
  },
  {
   "id": "sad-but-true-metallica",
@@ -13641,7 +13739,9 @@
     "notes": "D standard tuning — the heaviest slow riff in the catalog; leave space."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg",
+  "key": "E minor (D tuning)",
+  "chords": "E5 – G5 drop riff"
  },
  {
   "id": "for-whom-the-bell-tolls-metallica",
@@ -13923,7 +14023,9 @@
     "notes": "Am arpeggios under the vocal; the chorus flips heavy — set both sounds up."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/9e/80/1b/9e801b06-67fa-0990-2d15-85480ad3cd46/850007452025.png/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – C – G – Em"
  },
  {
   "id": "wherever-i-may-roam-metallica",
@@ -14655,7 +14757,9 @@
     "notes": "Mid-tempo stomp — the riff is a march, not a sprint."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ff/79/20/ff79206c-4d9e-d991-a020-1e79651edf9a/13UABIM29570.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ff/79/20/ff79206c-4d9e-d991-a020-1e79651edf9a/13UABIM29570.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 – F5 – E5 riff"
  },
  {
   "id": "holy-wars-the-punishment-due-megadeth",
@@ -14684,7 +14788,9 @@
     "notes": "Mustaine's spider-chord riffing — economy of motion, brutal precision."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em fast riff"
  },
  {
   "id": "hangar-18-megadeth",
@@ -14713,7 +14819,9 @@
     "notes": "Trading solos every four bars — each one raises the stakes."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – G arpeggios"
  },
  {
   "id": "peace-sells-megadeth",
@@ -14742,7 +14850,9 @@
     "notes": "The bass owns the intro; guitar answers with snarling stabs."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/38/eb/22/38eb2239-25be-c219-b8c8-aa9853c91032/00602547895011.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/38/eb/22/38eb2239-25be-c219-b8c8-aa9853c91032/00602547895011.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 bass riff"
  },
  {
   "id": "tornado-of-souls-megadeth",
@@ -14771,7 +14881,9 @@
     "notes": "Friedman's solo: exotic bends approached from below, phrased like a vocalist."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/df/fe/a7/dffea722-e8d7-b2ac-2b31-e207fb738b8e/13UABIM36806.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 gallop – C – D"
  },
  {
   "id": "a-tout-le-monde-megadeth",
@@ -18056,7 +18168,9 @@
     "notes": "Drop C. The riff flips between delicate picking and full detonation mid-bar."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/600x600bb.jpg",
+  "key": "G minor (drop C)",
+  "chords": "G5 – A♭5 riff"
  },
  {
   "id": "toxicity-system-of-a-down",
@@ -18085,7 +18199,9 @@
     "notes": "Drop C; verse harmonics ring like bells before the stomp."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/600x600bb.jpg",
+  "key": "C minor (drop C)",
+  "chords": "C5 riff – E♭ – B♭"
  },
  {
   "id": "b-y-o-b-system-of-a-down",
@@ -19815,7 +19931,9 @@
     "notes": "Drop D; the riff supports the piano hook — precision chug, no fills."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/53/a7/7f/53a77fab-c54c-a57b-8130-248fc12d0c80/093624948995.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/53/a7/7f/53a77fab-c54c-a57b-8130-248fc12d0c80/093624948995.jpg/600x600bb.jpg",
+  "key": "E♭ minor",
+  "chords": "E♭m – B – D♭ – A♭"
  },
  {
   "id": "numb-linkin-park",
@@ -19844,7 +19962,9 @@
     "notes": "Drop D wall behind the synth — chords sustained full bars."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/dd/7d/72/dd7d7259-d27f-5b3e-ce64-9e304d2cb40f/dj.rxzrauer.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/dd/7d/72/dd7d7259-d27f-5b3e-ce64-9e304d2cb40f/dj.rxzrauer.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#m – D – A – E"
  },
  {
   "id": "crawling-linkin-park",
@@ -20903,7 +21023,9 @@
     "notes": "Drop D. The riff counts in 6.5/8 — feel it as a conversation, not math."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/fb/99/8c/fb998c1e-1a11-2434-0fa7-0d90beba5d2b/886447824764.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/fb/99/8c/fb998c1e-1a11-2434-0fa7-0d90beba5d2b/886447824764.jpg/600x600bb.jpg",
+  "key": "D minor (drop D)",
+  "chords": "Dm riff 5/8+7/8"
  },
  {
   "id": "sober-tool",
@@ -20931,7 +21053,9 @@
     "pedals": [],
     "notes": "Drop D; the verse is bass territory — guitar stabs only where it hurts."
    }
-  ]
+  ],
+  "key": "D minor (drop D)",
+  "chords": "D5 – F5 – A5 riff"
  },
  {
   "id": "forty-six-2-tool",
@@ -22127,7 +22251,9 @@
     "notes": "Neck-position warmth carries the melody — dig in only for accents."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "D – F#m – E – B verse"
  },
  {
   "id": "californication-red-hot-chili-peppers",
@@ -22156,7 +22282,9 @@
     "notes": "Two-note broken chords — fingertips soft, let the bass write the harmony."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – C – G"
  },
  {
   "id": "scar-tissue-red-hot-chili-peppers",
@@ -22185,7 +22313,9 @@
     "notes": "The slide fills between chords are the vocal's shadow."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg",
+  "key": "F major",
+  "chords": "F – Dm – C"
  },
  {
   "id": "otherside-red-hot-chili-peppers",
@@ -22214,7 +22344,9 @@
     "notes": "Am arpeggio verse; chorus chords brushed, not hit."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a0/fe/3f/a0fe3ff1-d068-b00e-6265-0b53dd144dcf/093624931997.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – C – G"
  },
  {
   "id": "can-t-stop-red-hot-chili-peppers",
@@ -22243,7 +22375,9 @@
     "notes": "Ghost-note sixteenths — the left hand mutes more than it frets."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/73/ec/27/73ec2771-a008-e55b-8ccd-faf6257d5cd0/093624932178.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/73/ec/27/73ec2771-a008-e55b-8ccd-faf6257d5cd0/093624932178.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em funk riff – D – Bm – C"
  },
  {
   "id": "by-the-way-red-hot-chili-peppers",
@@ -22337,7 +22471,9 @@
     "notes": "The fastest 'clean' riff in radio history — economy picking, feather touch."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/24/8e/2a248e94-2b8e-3745-906a-084837c0d547/mzi.xeoqdinh.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/2a/24/8e/2a248e94-2b8e-3745-906a-084837c0d547/mzi.xeoqdinh.jpg/600x600bb.jpg",
+  "key": "G# minor",
+  "chords": "G#m – E – B – F# riff"
  },
  {
   "id": "dani-california-red-hot-chili-peppers",
@@ -22792,7 +22928,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
+  "key": "F minor",
+  "chords": "F5 – B♭5 – A♭5 – D♭5"
  },
  {
   "id": "come-as-you-are-nirvana",
@@ -22852,7 +22990,9 @@
     "notes": "Riff tuned down a whole step (D standard) — play it lazy, half-behind the beat."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
+  "key": "E minor (D tuning)",
+  "chords": "Em – D riff"
  },
  {
   "id": "lithium-nirvana",
@@ -22897,7 +23037,9 @@
     "notes": "Verse chords staccato and muted; chorus explodes — the quiet/loud blueprint."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
+  "key": "D major",
+  "chords": "D5 – F#5 – B5 – G5 – B♭5 – C5 – A5 – C5"
  },
  {
   "id": "in-bloom-nirvana",
@@ -22942,7 +23084,9 @@
     "notes": "Nevermind rhythm tone: scooped wall of grind, chords slightly rushed."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/fd/b9/95fdb9b2-6d2b-92a6-97f2-51c1a6d77f1a/00602527874609.rgb.jpg/600x600bb.jpg",
+  "key": "B♭ major",
+  "chords": "B♭5 – G♭5 riff"
  },
  {
   "id": "heart-shaped-box-nirvana",
@@ -22991,7 +23135,9 @@
     "notes": "In Utero rawness — verse almost whispered, chorus a landslide."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e3/20/03/e32003a4-99bc-1c70-40ba-001882f35dba/00602537526840.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e3/20/03/e32003a4-99bc-1c70-40ba-001882f35dba/00602537526840.rgb.jpg/600x600bb.jpg",
+  "key": "A minor (drop D)",
+  "chords": "A5 – F5 – D♭5"
  },
  {
   "id": "about-a-girl-nirvana",
@@ -23607,7 +23753,9 @@
     "notes": "The riff bounces between open A and harmonics; solo is one long crescendo of bends."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – Cadd9 – G riff"
  },
  {
   "id": "even-flow-pearl-jam",
@@ -23643,7 +23791,9 @@
     "notes": "E-A funk-rock groove; ghost strums between chords."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/42/22/dd/4222ddfc-35a9-ab18-f467-cc370f6f24d6/098707793424.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/42/22/dd/4222ddfc-35a9-ab18-f467-cc370f6f24d6/098707793424.jpg/600x600bb.jpg",
+  "key": "D major",
+  "chords": "D – C funk riff"
  },
  {
   "id": "jeremy-pearl-jam",
@@ -23701,7 +23851,9 @@
     "notes": "E-A with hammered suspensions; the outro solo cries — bend slow."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/e1/7c/e0e17cf0-62e5-6312-f3df-2462960cc8f1/884977724745.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – Asus2"
  },
  {
   "id": "yellow-ledbetter-pearl-jam",
@@ -24200,7 +24352,9 @@
     "notes": "Drop D. Verse chords float in rotary swirl; chorus crushes."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/b6/d6/aeb6d672-2004-41eb-ccba-e2964643a2bc/06UMGIM18607.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/b6/d6/aeb6d672-2004-41eb-ccba-e2964643a2bc/06UMGIM18607.rgb.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – B♭ – F – E♭ – D"
  },
  {
   "id": "spoonman-soundgarden",
@@ -24229,7 +24383,9 @@
     "notes": "C–G drop tuning riff in 7 — percussion is the co-lead."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/b6/d6/aeb6d672-2004-41eb-ccba-e2964643a2bc/06UMGIM18607.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/b6/d6/aeb6d672-2004-41eb-ccba-e2964643a2bc/06UMGIM18607.rgb.jpg/600x600bb.jpg",
+  "key": "C (drop D)",
+  "chords": "C5 – D5 riff 7/4"
  },
  {
   "id": "outshined-soundgarden",
@@ -24686,7 +24842,9 @@
     "notes": "Half-step down; the riff bends a quarter-tone — tune to the sludge."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/2f/47/fa/mzi.effcotrm.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/2f/47/fa/mzi.effcotrm.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E5 wah riff – G5 – A5"
  },
  {
   "id": "would-alice-in-chains",
@@ -24715,7 +24873,9 @@
     "notes": "Bass owns the verse; guitar enters like dread arriving."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/54/26/62/5426627b-4707-7867-acc0-ce616d250381/074645247526.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/54/26/62/5426627b-4707-7867-acc0-ce616d250381/074645247526.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#m bass riff – B"
  },
  {
   "id": "rooster-alice-in-chains",
@@ -24760,7 +24920,9 @@
     "notes": "Clean arpeggios float; the chorus lands like artillery."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/54/26/62/5426627b-4707-7867-acc0-ce616d250381/074645247526.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/54/26/62/5426627b-4707-7867-acc0-ce616d250381/074645247526.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – G – D – A"
  },
  {
   "id": "them-bones-alice-in-chains",
@@ -25142,7 +25304,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d1/78/59/d178595c-350b-ad13-0386-1e734a9762ea/603497866878.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d1/78/59/d178595c-350b-ad13-0386-1e734a9762ea/603497866878.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – B♭ – C – A♭"
  },
  {
   "id": "interstate-love-song-stone-temple-pilots",
@@ -25171,7 +25335,9 @@
     "notes": "Open-position color chords — the prettiest grunge riff; don't overdrive it."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/f9/5d/c3/f95dc3b6-fa4d-ad2c-fe34-c6e53d748cef/dj.crzhohrj.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/f9/5d/c3/f95dc3b6-fa4d-ad2c-fe34-c6e53d748cef/dj.crzhohrj.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – C#m – A – B"
  },
  {
   "id": "vasoline-stone-temple-pilots",
@@ -26555,7 +26721,9 @@
     "notes": "The Dookie tone: one modded Plexi, no pedals, downstrokes forever."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/88/83/e7/8883e74b-1b7c-0725-09de-21e4e00d54b5/093624915713.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/88/83/e7/8883e74b-1b7c-0725-09de-21e4e00d54b5/093624915713.jpg/600x600bb.jpg",
+  "key": "E♭ major",
+  "chords": "E♭ – B♭ – Cm – Gm – A♭"
  },
  {
   "id": "american-idiot-green-day",
@@ -26583,7 +26751,9 @@
     "pedals": [],
     "notes": "Power chords as protest signs — all downstrokes, zero swing."
    }
-  ]
+  ],
+  "key": "A♭ major",
+  "chords": "A♭5 – D♭5 – E♭5"
  },
  {
   "id": "boulevard-of-broken-dreams-green-day",
@@ -26627,7 +26797,9 @@
     ],
     "notes": "Fm arpeggio figure — tremolo does the crying."
    }
-  ]
+  ],
+  "key": "F minor (capo 1)",
+  "chords": "Em – G – D – A shapes"
  },
  {
   "id": "when-i-come-around-green-day",
@@ -29522,7 +29694,9 @@
     "notes": "Jonny's dead-note crunches are sabotage-as-hook."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/28/7a/7c/287a7ca9-ed95-1a21-e3bb-4559a1a0ac0e/191404134351.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/28/7a/7c/287a7ca9-ed95-1a21-e3bb-4559a1a0ac0e/191404134351.png/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – B – C – Cm"
  },
  {
   "id": "paranoid-android-radiohead",
@@ -29571,7 +29745,9 @@
     "notes": "Three songs stitched together; the outro solo fights the time signature on purpose."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Cm – Gm – A – E"
  },
  {
   "id": "karma-police-radiohead",
@@ -29600,7 +29776,9 @@
     "notes": "Piano leads; guitar shadows the chords — restraint throughout."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/07/60/ba/0760ba0f-148c-b18f-d0ff-169ee96f3af5/634904078164.png/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – D – G – Em"
  },
  {
   "id": "no-surprises-radiohead",
@@ -31238,7 +31416,9 @@
     "notes": "Capo 2. The electric just halos the acoustic — sustain single notes under the chorus."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg",
+  "key": "F# minor (capo 2)",
+  "chords": "Em7 – G – Dsus4 – A7sus4 shapes"
  },
  {
   "id": "don-t-look-back-in-anger-oasis",
@@ -31267,7 +31447,9 @@
     "notes": "Piano intro, then wall-of-guitars C major — solo is pentatonic singalong."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/04/92/e0/0492e08b-cbcc-9969-9ad6-8f5a0888068c/5051961007107.jpg/600x600bb.jpg",
+  "key": "C major",
+  "chords": "C – F – Am – G"
  },
  {
   "id": "live-forever-oasis",
@@ -32076,7 +32258,9 @@
     "notes": "The riff is half-time and hypnotic — play behind the beat, never rush."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9c/b5/699cb5d6-115c-ff73-9d26-e57ea4350d72/887828031795.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9c/b5/699cb5d6-115c-ff73-9d26-e57ea4350d72/887828031795.png/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "Gm – E♭ – B♭ riff"
  },
  {
   "id": "r-u-mine-arctic-monkeys",
@@ -32125,7 +32309,9 @@
     "notes": "Falsetto hook over a riff that pivots between octaves."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9c/b5/699cb5d6-115c-ff73-9d26-e57ea4350d72/887828031795.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9c/b5/699cb5d6-115c-ff73-9d26-e57ea4350d72/887828031795.png/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#m – A – E riff"
  },
  {
   "id": "i-bet-you-look-good-on-the-dancefloor-arctic-monkeys",
@@ -33638,7 +33824,9 @@
     "notes": "Ride the guitar volume knob: full up for the riff, backed off to clean up."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/07/25/09/0725098a-09f4-f240-e551-94384a590371/886448799009.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/07/25/09/0725098a-09f4-f240-e551-94384a590371/886448799009.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "E – G – E – D – C – B riff"
  },
  {
   "id": "fell-in-love-with-a-girl-the-white-stripes",
@@ -33930,7 +34118,9 @@
     "notes": "The riff shuffles — swing the sixteenths like a boogie."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – G – A riff"
  },
  {
   "id": "tighten-up-the-black-keys",
@@ -34028,7 +34218,9 @@
     "notes": "Boogie chords with an octave fuzz sheen — strut tempo."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/55/39/ca/5539caf8-333e-5ad2-06ca-eaf5d84cd264/mzm.nmxwulyo.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – C – D riff"
  },
  {
   "id": "howlin-for-you-the-black-keys",
@@ -36644,7 +36836,9 @@
     "notes": "Riff swings — the groove matters more than the wall."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/f6/33/20/f6332053-fba1-187e-a42d-703e902dcb77/825646240913.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/f6/33/20/f6332053-fba1-187e-a42d-703e902dcb77/825646240913.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am fuzz riff"
  },
  {
   "id": "out-of-the-black-royal-blood",
@@ -36699,7 +36893,9 @@
     "notes": "It's a bass through pitch-split rigs — on guitar: drop tuning + octave-down pedal gets close."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fd/73/21/fd732192-133a-5167-ea66-a94a58b690a1/825646231843.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fd/73/21/fd732192-133a-5167-ea66-a94a58b690a1/825646231843.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#5 fuzz riff"
  },
  {
   "id": "little-monster-royal-blood",
@@ -38017,7 +38213,9 @@
     "notes": "Neck-position warmth carries the melody — dig in only for accents."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/47/c3/21/mzi.ciyzkqao.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/47/c3/21/mzi.ciyzkqao.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – C – B♭ – A"
  },
  {
   "id": "money-for-nothing-dire-straits",
@@ -38053,7 +38251,9 @@
     "notes": "The famous tone was a mic accident + parked wah. Fingerstyle, no pick."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/c3/91/ff/c391ff50-caba-db8a-2387-6c906d2ca65c/mzi.gyijrdqr.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/c3/91/ff/c391ff50-caba-db8a-2387-6c906d2ca65c/mzi.gyijrdqr.jpg/600x600bb.jpg",
+  "key": "G minor",
+  "chords": "Gm – B♭ – C riff"
  },
  {
   "id": "brothers-in-arms-dire-straits",
@@ -38102,7 +38302,9 @@
     "notes": "Every note placed like a word in a eulogy — fingerstyle, volume swells."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/bd/54/e8bd54fd-6595-4ebf-aa4c-58139ed316e6/dj.bngafruf.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/bd/54/e8bd54fd-6595-4ebf-aa4c-58139ed316e6/dj.bngafruf.jpg/600x600bb.jpg",
+  "key": "G# minor",
+  "chords": "G#m – E – B – F#"
  },
  {
   "id": "romeo-and-juliet-dire-straits",
@@ -39833,7 +40035,9 @@
     "notes": "Add a touch more delay for the held notes at the top of the solo."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg",
+  "key": "D major",
+  "chords": "D – C – G intro riff"
  },
  {
   "id": "welcome-to-the-jungle-guns-n-roses",
@@ -39939,7 +40143,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "A5 riff – Cadd9"
  },
  {
   "id": "paradise-city-guns-n-roses",
@@ -40045,7 +40251,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – C – F – C – G"
  },
  {
   "id": "november-rain-guns-n-roses",
@@ -40113,7 +40321,9 @@
     "notes": "Take your time with the bends — every note counts."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/6a/e2/1f/6ae21fa9-c897-3be1-2967-50eefae22b93/06UMGIM05041.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/6a/e2/1f/6ae21fa9-c897-3be1-2967-50eefae22b93/06UMGIM05041.rgb.jpg/600x600bb.jpg",
+  "key": "C major",
+  "chords": "C – F – G – Am"
  },
  {
   "id": "don-t-cry-guns-n-roses",
@@ -42884,7 +43094,9 @@
     "notes": "F# minor riff — classical precision, every note picked."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/92/06/bd/9206bdb3-453a-db69-44f4-c4b5bfe33510/886448748045.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/92/06/bd/9206bdb3-453a-db69-44f4-c4b5bfe33510/886448748045.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#5 – A – E – D riff"
  },
  {
   "id": "mr-crowley-ozzy-osbourne",
@@ -42929,7 +43141,9 @@
     "notes": "The outro solo is Rhoads' masterclass: fast scalar runs resolving to huge bends."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/92/06/bd/9206bdb3-453a-db69-44f4-c4b5bfe33510/886448748045.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/92/06/bd/9206bdb3-453a-db69-44f4-c4b5bfe33510/886448748045.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – A – Gm"
  },
  {
   "id": "bark-at-the-moon-ozzy-osbourne",
@@ -43034,7 +43248,9 @@
     "notes": "Zakk's pinch harmonics squeal on every riff repeat."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8e/ef/44/8eef4402-508e-860e-a3c0-9be46cf2379e/696998524828.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8e/ef/44/8eef4402-508e-860e-a3c0-9be46cf2379e/696998524828.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am bass riff – F – G"
  },
  {
   "id": "mama-i-m-coming-home-ozzy-osbourne",
@@ -44633,7 +44849,9 @@
     "notes": "Slide verses in open E feel; the outro is twin-guitar harmony — record one, play the other."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/57/00/f3/5700f331-2d06-7f5d-cb98-43970fd52874/14UMGIM00860.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/57/00/f3/5700f331-2d06-7f5d-cb98-43970fd52874/14UMGIM00860.rgb.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – D/F# – Em – F – C – D"
  },
  {
   "id": "sweet-home-alabama-lynyrd-skynyrd",
@@ -44662,7 +44880,9 @@
     "notes": "The D–C–G turnaround with chicken-pickin' fills — snap the strings off the fretboard."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/d6/41/c2d64132-6a94-38ea-3309-3326f4680169/14UMGIM00873.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/d6/41/c2d64132-6a94-38ea-3309-3326f4680169/14UMGIM00873.rgb.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "D – C – G"
  },
  {
   "id": "simple-man-lynyrd-skynyrd",
@@ -44691,7 +44911,9 @@
     "notes": "Arpeggiated C–G–Am forever; the solo stays inside the vocal melody."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/57/00/f3/5700f331-2d06-7f5d-cb98-43970fd52874/14UMGIM00860.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/57/00/f3/5700f331-2d06-7f5d-cb98-43970fd52874/14UMGIM00860.rgb.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "C – G – Am"
  },
  {
   "id": "gimme-three-steps-lynyrd-skynyrd",
@@ -45054,7 +45276,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/19/4d/3c/194d3c17-7a21-5622-0939-16feb62b6b07/0603497921430.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/19/4d/3c/194d3c17-7a21-5622-0939-16feb62b6b07/0603497921430.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A blues boogie riff"
  },
  {
   "id": "sharp-dressed-man-zz-top",
@@ -45083,7 +45307,9 @@
     "notes": "Boogie in C — pinch harmonics between phrases, always in the pocket."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/2d/1b/df/2d1bdf1c-e8bc-8361-a800-0f13ba944ad3/0603497921461.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/2d/1b/df/2d1bdf1c-e8bc-8361-a800-0f13ba944ad3/0603497921461.jpg/600x600bb.jpg",
+  "key": "C major",
+  "chords": "C5 boogie riff"
  },
  {
   "id": "gimme-all-your-lovin-zz-top",
@@ -45431,7 +45657,9 @@
     "notes": "Heavy strings (13s), tuned half-step down — shuffle with thumb bass notes."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/4c/30/3b/4c303b15-31ec-2f95-5beb-370471968188/dj.fbyalctw.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/4c/30/3b/4c303b15-31ec-2f95-5beb-370471968188/dj.fbyalctw.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E shuffle 12-bar"
  },
  {
   "id": "texas-flood-stevie-ray-vaughan",
@@ -45480,7 +45708,9 @@
     "notes": "Half-step down; every phrase begins with a rake and ends with vibrato."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/4c/30/3b/4c303b15-31ec-2f95-5beb-370471968188/dj.fbyalctw.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/4c/30/3b/4c303b15-31ec-2f95-5beb-370471968188/dj.fbyalctw.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G 12-bar slow blues"
  },
  {
   "id": "cold-shot-stevie-ray-vaughan",
@@ -45554,7 +45784,9 @@
     "notes": "The funk intro is muted rakes — pick hard, mute harder."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/7b/39/22/7b3922b9-61c1-5ad9-4c68-25f41f3fd402/dj.orqmjfhi.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/7b/39/22/7b3922b9-61c1-5ad9-4c68-25f41f3fd402/dj.orqmjfhi.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am funk riff"
  },
  {
   "id": "scuttle-buttin-stevie-ray-vaughan",
@@ -46547,7 +46779,9 @@
     "notes": "Lazy behind-the-beat riff — the space IS the groove."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/55/08/2b550878-8bad-b40f-9a58-d63aca53c824/00602498206034.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/55/08/2b550878-8bad-b40f-9a58-d63aca53c824/00602498206034.rgb.jpg/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – D riff"
  },
  {
   "id": "wonderful-tonight-eric-clapton",
@@ -46576,7 +46810,9 @@
     "notes": "The melody speaks — soft fingers, volume rolled to 7, every bend to pitch."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/55/08/2b550878-8bad-b40f-9a58-d63aca53c824/00602498206034.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/55/08/2b550878-8bad-b40f-9a58-d63aca53c824/00602498206034.rgb.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – D/F# – C – D"
  },
  {
   "id": "tears-in-heaven-eric-clapton",
@@ -46621,7 +46857,9 @@
     "notes": "Keep the pick attack light and let the chords breathe."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ec/7b/e1/ec7be14e-e011-1f8a-9a32-59ef378482c6/mzi.uvfjworw.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ec/7b/e1/ec7be14e-e011-1f8a-9a32-59ef378482c6/mzi.uvfjworw.jpg/600x600bb.jpg",
+  "key": "A major",
+  "chords": "A – E/G# – F#m – D – E"
  },
  {
   "id": "bell-bottom-blues-eric-clapton",
@@ -46972,7 +47210,9 @@
     "notes": "The solo is four notes done perfectly — bend slow, land exact, vibrato like breathing."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/a0/f4/7aa0f487-f983-390e-73ef-005115eea1e0/dj.oqpplyfm.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/a0/f4/7aa0f487-f983-390e-73ef-005115eea1e0/dj.oqpplyfm.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – C/G blues"
  },
  {
   "id": "slow-dancing-in-a-burning-room-john-mayer",
@@ -47017,7 +47257,9 @@
     "notes": "The intro double-stops slide between chords — thumb over the neck."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/a0/f4/7aa0f487-f983-390e-73ef-005115eea1e0/dj.oqpplyfm.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/a0/f4/7aa0f487-f983-390e-73ef-005115eea1e0/dj.oqpplyfm.jpg/600x600bb.jpg",
+  "key": "C# minor",
+  "chords": "C#m – A – E – B"
  },
  {
   "id": "neon-john-mayer",
@@ -47046,7 +47288,9 @@
     "notes": "Percussive thumb-slap fingerstyle — the riff is a drum pattern with pitches."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/0b/01/40/0b014055-6f12-94f6-6be6-35bb27676253/mzi.tciowflu.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/0b/01/40/0b014055-6f12-94f6-6be6-35bb27676253/mzi.tciowflu.jpg/600x600bb.jpg",
+  "key": "C minor",
+  "chords": "C7#9 funk riff"
  },
  {
   "id": "belief-john-mayer",
@@ -47271,7 +47515,9 @@
     "notes": "The Santana sustain: Boogie's cascading gain + neck pickup + perfectly still fretting hand."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5d/cc/48/5dcc4850-35e3-239a-3fde-dbade47cddfe/886970629324.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5d/cc/48/5dcc4850-35e3-239a-3fde-dbade47cddfe/886970629324.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – A7 – Gm"
  },
  {
   "id": "oye-como-va-santana",
@@ -47435,7 +47681,9 @@
     "notes": "Melody as prayer — swell into notes, hold until feedback blooms."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5d/cc/48/5dcc4850-35e3-239a-3fde-dbade47cddfe/886970629324.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5d/cc/48/5dcc4850-35e3-239a-3fde-dbade47cddfe/886970629324.jpg/600x600bb.jpg",
+  "key": "C minor",
+  "chords": "Cm – Fm – B♭ – E♭"
  },
  {
   "id": "samba-pa-ti-santana",
@@ -47464,7 +47712,9 @@
     "notes": "Slow samba — play the melody like a singer who's in no hurry."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/30/03/7f/30037fd6-3292-1806-c806-5341391c9aac/886444593038.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/30/03/7f/30037fd6-3292-1806-c806-5341391c9aac/886444593038.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G – Em – Am – D"
  },
  {
   "id": "soul-sacrifice-santana",
@@ -56639,7 +56889,9 @@
     "notes": "Four chords, endless — dynamics come only from the fuzz switch."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b6/c8/85/b6c885de-fde6-d40d-c95a-d89ede4270ae/06UMGIM09433.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b6/c8/85/b6c885de-fde6-d40d-c95a-d89ede4270ae/06UMGIM09433.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – G – D/F#"
  },
  {
   "id": "linger-the-cranberries",
@@ -63370,7 +63622,9 @@
     "notes": "The lead is two notes ringing over strums — the ghost 'ooh' does the rest."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9e/b7/25/9eb725bc-977c-545b-4b6b-cea4a72656ec/652637240634.png/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9e/b7/25/9eb725bc-977c-545b-4b6b-cea4a72656ec/652637240634.png/600x600bb.jpg",
+  "key": "E major",
+  "chords": "E – C#m – G# – A"
  },
  {
   "id": "here-comes-your-man-pixies",
@@ -72112,7 +72366,9 @@
     "notes": "Legato lines that never stop moving — pick only when the phrase restarts."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/40/cc/4a/40cc4a28-8630-bf68-fe8d-5fe4801fc915/884977849714.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/40/cc/4a/40cc4a28-8630-bf68-fe8d-5fe4801fc915/884977849714.jpg/600x600bb.jpg",
+  "key": "G major",
+  "chords": "G lydian riff"
  },
  {
   "id": "always-with-me-always-with-you-joe-satriani",
@@ -72176,7 +72432,9 @@
     "notes": "The melody is the song — tap the arpeggio section with metronome patience."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/40/cc/4a/40cc4a28-8630-bf68-fe8d-5fe4801fc915/884977849714.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/40/cc/4a/40cc4a28-8630-bf68-fe8d-5fe4801fc915/884977849714.jpg/600x600bb.jpg",
+  "key": "B major",
+  "chords": "B – G#m – E – F#"
  },
  {
   "id": "satch-boogie-joe-satriani",
@@ -72435,7 +72693,9 @@
     "notes": "Ten minutes of sustain and prayer — the trem arm is another finger."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/5a/d4/c0/mzi.edixmxmg.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/5a/d4/c0/mzi.edixmxmg.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – Am – B"
  },
  {
   "id": "tender-surrender-steve-vai",
@@ -83744,7 +84004,9 @@
     "notes": "Kurtalan Ekspres inceliği: az nota, çok duygu."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/96/b5/6f/96b56f34-4bb9-3aa5-add2-5a2504e74562/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/96/b5/6f/96b56f34-4bb9-3aa5-add2-5a2504e74562/cover.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – C – B♭ – A"
  },
  {
   "id": "sari-cizmeli-mehmet-aga-baris-manco",
@@ -84316,7 +84578,9 @@
     "notes": "Anadolu rock klasiği — riff işçi türküsü gibi dürüst; süsleme az, vurgu tam."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/85/20/ae/8520ae1f-63fc-ab56-6467-67e5a381bd27/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/85/20/ae/8520ae1f-63fc-ab56-6467-67e5a381bd27/cover.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – Dm – E"
  },
  {
   "id": "resimdeki-gozyaslari-cem-karaca",
@@ -84361,7 +84625,9 @@
     "notes": "Neck-position warmth carries the melody — dig in only for accents."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music71/v4/96/75/5f/96755f31-ca69-8c0b-72a8-1f0fa16a6bc6/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music71/v4/96/75/5f/96755f31-ca69-8c0b-72a8-1f0fa16a6bc6/cover.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – Am – B7"
  },
  {
   "id": "islak-islak-cem-karaca",
@@ -85172,7 +85438,9 @@
     "notes": "Mikrotonal süslemeler — perde arası çeyrek ses bükmeler riffin ruhu."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/de/f4/d4/def4d428-1941-bd2f-1cfe-45d23141e458/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/de/f4/d4/def4d428-1941-bd2f-1cfe-45d23141e458/cover.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – C – B♭"
  },
  {
   "id": "estarabim-erkin-koray",
@@ -86866,7 +87134,9 @@
     "notes": "Anadolu makamıyla thrash — riff aksanları zurna gibi konuşur."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/04/98/e9/0498e90d-a826-6f16-b9b8-4f58cdf25a3a/886443862203.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/04/98/e9/0498e90d-a826-6f16-b9b8-4f58cdf25a3a/886443862203.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em riff – C – D"
  },
  {
   "id": "gunduz-gece-pentagram",
@@ -86930,7 +87200,9 @@
     "notes": "Baladın yükü temiz arpejlerde — nakarat gain'i şarkının zirvesi."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/2f/66/de2f6633-c819-5841-e788-b15367a9f88a/886446374291.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/2f/66/de2f6633-c819-5841-e788-b15367a9f88a/886446374291.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – G – E"
  },
  {
   "id": "seytan-bunun-neresinde-pentagram",
@@ -87267,7 +87539,9 @@
     "notes": "Balad gövdesi, rock zirvesi — solo bölümünde sustain'e yaslan."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bd/5c/26/bd5c26e2-2bec-58cc-f295-d9f037567041/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bd/5c/26/bd5c26e2-2bec-58cc-f295-d9f037567041/cover.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – B♭ – F – C"
  },
  {
   "id": "bu-ask-fazla-sana-sebnem-ferah",
@@ -87296,7 +87570,9 @@
     "notes": "90'lar Türk rock tınısı: parlak crunch, net arpejler."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1a/a7/52/1aa752a9-0d58-18ff-7bef-30e1b77c431f/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1a/a7/52/1aa752a9-0d58-18ff-7bef-30e1b77c431f/cover.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – C – G"
  },
  {
   "id": "mayin-tarlasi-sebnem-ferah",
@@ -87370,7 +87646,9 @@
     "notes": "Roll the guitar volume back slightly for extra sparkle."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bd/5c/26/bd5c26e2-2bec-58cc-f295-d9f037567041/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bd/5c/26/bd5c26e2-2bec-58cc-f295-d9f037567041/cover.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – G – D"
  },
  {
   "id": "vazgectim-dunyadan-sebnem-ferah",
@@ -87795,7 +88073,9 @@
     "notes": "Şehirli hüzün: arpej + boşluk; vokale alan bırak."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/56/99/55/5699553f-9911-4b27-0193-cec688002ee5/887845498595.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/56/99/55/5699553f-9911-4b27-0193-cec688002ee5/887845498595.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – Am – B7"
  },
  {
   "id": "istanbul-da-sonbahar-teoman",
@@ -87836,7 +88116,9 @@
     "notes": "Az nota, çok sis — melodi yürüyüş temposunda."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/45/a7/12/45a71215-4b6b-7619-0073-f88158cf469e/00602567855491.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/45/a7/12/45a71215-4b6b-7619-0073-f88158cf469e/00602567855491.rgb.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – Dm – E – Am"
  },
  {
   "id": "paramparca-teoman",
@@ -87881,7 +88163,9 @@
     "notes": "Roll the guitar volume back slightly for extra sparkle."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e1/06/ee/e106ee25-82c4-244f-11ce-f3f81b92461d/00602567853671.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e1/06/ee/e106ee25-82c4-244f-11ce-f3f81b92461d/00602567853671.rgb.jpg/600x600bb.jpg",
+  "key": "D minor",
+  "chords": "Dm – B♭ – C – A"
  },
  {
   "id": "gemiler-teoman",
@@ -88409,7 +88693,9 @@
     "notes": "Grunge dinamiği: sözde fısıltı, nakaratta patlama. Akorları bırak, çalsın."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – G – D – A"
  },
  {
   "id": "senden-daha-guzel-duman",
@@ -88454,7 +88740,9 @@
     "notes": "Riff basit, gruv derin — sekizlikleri sürükleyerek çal."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e3/6a/03/e36a0347-7191-da04-7d53-32569e5904fd/884977122039.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e3/6a/03/e36a0347-7191-da04-7d53-32569e5904fd/884977122039.jpg/600x600bb.jpg",
+  "key": "F# minor",
+  "chords": "F#m – D – A – E"
  },
  {
   "id": "bu-aksam-duman",
@@ -88483,7 +88771,9 @@
     "notes": "Arpej + hüzün; nakaratta hafif drive yeter."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – C – G"
  },
  {
   "id": "belki-alisman-lazim-duman",
@@ -88528,7 +88818,9 @@
     "notes": "Riff tekrarında küçük süslemeler — fazlası gürültü."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ba/22/76/ba2276a9-e829-2a71-1ed8-43495f0d0a11/00602567788485.rgb.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – G – D – A"
  },
  {
   "id": "koprualti-duman",
@@ -88557,7 +88849,9 @@
     "notes": "Sokak ağzıyla ballad — vurgular sözle birlikte nefes alır."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/af/be/cf/afbecfd4-54c5-ff05-123a-db2b8cbdb2a8/18UMGIM33471.rgb.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/af/be/cf/afbecfd4-54c5-ff05-123a-db2b8cbdb2a8/18UMGIM33471.rgb.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – G – D"
  },
  {
   "id": "aman-aman-duman",
@@ -89483,7 +89777,9 @@
     "notes": "Riff inatçı ve köşeli — alternatif rock'ın Türkçe marşı; downstroke ağırlıklı."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – F – G – E"
  },
  {
   "id": "bir-derdim-var-mor-ve-otesi",
@@ -89585,7 +89881,9 @@
     "notes": "Nakaratta tam duvar; delay kapanmaz, sadece gain artar."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – G – D – A"
  },
  {
   "id": "sevda-cicegi-mor-ve-otesi",
@@ -89630,7 +89928,9 @@
     "notes": "Roll the guitar volume back slightly for extra sparkle."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg",
+  "key": "A minor",
+  "chords": "Am – G – F – E"
  },
  {
   "id": "deli-mor-ve-otesi",
@@ -89659,7 +89959,9 @@
     "notes": "Kısa, sinirli vuruşlar — punk enerjisi, alternatif ton."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/f2/81/04/f2810447-5f3e-2a05-5693-8ea407811d00/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/f2/81/04/f2810447-5f3e-2a05-5693-8ea407811d00/cover.jpg/600x600bb.jpg",
+  "key": "B minor",
+  "chords": "Bm – G – A – F#"
  },
  {
   "id": "uyan-mor-ve-otesi",
@@ -89708,7 +90010,9 @@
     "notes": "Kreşendo mimarisi: fısıltıyla başla, duvarla bitir."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/96/e5/e796e52e-030e-fd01-096a-0264fcaa3f9a/cover.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – G – D"
  },
  {
   "id": "olum-mor-ve-otesi",
@@ -91057,7 +91361,9 @@
     "pedals": [],
     "notes": "Pop-rock nakarat makinesi — köprüde dinamiği düşür, finalde patlat."
    }
-  ]
+  ],
+  "key": "E minor",
+  "chords": "Em – C – G – D"
  },
  {
   "id": "sensiz-olmaz-gripin",
@@ -92334,7 +92640,9 @@
     "notes": "Arpejler yağmur gibi — nakaratta hafif kırık yeter."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features/v4/7e/8f/99/7e8f991a-1a79-fbc7-fd98-bfd89acd23b7/dj.fdiqtwll.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Features/v4/7e/8f/99/7e8f991a-1a79-fbc7-fd98-bfd89acd23b7/dj.fdiqtwll.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – G – D"
  },
  {
   "id": "alev-alev-feridun-duzagac",
@@ -92769,7 +93077,9 @@
     "notes": "Lead variant: extra gain and mids to cut through, delay for width. Pick nearer the bridge and let bends sustain."
    }
   ],
-  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c6/6a/94/c66a9402-df2b-4b7d-ffc2-d9492a15e5af/cover.jpg/600x600bb.jpg"
+  "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c6/6a/94/c66a9402-df2b-4b7d-ffc2-d9492a15e5af/cover.jpg/600x600bb.jpg",
+  "key": "E minor",
+  "chords": "Em – C – D – Bm"
  },
  {
   "id": "sen-bir-meleksin-kargo",

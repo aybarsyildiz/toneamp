@@ -52,6 +52,16 @@ struct ProfileView: View {
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
+                    if let badge = contributorBadge {
+                        Label(badge.0, systemImage: badge.1)
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.tint)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                            .background(Color.accentColor.opacity(0.1), in: Capsule())
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 8, leading: 40, bottom: 0, trailing: 40))
+                    }
                 }
 
                 Section {
@@ -178,6 +188,17 @@ struct ProfileView: View {
             .refreshable {
                 await loadMyTones()
             }
+        }
+    }
+
+    /// Recognition tiers for community publishing.
+    private var contributorBadge: (String, String)? {
+        let count = myTones.count
+        switch count {
+        case 0: return nil
+        case 1..<5: return ("First Tone Published", "seal.fill")
+        case 5..<15: return ("Tone Smith — \(count) published", "hammer.fill")
+        default: return ("Tone Legend — \(count) published", "crown.fill")
         }
     }
 

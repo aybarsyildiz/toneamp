@@ -10,8 +10,29 @@ struct CatalogSong: Codable, Hashable, Identifiable {
     let releaseDate: String?
     let primaryGenreName: String?
     let artworkUrl100: String?
+    let previewUrl: String?
 
     var id: Int { trackId }
+
+    init(
+        trackId: Int,
+        trackName: String,
+        artistName: String,
+        collectionName: String?,
+        releaseDate: String?,
+        primaryGenreName: String?,
+        artworkUrl100: String?,
+        previewUrl: String? = nil
+    ) {
+        self.trackId = trackId
+        self.trackName = trackName
+        self.artistName = artistName
+        self.collectionName = collectionName
+        self.releaseDate = releaseDate
+        self.primaryGenreName = primaryGenreName
+        self.artworkUrl100 = artworkUrl100
+        self.previewUrl = previewUrl
+    }
 
     var year: Int {
         guard let releaseDate, releaseDate.count >= 4,

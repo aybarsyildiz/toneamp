@@ -46,6 +46,15 @@ struct CommunityView: View {
         }
     }
 
+    /// The three most prolific publishers — recognition drives publishing.
+    private var topContributors: [(String, Int)] {
+        var counts: [String: Int] = [:]
+        for tone in recentTones where !moderation.isHidden(tone) {
+            counts[tone.authorName, default: 0] += 1
+        }
+        return counts.sorted { $0.value > $1.value }.prefix(3).map { ($0.key, $0.value) }
+    }
+
     private var isFilterActive: Bool {
         sort != .recent || characterFilter != nil
     }
@@ -142,6 +151,27 @@ struct CommunityView: View {
             }
         } else {
             List {
+                if !topContributors.isEmpty {
+                    Section("Top Contributors") {
+                        HStack(spacing: 14) {
+                            ForEach(topContributors, id: \.0) { name, count in
+                                VStack(spacing: 4) {
+                                    Image(systemName: "person.crop.circle.fill")
+                                        .font(.title2)
+                                        .foregroundStyle(.tint)
+                                    Text(name)
+                                        .font(.caption.weight(.semibold))
+                                        .lineLimit(1)
+                                    Text(count == 1 ? "1 tone" : "\(count) tones")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
                 Section(sectionTitle) {
                     ForEach(filteredSongs) { summary in
                         NavigationLink(value: summary.song) {

@@ -4,6 +4,8 @@ import Foundation
 struct AIGeneratedTone: Identifiable, Hashable {
     let id = UUID()
     let name: String
+    /// Musical key of the song, e.g. "E minor" (may be empty).
+    var key: String = ""
     let character: ToneCharacter
     let ampName: String
     let settings: AmpSettings
@@ -394,6 +396,8 @@ enum AIToneService {
     relevant knobs (e.g. a wah), use an empty controls array and explain usage in its note.
     - Name real amps, guitars, and pedals used on the recording where known.
     - Keep notes practical and concise: tuning, technique, what makes the tone work.
+    - Fill the key field with the song's musical key (e.g. "E minor", "A major"); \
+    empty string only if genuinely unknowable.
     - Set found to false ONLY when the music genuinely has no guitar at all (solo piano, \
     a cappella, pure electronic). NEVER because you don't know the specific song: if the \
     exact recording is unfamiliar, infer a credible tone from the artist's overall sound, \
@@ -426,9 +430,10 @@ enum AIToneService {
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "character", "amp", "settings", "guitar", "pickup", "pedals", "notes", "rigTips"],
+            "required": ["name", "character", "amp", "settings", "guitar", "pickup", "pedals", "notes", "rigTips", "key"],
             "properties": {
               "name": {"type": "string"},
+              "key": {"type": "string"},
               "character": {"type": "string", "enum": ["Clean", "Crunch", "Overdrive", "High Gain", "Fuzz", "Lead"]},
               "amp": {"type": "string"},
               "settings": {
@@ -529,6 +534,7 @@ enum AIToneService {
             }
 
             let name: String
+            let key: String?
             let character: String
             let amp: String
             let settings: GSettings
@@ -541,6 +547,7 @@ enum AIToneService {
             func toGeneratedTone() -> AIGeneratedTone {
                 AIGeneratedTone(
                     name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+                    key: (key ?? "").trimmingCharacters(in: .whitespacesAndNewlines),
                     character: ToneCharacter(rawValue: character) ?? .crunch,
                     ampName: amp.trimmingCharacters(in: .whitespacesAndNewlines),
                     settings: AmpSettings(

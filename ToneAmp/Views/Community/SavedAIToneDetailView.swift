@@ -47,6 +47,13 @@ struct SavedAIToneDetailView: View {
 
             Section("Settings") {
                 AmpPanelView(settings: tone.settings)
+                if let key = tone.key, !key.isEmpty {
+                    LabeledContent {
+                        Text(key)
+                    } label: {
+                        Label("Key", systemImage: "music.quarternote.3")
+                    }
+                }
             }
 
             Section("Guitar") {

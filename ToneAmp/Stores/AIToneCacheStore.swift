@@ -22,6 +22,7 @@ struct SavedAITone: Codable, Identifiable, Hashable {
     let pedals: [EffectPedal]
     let notes: String
     let rigTips: [String]
+    var key: String? = nil
     let rigDescription: String
 
     var character: ToneCharacter {
@@ -95,6 +96,7 @@ final class AIToneCacheStore {
                     pedals: tone.pedals,
                     notes: tone.notes,
                     rigTips: tone.rigTips,
+                    key: tone.key.isEmpty ? nil : tone.key,
                     rigDescription: rigDescription
                 ),
                 at: 0

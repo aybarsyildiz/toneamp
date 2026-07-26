@@ -38,6 +38,12 @@ struct CommunitySongView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    ReferencePlayButton(
+                        trackID: song.trackId,
+                        songTitle: song.trackName,
+                        artist: song.artistName,
+                        knownPreviewURL: song.previewUrl
+                    )
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
