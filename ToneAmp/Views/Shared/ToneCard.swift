@@ -164,42 +164,35 @@ struct ToneCardView: View {
     }
 }
 
-/// Renders the card at 2x (1080×1350 — Instagram-friendly 4:5) and shares.
-struct ShareToneCardButton: View {
+/// Toolbar share control. The card renders once at 2x (1080×1350 —
+/// Instagram-friendly 4:5) before the button enables, so the system share
+/// sheet always receives a finished image with a real preview.
+struct ToneCardShareLink: View {
     let payload: ToneCardPayload
 
-    @State private var shareImage: UIImage?
-    @State private var showingShare = false
+    @State private var card: Image?
 
     var body: some View {
-        Button {
-            let renderer = ImageRenderer(content: ToneCardView(payload: payload))
-            renderer.scale = 2
-            if let image = renderer.uiImage {
-                shareImage = image
-                showingShare = true
+        if let card {
+            ShareLink(
+                item: card,
+                preview: SharePreview(
+                    "\(payload.songTitle) — \(payload.toneName)",
+                    image: card
+                )
+            ) {
+                Image(systemName: "square.and.arrow.up")
             }
-        } label: {
-            Label("Share Tone Card", systemImage: "square.and.arrow.up.on.square")
-                .frame(maxWidth: .infinity)
-        }
-        .sheet(isPresented: $showingShare) {
-            if let shareImage {
-                ActivitySheet(items: [shareImage])
-                    .presentationDetents([.medium, .large])
-                    .ignoresSafeArea()
-            }
+        } else {
+            Image(systemName: "square.and.arrow.up")
+                .foregroundStyle(.tertiary)
+                .task {
+                    let renderer = ImageRenderer(content: ToneCardView(payload: payload))
+                    renderer.scale = 2
+                    if let image = renderer.uiImage {
+                        card = Image(uiImage: image)
+                    }
+                }
         }
     }
-}
-
-/// Thin UIActivityViewController wrapper — ShareLink can't render lazily.
-private struct ActivitySheet: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

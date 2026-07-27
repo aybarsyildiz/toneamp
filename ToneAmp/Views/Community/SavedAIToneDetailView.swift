@@ -14,6 +14,21 @@ struct SavedAIToneDetailView: View {
     @State private var showingSignIn = false
     @State private var confirmingDelete = false
 
+    private var cardPayload: ToneCardPayload {
+        ToneCardPayload(
+            songTitle: tone.songTitle,
+            artist: tone.artistName,
+            toneName: tone.name,
+            character: tone.character,
+            ampName: tone.ampName,
+            settings: tone.settings,
+            guitar: tone.guitar,
+            pickup: tone.pickup,
+            pedalNames: tone.pedals.map(\.name),
+            key: tone.key
+        )
+    }
+
     var body: some View {
         List {
             Section {
@@ -111,18 +126,6 @@ struct SavedAIToneDetailView: View {
             }
 
             Section {
-                ShareToneCardButton(payload: ToneCardPayload(
-                    songTitle: tone.songTitle,
-                    artist: tone.artistName,
-                    toneName: tone.name,
-                    character: tone.character,
-                    ampName: tone.ampName,
-                    settings: tone.settings,
-                    guitar: tone.guitar,
-                    pickup: tone.pickup,
-                    pedalNames: tone.pedals.map(\.name),
-                    key: tone.key
-                ))
                 if isPublished {
                     Label("Published to the community", systemImage: "checkmark.circle.fill")
                         .foregroundStyle(.green)
@@ -157,21 +160,10 @@ struct SavedAIToneDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(
-                    item: toneShareText(
-                        songTitle: tone.songTitle,
-                        artist: tone.artistName,
-                        toneName: tone.name,
-                        amp: tone.ampName,
-                        settings: tone.settings,
-                        guitar: tone.guitar,
-                        pickup: tone.pickup,
-                        pedals: tone.pedals,
-                        notes: tone.notes
-                    )
-                ) {
-                    Image(systemName: "square.and.arrow.up")
-                }
+                ToneCardShareLink(payload: cardPayload)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                SetlistToolbarMenu(item: SetlistItem(aiTone: tone))
             }
         }
         .sheet(isPresented: $showingSignIn) {

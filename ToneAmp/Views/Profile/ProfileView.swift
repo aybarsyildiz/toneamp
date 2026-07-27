@@ -121,7 +121,7 @@ struct ProfileView: View {
                             } icon: {
                                 Image(systemName: "music.note.list")
                             }
-                            .badge(setlist.songIDs.count)
+                            .badge(setlist.items.count)
                         }
                     }
                     .onDelete { offsets in

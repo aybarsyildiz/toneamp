@@ -97,6 +97,13 @@ enum CommunityService {
             .sorted { $0.createdAt > $1.createdAt }
     }
 
+    /// One published tone by record ID — setlist entries resolve through this.
+    static func tone(id: String) async throws -> CommunityTone? {
+        try await ensureAccount()
+        let record = try await database.record(for: CKRecord.ID(recordName: id))
+        return CommunityTone(record: record)
+    }
+
     /// Tones published by one user (the Profile screen).
     static func tones(byAuthorID authorID: String) async throws -> [CommunityTone] {
         try await ensureAccount()

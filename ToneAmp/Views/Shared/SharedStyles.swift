@@ -154,45 +154,6 @@ struct RatingStarsView: View {
     }
 }
 
-/// Plain-text tone sheet for ShareLink.
-func toneShareText(
-    songTitle: String,
-    artist: String,
-    toneName: String,
-    amp: String,
-    settings: AmpSettings,
-    guitar: String,
-    pickup: String,
-    pedals: [EffectPedal],
-    notes: String
-) -> String {
-    var lines: [String] = []
-    lines.append("🎸 \(toneName) — \(songTitle) by \(artist)")
-    lines.append("Amp: \(amp)")
-    let knobs = settings.knobs
-        .map { "\($0.label) \($0.value.formatted(.number.precision(.fractionLength(0...1))))" }
-        .joined(separator: " · ")
-    lines.append("Settings: \(knobs)")
-    if !guitar.isEmpty {
-        lines.append("Guitar: \(guitar) (\(pickup))")
-    }
-    if pedals.isEmpty {
-        lines.append("Pedals: straight into the amp")
-    } else {
-        for pedal in pedals {
-            let controls = pedal.controls
-                .map { "\($0.name) \($0.value.formatted(.number.precision(.fractionLength(0...1))))" }
-                .joined(separator: ", ")
-            lines.append("Pedal: \(pedal.name)\(controls.isEmpty ? "" : " — " + controls)")
-        }
-    }
-    if !notes.isEmpty {
-        lines.append("Notes: \(notes)")
-    }
-    lines.append("— dialed in with ToneAmp")
-    return lines.joined(separator: "\n")
-}
-
 /// Compact "★ 4.5 (12)" label for list rows.
 struct RatingSummaryLabel: View {
     let average: Double?

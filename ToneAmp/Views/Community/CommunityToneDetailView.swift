@@ -28,6 +28,20 @@ struct CommunityToneDetailView: View {
         return Double(ratingTotal) / Double(ratingCount)
     }
 
+    private var cardPayload: ToneCardPayload {
+        ToneCardPayload(
+            songTitle: tone.songTitle,
+            artist: tone.artistName,
+            toneName: tone.toneName,
+            character: tone.character,
+            ampName: tone.ampName,
+            settings: tone.settings,
+            guitar: tone.guitar,
+            pickup: tone.pickup,
+            pedalNames: tone.pedals.map(\.name)
+        )
+    }
+
     var body: some View {
         List {
             Section {
@@ -126,18 +140,6 @@ struct CommunityToneDetailView: View {
 
             Section("For Your Rig") {
                 RigTipsView(pickup: tone.pickup, amp: tone.ampName, pedals: tone.pedals)
-                NailedItButton(toneKey: "ct|\(tone.id)")
-                ShareToneCardButton(payload: ToneCardPayload(
-                    songTitle: tone.songTitle,
-                    artist: tone.artistName,
-                    toneName: tone.toneName,
-                    character: tone.character,
-                    ampName: tone.ampName,
-                    settings: tone.settings,
-                    guitar: tone.guitar,
-                    pickup: tone.pickup,
-                    pedalNames: tone.pedals.map(\.name)
-                ))
                 AdaptToMyGearButton(
                     input: ToneAdaptationInput(
                         trackID: tone.trackID,
@@ -164,26 +166,19 @@ struct CommunityToneDetailView: View {
                         .font(.callout)
                 }
             }
+
+            Section {
+                NailedItButton(toneKey: "ct|\(tone.id)")
+            }
         }
         .navigationTitle(tone.toneName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(
-                    item: toneShareText(
-                        songTitle: tone.songTitle,
-                        artist: tone.artistName,
-                        toneName: tone.toneName,
-                        amp: tone.ampName,
-                        settings: tone.settings,
-                        guitar: tone.guitar,
-                        pickup: tone.pickup,
-                        pedals: tone.pedals,
-                        notes: tone.notes
-                    )
-                ) {
-                    Image(systemName: "square.and.arrow.up")
-                }
+                ToneCardShareLink(payload: cardPayload)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                SetlistToolbarMenu(item: SetlistItem(community: tone))
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {

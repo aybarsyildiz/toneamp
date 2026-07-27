@@ -82,24 +82,7 @@ struct SongDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    if setlistStore.setlists.isEmpty {
-                        Text("No setlists yet — create one in Profile.")
-                    }
-                    ForEach(setlistStore.setlists) { setlist in
-                        Button {
-                            setlistStore.toggle(songID: song.id, in: setlist.id)
-                        } label: {
-                            if setlistStore.contains(songID: song.id, in: setlist.id) {
-                                Label(setlist.name, systemImage: "checkmark")
-                            } else {
-                                Text(setlist.name)
-                            }
-                        }
-                    }
-                } label: {
-                    Image(systemName: "music.note.list")
-                }
+                SetlistToolbarMenu(item: SetlistItem(song: song))
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
