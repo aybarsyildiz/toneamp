@@ -166,7 +166,7 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Version", value: "1.0")
+                    LabeledContent("Version", value: "1.0.1")
                 } header: {
                     Text("About")
                 } footer: {

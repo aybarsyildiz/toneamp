@@ -10,8 +10,10 @@ compatibility_date = "2026-01-01"
 binding = "USAGE"
 id = "8a379eabbf454e67814bcb381b6a3c12"
 
-# Demo kill switch: the in-app review code (TONEAMP-REVIEW) is DISABLED
-# in production. For future update reviews: comment this out, deploy,
-# submit, then re-enable after approval.
-[vars]
-DEMO_DISABLED = "true"
+# Demo kill switch: the in-app review code (TONEAMP-REVIEW) is currently
+# ENABLED for the 1.0.1 review. After approval: restore
+#   [vars]
+#   DEMO_DISABLED = "true"
+# and deploy again.
+# [vars]
+# DEMO_DISABLED = "true"
