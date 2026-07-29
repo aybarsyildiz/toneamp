@@ -13,5 +13,5 @@ id = "8a379eabbf454e67814bcb381b6a3c12"
 # Demo kill switch: the in-app review code (TONEAMP-REVIEW) is DISABLED
 # in production. For future update reviews: comment this out, deploy,
 # submit, then re-enable after approval.
-# [vars]
-# DEMO_DISABLED = "true"
+[vars]
+DEMO_DISABLED = "true"
