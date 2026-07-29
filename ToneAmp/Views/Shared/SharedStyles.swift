@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 
 extension Genre {
     var tint: Color {
@@ -344,6 +345,7 @@ struct NailedItButton: View {
     let toneKey: String
 
     @Environment(SessionStore.self) private var session
+    @Environment(\.requestReview) private var requestReview
     @State private var count = 0
     @State private var nailed = false
     @State private var busy = false
@@ -363,6 +365,11 @@ struct NailedItButton: View {
                     var set = Set(UserDefaults.standard.stringArray(forKey: Self.localKey) ?? [])
                     set.insert(toneKey)
                     UserDefaults.standard.set(Array(set), forKey: Self.localKey)
+                    if !UserDefaults.standard.bool(forKey: "toneamp.askedForReview") {
+                        UserDefaults.standard.set(true, forKey: "toneamp.askedForReview")
+                        try? await Task.sleep(for: .seconds(1.2))
+                        requestReview()
+                    }
                 }
                 busy = false
             }
